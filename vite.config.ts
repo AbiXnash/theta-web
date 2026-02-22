@@ -47,6 +47,7 @@ export default defineConfig(({ command, mode }): UserConfig => {
     //     : undefined,
 
     server: {
+      port: 9090,
       headers: {
         // Don't cache the server response in dev mode
         "Cache-Control": "public, max-age=0",
