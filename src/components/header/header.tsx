@@ -26,8 +26,9 @@ export const Header = component$(() => {
   });
 
   return (
-    <header class="premium-surface fixed top-0 right-0 left-0 z-50 border-b border-white/20 bg-slate-950/75">
-      <div class="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 sm:px-8">
+    <header class="fixed top-0 right-0 left-0 z-50 border-b border-cyan-300/20 bg-slate-950/70 backdrop-blur-2xl">
+      <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.18),transparent_45%),radial-gradient(circle_at_85%_10%,rgba(244,114,182,0.14),transparent_40%)]"></div>
+      <div class="relative mx-auto flex h-20 max-w-7xl items-center justify-between px-5 sm:h-24 sm:px-8 lg:h-28">
         {/* Logo */}
         <Link href="/" class="group flex items-center gap-3">
           <div class="relative">
@@ -39,30 +40,27 @@ export const Header = component$(() => {
               loading="eager"
               fetchPriority="high"
               decoding="async"
-              class="h-10 w-auto transition-transform duration-300 group-hover:scale-110 sm:h-12"
+              class="h-11 w-auto transition-transform duration-300 group-hover:scale-110 sm:h-14 lg:h-16"
             />
-            <div class="absolute -inset-2 rounded-full bg-violet-500/20 opacity-0 blur-lg transition-opacity duration-300 group-hover:opacity-100"></div>
+            <div class="absolute -inset-2 rounded-full bg-cyan-400/20 opacity-0 blur-lg transition-opacity duration-300 group-hover:opacity-100"></div>
           </div>
-          <span class="hidden text-2xl font-bold tracking-wider text-white sm:block">
-            2026
-          </span>
         </Link>
 
         {/* Desktop Nav */}
-        <nav class="hidden items-center gap-2 lg:flex">
+        <nav class="hidden items-center gap-3 lg:flex">
           {navItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              class="group premium-card relative rounded-xl px-5 py-3 text-base font-medium text-slate-200 transition-all hover:bg-white/10 hover:text-white"
+              class="group relative rounded-full border border-transparent bg-white/3 px-6 py-3 text-base font-semibold tracking-wide text-slate-200 transition-all hover:border-cyan-300/40 hover:bg-white/10 hover:text-white"
             >
               <span class="relative z-10">{item.label}</span>
-              <div class="absolute bottom-0 left-1/2 h-0.5 w-0 -translate-x-1/2 rounded-full bg-violet-500 transition-all duration-300 group-hover:w-3/4"></div>
+              <div class="absolute right-3 bottom-1.5 h-1.5 w-1.5 rounded-full bg-cyan-300 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
             </Link>
           ))}
-          <div class="ml-4 flex items-center gap-2 rounded-full border border-violet-500/30 bg-violet-500/10 px-4 py-2">
-            <span class="text-xs text-violet-400">Merch</span>
-            <span class="rounded-full bg-violet-500/20 px-2 py-0.5 text-[10px] text-violet-300">
+          <div class="ml-3 flex items-center gap-2 rounded-full border border-amber-300/35 bg-amber-300/10 px-4 py-2">
+            <span class="text-xs font-medium text-amber-300">Merch</span>
+            <span class="rounded-full bg-amber-200/20 px-2 py-0.5 text-[10px] text-amber-100">
               Soon
             </span>
           </div>
@@ -72,7 +70,7 @@ export const Header = component$(() => {
         <button
           type="button"
           onClick$={toggleMenu}
-          class="premium-surface flex h-14 w-14 items-center justify-center rounded-xl text-slate-200 transition-all hover:border-violet-300/60 hover:bg-white/10 lg:hidden"
+          class="flex h-11 w-11 items-center justify-center rounded-xl border border-cyan-300/30 bg-white/5 text-slate-200 transition-all hover:bg-white/10 sm:h-12 sm:w-12 lg:hidden"
         >
           {isMenuOpen.value ? (
             <svg
@@ -108,20 +106,20 @@ export const Header = component$(() => {
 
       {/* Mobile Menu Dropdown */}
       {isMenuOpen.value && (
-        <div class="premium-surface border-t border-white/20 bg-slate-950/80 lg:hidden">
+        <div class="border-t border-cyan-300/20 bg-slate-950/85 backdrop-blur-2xl lg:hidden">
           <div class="space-y-2 px-6 py-6">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                class="premium-card block rounded-xl bg-slate-800/50 px-6 py-4 text-lg font-medium text-slate-200 transition-all hover:bg-white/10 hover:text-white"
+                class="block rounded-xl border border-white/10 bg-white/5 px-6 py-4 text-lg font-medium text-slate-200 transition-all hover:border-cyan-300/40 hover:bg-white/10 hover:text-white"
               >
                 {item.label}
               </Link>
             ))}
             <div class="flex items-center gap-3 px-6 py-4">
-              <span class="text-base font-medium text-slate-500">Merch</span>
-              <span class="rounded-full bg-violet-500/20 px-3 py-1 text-xs text-violet-400">
+              <span class="text-base font-medium text-slate-400">Merch</span>
+              <span class="rounded-full bg-amber-300/20 px-3 py-1 text-xs text-amber-200">
                 Coming Soon
               </span>
             </div>
