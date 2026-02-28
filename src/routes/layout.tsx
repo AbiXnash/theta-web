@@ -7,12 +7,24 @@ export default component$(() => {
   const cursorY = useSignal(0);
   const isHovering = useSignal(false);
   const isMobile = useSignal(true);
+  const enableCursorFx = useSignal(false);
   const underDev = useSignal(true);
 
   useVisibleTask$(() => {
-    isMobile.value = window.innerWidth < 1024;
+    const computeUiMode = () => {
+      const width = window.innerWidth;
+      isMobile.value = width < 1024;
+      const prefersReducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+      const supportsFinePointer = window.matchMedia("(pointer:fine)").matches;
+      enableCursorFx.value =
+        !prefersReducedMotion && supportsFinePointer && width >= 1024;
+    };
+
+    computeUiMode();
     const handleResize = () => {
-      isMobile.value = window.innerWidth < 1024;
+      computeUiMode();
     };
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
@@ -23,6 +35,8 @@ export default component$(() => {
   });
 
   useVisibleTask$(() => {
+    if (!enableCursorFx.value) return;
+
     const handleMouseMove = (e: MouseEvent) => {
       cursorX.value = e.clientX;
       cursorY.value = e.clientY;
@@ -54,7 +68,7 @@ export default component$(() => {
   return (
     <div class="min-h-screen cursor-none bg-gray-950 lg:cursor-auto">
       {/* Custom Cursor - Desktop Only */}
-      {!isMobile.value && (
+      {!isMobile.value && enableCursorFx.value && (
         <div
           class="pointer-events-none fixed z-[9999] rounded-full bg-violet-500 mix-blend-difference transition-transform duration-100"
           style={{
@@ -109,7 +123,14 @@ export default component$(() => {
             {/* Logo & Description */}
             <div class="md:col-span-2">
               <Link href="/" class="flex items-center gap-3">
-                <img src="/theta-logo.png" alt="Theta" class="h-16 w-auto" />
+                <img
+                  src="/theta-logo.png"
+                  alt="Theta"
+                  width="128"
+                  height="64"
+                  decoding="async"
+                  class="h-16 w-auto"
+                />
               </Link>
               <p class="mt-4 max-w-md text-base text-slate-400">
                 Theta is a national-level techno-management fest organized by

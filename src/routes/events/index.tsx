@@ -42,7 +42,7 @@ const defaultEvents: Event[] = [
     status: "active",
     description:
       "## Robotics Workshop\n\nLearn the fundamentals of robotics, including:\n- Basic electronics\n- Arduino programming\n- Sensor integration\n- Building your first robot\n\n**Prerequisites:** Basic knowledge of programming\n\n**What to bring:** Laptop",
-    image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800",
+    image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=800&q=60",
     registrationUrl: "https://forms.google.com/example",
   },
   {
@@ -55,7 +55,7 @@ const defaultEvents: Event[] = [
     status: "active",
     description:
       "## Code Battle\n\nCompetitive coding event with multiple rounds:\n- Round 1: MCQ\n- Round 2: Coding\n- Round 3: Debugging\n\n**Languages:** C, C++, Java, Python\n\n**Winner gets ₹5000 cash prize!**",
-    image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800",
+    image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=800&q=60",
     registrationUrl: "https://forms.google.com/example",
   },
   {
@@ -68,7 +68,7 @@ const defaultEvents: Event[] = [
     status: "active",
     description:
       "## Tech Quiz\n\nTest your technical knowledge!\n- Technical rounds\n- Rapid fire\n- Buzzer round\n\n**Prize:** ₹3000 for winner",
-    image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800",
+    image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=60",
     registrationUrl: "https://forms.google.com/example",
   },
   {
@@ -81,7 +81,7 @@ const defaultEvents: Event[] = [
     status: "active",
     description:
       "## Hackathon\n\n24-hour hackathon to build innovative solutions.\n- Team size: 2-4 members\n- Bring your own laptop\n\n**Prize:** ₹10000 for winner",
-    image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800",
+    image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=60",
     registrationUrl: "https://forms.google.com/example",
   },
   {
@@ -94,7 +94,7 @@ const defaultEvents: Event[] = [
     status: "active",
     description:
       "## Project Expo\n\nShowcase your projects to industry experts.\n- Present your innovative ideas\n- Network with professionals\n\n**Prize:** ₹5000 for best project",
-    image: "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800",
+    image: "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=800&q=60",
     registrationUrl: "https://forms.google.com/example",
   },
 ];
@@ -193,7 +193,7 @@ export default component$(() => {
     <div class="min-h-screen bg-gray-950">
       {/* Background */}
       <div class="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-950 to-gray-900"></div>
-      <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1920')] bg-cover bg-center opacity-10"></div>
+      <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1920&q=60')] bg-cover bg-center opacity-10"></div>
 
       <div class="relative mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         {/* Header */}
@@ -504,6 +504,10 @@ export default component$(() => {
                       <img
                         src={selectedEvent.value.image}
                         alt={selectedEvent.value.name}
+                        width="80"
+                        height="80"
+                        loading="lazy"
+                        decoding="async"
                         class="h-14 w-14 rounded-xl object-cover sm:h-20 sm:w-20 sm:rounded-2xl"
                       />
                     </div>
@@ -668,4 +672,11 @@ export default component$(() => {
 
 export const head: DocumentHead = {
   title: "Events - Theta 2026",
+  meta: [
+    {
+      name: "description",
+      content:
+        "Browse Theta 2026 events and workshops, filter by category, status, and cluster, and register online.",
+    },
+  ],
 };

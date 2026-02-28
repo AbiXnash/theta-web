@@ -3,6 +3,7 @@
 /lib
 /lib-types
 /server
+.netlify
 
 # Development
 node_modules

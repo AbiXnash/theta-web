@@ -278,4 +278,11 @@ export default component$(() => {
 
 export const head: DocumentHead = {
   title: "Contact - Theta 2026",
+  meta: [
+    {
+      name: "description",
+      content:
+        "Contact the Theta 2026 organizing team, coordinators, and WebTek support for event or sponsorship queries.",
+    },
+  ],
 };

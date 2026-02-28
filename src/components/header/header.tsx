@@ -34,6 +34,11 @@ export const Header = component$(() => {
             <img
               src="/theta-logo.png"
               alt="Theta"
+              width="96"
+              height="48"
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
               class="h-10 w-auto transition-transform duration-300 group-hover:scale-110 sm:h-12"
             />
             <div class="absolute -inset-2 rounded-full bg-violet-500/20 opacity-0 blur-lg transition-opacity duration-300 group-hover:opacity-100"></div>

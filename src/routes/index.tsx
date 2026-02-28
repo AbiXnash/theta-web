@@ -73,7 +73,7 @@ export default component$(() => {
       events: ["Inauguration", "Robotics Workshop", "Tech Quiz"],
       highlight: "SASTRA Singing Team Performance",
       bgImage:
-        "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=800",
+        "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?auto=format&fit=crop&w=800&q=60",
     },
     {
       day: "Day Two",
@@ -81,7 +81,7 @@ export default component$(() => {
       events: ["Code Battle", "Hackathon", "Project Expo"],
       highlight: "SASTRA Dance Team Performance",
       bgImage:
-        "https://images.unsplash.com/photo-1504609813442-a8924e83f76e?w=800",
+        "https://images.unsplash.com/photo-1504609813442-a8924e83f76e?auto=format&fit=crop&w=800&q=60",
     },
     {
       day: "Day Three",
@@ -89,7 +89,7 @@ export default component$(() => {
       events: ["Prize Distribution", "Valedictory"],
       highlight: "External Team Pro Nite",
       bgImage:
-        "https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?w=800",
+        "https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?auto=format&fit=crop&w=800&q=60",
     },
   ];
 
@@ -225,7 +225,7 @@ export default component$(() => {
       {/* Hero Section */}
       <section class="relative min-h-[calc(100vh-4rem)] overflow-hidden pt-20 sm:pt-24 lg:pt-32">
         <div class="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-950 to-gray-900"></div>
-        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1920')] bg-cover bg-center opacity-15"></div>
+        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1920&q=60')] bg-cover bg-center opacity-15"></div>
         <div class="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-950/70 to-transparent"></div>
 
         {/* Animated orbs */}
@@ -444,7 +444,7 @@ export default component$(() => {
       {/* Stats Section */}
       <section class="relative py-12 sm:py-20">
         <div class="absolute inset-0 bg-slate-900"></div>
-        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1511578314322-379afb476865?w=1920')] bg-cover bg-center opacity-5"></div>
+        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1920&q=60')] bg-cover bg-center opacity-5"></div>
 
         <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div class="grid grid-cols-2 gap-6 text-center sm:grid-cols-4 sm:gap-8">
@@ -499,6 +499,10 @@ export default component$(() => {
                       <img
                         src={sponsor.logo}
                         alt={sponsor.name}
+                        width="160"
+                        height="80"
+                        loading="lazy"
+                        decoding="async"
                         class="max-h-full max-w-full object-contain opacity-90 transition-all group-hover:opacity-100"
                         onError$={(e) => {
                           const target = e.target as HTMLImageElement;
@@ -532,6 +536,10 @@ export default component$(() => {
                       <img
                         src={sponsor.logo}
                         alt={sponsor.name}
+                        width="128"
+                        height="64"
+                        loading="lazy"
+                        decoding="async"
                         class="max-h-full max-w-full object-contain opacity-70 transition-all group-hover:opacity-100"
                         onError$={(e) => {
                           const target = e.target as HTMLImageElement;
@@ -565,6 +573,10 @@ export default component$(() => {
                       <img
                         src={sponsor.logo}
                         alt={sponsor.name}
+                        width="96"
+                        height="56"
+                        loading="lazy"
+                        decoding="async"
                         class="max-h-full max-w-full object-contain opacity-60 transition-all group-hover:opacity-100"
                         onError$={(e) => {
                           const target = e.target as HTMLImageElement;
@@ -601,6 +613,10 @@ export default component$(() => {
                     <img
                       src={sponsor.logo}
                       alt={sponsor.name}
+                      width="96"
+                      height="48"
+                      loading="lazy"
+                      decoding="async"
                       class="max-h-full max-w-full object-contain opacity-70 transition-all group-hover:opacity-100"
                       onError$={(e) => {
                         const target = e.target as HTMLImageElement;
@@ -720,6 +736,10 @@ export default component$(() => {
                       <img
                         src={event.image}
                         alt={event.name}
+                        width="128"
+                        height="80"
+                        loading="lazy"
+                        decoding="async"
                         class="h-full w-full object-cover"
                       />
                     </div>
@@ -841,4 +861,11 @@ export default component$(() => {
 
 export const head: DocumentHead = {
   title: "Theta 2026 - Home",
+  meta: [
+    {
+      name: "description",
+      content:
+        "Theta 2026 is SASTRA's national-level techno-management fest with events, workshops, sponsors, and registrations.",
+    },
+  ],
 };
