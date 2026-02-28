@@ -7,13 +7,102 @@
 }
 
 :root {
+  --bg-base: #070b14;
+  --bg-elevated: #0d1320;
+  --glass-bg: rgba(255, 255, 255, 0.07);
+  --glass-border: rgba(255, 255, 255, 0.18);
+  --glass-highlight: rgba(255, 255, 255, 0.32);
+  --brand-a: #8b5cf6;
+  --brand-b: #0ea5e9;
+  --brand-c: #ec4899;
   font-family: "Space Grotesk", sans-serif;
 }
 
 body {
+  background:
+    radial-gradient(
+      circle at 15% 15%,
+      rgba(139, 92, 246, 0.2) 0%,
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 85% 10%,
+      rgba(14, 165, 233, 0.16) 0%,
+      transparent 38%
+    ),
+    var(--bg-base);
   font-family: "Space Grotesk", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.premium-surface {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.09) 0%,
+      rgba(255, 255, 255, 0.04) 45%,
+      rgba(255, 255, 255, 0.08) 100%
+    ),
+    var(--bg-elevated);
+  border: 1px solid var(--glass-border);
+  box-shadow:
+    0 18px 50px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(16px) saturate(130%);
+  -webkit-backdrop-filter: blur(16px) saturate(130%);
+}
+
+.premium-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.premium-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 48%,
+    transparent 100%
+  );
+  opacity: 0;
+  transform: translateX(-25%);
+  transition: opacity 300ms ease;
+  pointer-events: none;
+}
+
+.premium-card:hover::before {
+  opacity: 1;
+}
+
+.premium-ring {
+  position: relative;
+}
+
+.premium-ring::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  border: 1px solid transparent;
+  background:
+    linear-gradient(var(--bg-base), var(--bg-base)) padding-box,
+    linear-gradient(
+        130deg,
+        rgba(139, 92, 246, 0.9),
+        rgba(14, 165, 233, 0.8),
+        rgba(236, 72, 153, 0.85)
+      )
+      border-box;
+  mask:
+    linear-gradient(#fff 0 0) padding-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0.75;
 }
 
 /* Load Animations */

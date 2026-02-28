@@ -117,9 +117,10 @@ export default component$(() => {
       </main>
 
       {/* Footer */}
-      <footer class="border-t border-white/10 bg-gray-950 py-16">
+      <footer class="border-t border-white/15 bg-gray-950/80 py-16 backdrop-blur-xl">
         <div class="mx-auto max-w-7xl px-6 sm:px-8">
-          <div class="grid gap-10 md:grid-cols-4">
+          <div class="premium-surface premium-ring rounded-3xl p-8 md:p-10">
+            <div class="grid gap-10 md:grid-cols-4">
             {/* Logo & Description */}
             <div class="md:col-span-2">
               <Link href="/" class="flex items-center gap-3">
@@ -140,7 +141,7 @@ export default component$(() => {
               <div class="mt-6 flex gap-4">
                 <a
                   href="#"
-                  class="flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-slate-400 transition-all hover:border-violet-500/50 hover:bg-violet-500/20 hover:text-violet-400"
+                  class="premium-card premium-surface flex h-12 w-12 items-center justify-center rounded-xl text-slate-300 transition-all hover:border-violet-300/70 hover:text-violet-200"
                 >
                   <span class="sr-only">Instagram</span>
                   <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
@@ -149,7 +150,7 @@ export default component$(() => {
                 </a>
                 <a
                   href="#"
-                  class="flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-slate-400 transition-all hover:border-violet-500/50 hover:bg-violet-500/20 hover:text-violet-400"
+                  class="premium-card premium-surface flex h-12 w-12 items-center justify-center rounded-xl text-slate-300 transition-all hover:border-violet-300/70 hover:text-violet-200"
                 >
                   <span class="sr-only">Twitter</span>
                   <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
@@ -158,7 +159,7 @@ export default component$(() => {
                 </a>
                 <a
                   href="#"
-                  class="flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-slate-400 transition-all hover:border-violet-500/50 hover:bg-violet-500/20 hover:text-violet-400"
+                  class="premium-card premium-surface flex h-12 w-12 items-center justify-center rounded-xl text-slate-300 transition-all hover:border-violet-300/70 hover:text-violet-200"
                 >
                   <span class="sr-only">YouTube</span>
                   <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
@@ -259,15 +260,15 @@ export default component$(() => {
                 </li>
               </ul>
             </div>
-          </div>
-
-          <div class="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 md:flex-row">
-            <p class="text-base text-slate-500">
-              © 2026 Theta. All rights reserved.
-            </p>
-            <p class="text-base text-slate-500">
-              Made with <span class="text-violet-500">♥</span> by WebTek Team
-            </p>
+            </div>
+            <div class="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 md:flex-row">
+              <p class="text-base text-slate-500">
+                © 2026 Theta. All rights reserved.
+              </p>
+              <p class="text-base text-slate-500">
+                Made with <span class="text-violet-400">♥</span> by WebTek Team
+              </p>
+            </div>
           </div>
         </div>
       </footer>

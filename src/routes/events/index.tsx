@@ -340,7 +340,7 @@ export default component$(() => {
             <div
               key={event.id}
               onClick$={() => openEventModal(event)}
-              class="group cursor-pointer overflow-hidden rounded-2xl border border-slate-800 bg-slate-900/50 transition-all hover:border-violet-500/50 hover:shadow-xl hover:shadow-violet-500/10"
+              class="premium-surface premium-card group cursor-pointer overflow-hidden rounded-2xl transition-all hover:border-violet-400/50 hover:shadow-xl hover:shadow-violet-500/10"
             >
               <div class="relative h-40 overflow-hidden">
                 <div
@@ -470,7 +470,7 @@ export default component$(() => {
             {/* Animated border gradient */}
             <div class="absolute -inset-0.5 animate-pulse rounded-3xl bg-gradient-to-r from-violet-500 via-fuchsia-500 to-cyan-400 opacity-70 blur-sm"></div>
 
-            <div class="relative h-full max-h-[95vh] overflow-y-auto rounded-2xl border border-white/15 bg-gradient-to-br from-slate-900 via-slate-900 to-gray-950 shadow-[0_25px_90px_rgba(76,29,149,0.45)] sm:max-h-[90vh] sm:rounded-3xl">
+            <div class="premium-surface premium-ring relative h-full max-h-[95vh] overflow-y-auto rounded-2xl shadow-[0_25px_90px_rgba(76,29,149,0.45)] sm:max-h-[90vh] sm:rounded-3xl">
               {/* Close button */}
               <button
                 onClick$={closeModal}
@@ -613,7 +613,7 @@ export default component$(() => {
                   </div>
 
                   {/* Description */}
-                  <div class="mb-8 rounded-2xl border border-white/10 bg-white/[0.03] p-4 text-sm leading-relaxed text-slate-300 sm:p-6 sm:text-base">
+                  <div class="premium-surface mb-8 rounded-2xl p-4 text-sm leading-relaxed text-slate-300 sm:p-6 sm:text-base">
                     <p>{selectedEvent.value.description}</p>
                   </div>
 

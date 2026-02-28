@@ -26,7 +26,7 @@ export const Header = component$(() => {
   });
 
   return (
-    <header class="fixed top-0 right-0 left-0 z-50 border-b border-white/10 bg-gray-950/90 backdrop-blur-xl">
+    <header class="premium-surface fixed top-0 right-0 left-0 z-50 border-b border-white/20 bg-slate-950/75">
       <div class="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 sm:px-8">
         {/* Logo */}
         <Link href="/" class="group flex items-center gap-3">
@@ -54,7 +54,7 @@ export const Header = component$(() => {
             <Link
               key={item.href}
               href={item.href}
-              class="group relative rounded-xl px-5 py-3 text-base font-medium text-slate-300 transition-all hover:bg-white/5 hover:text-white"
+              class="group premium-card relative rounded-xl px-5 py-3 text-base font-medium text-slate-200 transition-all hover:bg-white/10 hover:text-white"
             >
               <span class="relative z-10">{item.label}</span>
               <div class="absolute bottom-0 left-1/2 h-0.5 w-0 -translate-x-1/2 rounded-full bg-violet-500 transition-all duration-300 group-hover:w-3/4"></div>
@@ -72,7 +72,7 @@ export const Header = component$(() => {
         <button
           type="button"
           onClick$={toggleMenu}
-          class="flex h-14 w-14 items-center justify-center rounded-xl border border-slate-700 bg-slate-800/50 text-slate-300 transition-all hover:border-violet-500 hover:bg-violet-500/20 lg:hidden"
+          class="premium-surface flex h-14 w-14 items-center justify-center rounded-xl text-slate-200 transition-all hover:border-violet-300/60 hover:bg-white/10 lg:hidden"
         >
           {isMenuOpen.value ? (
             <svg
@@ -108,13 +108,13 @@ export const Header = component$(() => {
 
       {/* Mobile Menu Dropdown */}
       {isMenuOpen.value && (
-        <div class="border-t border-white/10 bg-gray-950/95 backdrop-blur-xl lg:hidden">
+        <div class="premium-surface border-t border-white/20 bg-slate-950/80 lg:hidden">
           <div class="space-y-2 px-6 py-6">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                class="block rounded-xl bg-slate-800/50 px-6 py-4 text-lg font-medium text-slate-300 transition-all hover:bg-violet-500/20 hover:text-white"
+                class="premium-card block rounded-xl bg-slate-800/50 px-6 py-4 text-lg font-medium text-slate-200 transition-all hover:bg-white/10 hover:text-white"
               >
                 {item.label}
               </Link>

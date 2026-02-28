@@ -303,7 +303,7 @@ export default component$(() => {
                 <div
                   key={day.day}
                   onClick$={() => openDayModal(day.day)}
-                  class="group relative cursor-pointer overflow-hidden rounded-xl border border-slate-800 bg-slate-900 transition-all hover:border-violet-500/30"
+                  class="premium-surface premium-card group relative cursor-pointer overflow-hidden rounded-xl transition-all hover:border-violet-400/50"
                 >
                   {/* Background Image */}
                   <div
@@ -416,7 +416,7 @@ export default component$(() => {
             ].map((item) => (
               <div
                 key={item.title}
-                class="rounded-2xl border border-slate-800 bg-slate-900/50 p-6 backdrop-blur-sm transition-all hover:border-violet-500/30 sm:p-8"
+                class="premium-surface premium-card rounded-2xl p-6 transition-all hover:border-violet-400/50 sm:p-8"
               >
                 <div class="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-purple-500 sm:h-14 sm:w-14">
                   <svg
@@ -493,7 +493,7 @@ export default component$(() => {
                 (sponsor) => (
                   <div
                     key={sponsor.name}
-                    class="group flex flex-col items-center justify-center rounded-2xl border border-slate-800 bg-slate-900/50 p-6 transition-all hover:border-violet-500/30"
+                    class="premium-surface premium-card group flex flex-col items-center justify-center rounded-2xl p-6 transition-all hover:border-violet-400/50"
                   >
                     <div class="flex h-20 w-40 items-center justify-center">
                       <img
@@ -607,7 +607,7 @@ export default component$(() => {
               ).map((sponsor) => (
                 <div
                   key={sponsor.name}
-                  class="group flex flex-col items-center justify-center rounded-2xl border border-slate-800/50 bg-slate-900/30 p-6 transition-all hover:border-violet-500/30 hover:bg-slate-800/50"
+                  class="premium-surface premium-card group flex flex-col items-center justify-center rounded-2xl p-6 transition-all hover:border-violet-400/50 hover:bg-white/10"
                 >
                   <div class="flex h-12 w-24 items-center justify-center">
                     <img
@@ -694,7 +694,7 @@ export default component$(() => {
         >
           <div class="absolute inset-0 bg-gray-950/80 backdrop-blur-sm"></div>
           <div
-            class="relative max-h-[80vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-slate-800 bg-slate-900 p-6 sm:p-8"
+            class="premium-surface premium-ring relative max-h-[80vh] w-full max-w-2xl overflow-y-auto rounded-2xl p-6 sm:p-8"
             onClick$={(e) => e.stopPropagation()}
           >
             <button

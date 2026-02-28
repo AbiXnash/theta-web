@@ -43,7 +43,7 @@ export default component$(() => {
     member: TeamMember;
     size?: "sm" | "md" | "lg";
   }) => (
-    <div class="group flex flex-col items-center rounded-2xl border border-slate-800 bg-slate-900/50 p-6 transition-all hover:border-violet-500/30 sm:p-8">
+    <div class="premium-surface premium-card group flex flex-col items-center rounded-2xl p-6 transition-all hover:border-violet-400/50 sm:p-8">
       <div class="text-center">
         <h4
           class={[
@@ -173,7 +173,7 @@ export default component$(() => {
                     href={teamData.value.webtek.github}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="flex h-16 w-16 items-center justify-center rounded-full border border-slate-700 bg-slate-800/50 text-slate-300 transition-all hover:border-violet-500 hover:bg-violet-500/20 hover:text-violet-400"
+                    class="premium-surface premium-card flex h-16 w-16 items-center justify-center rounded-full text-slate-300 transition-all hover:border-violet-300/70 hover:text-violet-200"
                   >
                     <svg
                       class="h-8 w-8"
@@ -191,7 +191,7 @@ export default component$(() => {
                     href={teamData.value.webtek.linkedin}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="flex h-16 w-16 items-center justify-center rounded-full border border-slate-700 bg-slate-800/50 text-slate-300 transition-all hover:border-violet-500 hover:bg-violet-500/20 hover:text-violet-400"
+                    class="premium-surface premium-card flex h-16 w-16 items-center justify-center rounded-full text-slate-300 transition-all hover:border-violet-300/70 hover:text-violet-200"
                   >
                     <svg
                       class="h-8 w-8"
@@ -203,7 +203,7 @@ export default component$(() => {
                   </a>
                   <a
                     href={`mailto:${teamData.value.webtek.email}`}
-                    class="flex h-16 w-16 items-center justify-center rounded-full border border-slate-700 bg-slate-800/50 text-slate-300 transition-all hover:border-violet-500 hover:bg-violet-500/20 hover:text-violet-400"
+                    class="premium-surface premium-card flex h-16 w-16 items-center justify-center rounded-full text-slate-300 transition-all hover:border-violet-300/70 hover:text-violet-200"
                   >
                     <svg
                       class="h-8 w-8"
@@ -243,7 +243,7 @@ export default component$(() => {
         )}
 
         <div class="mt-20 text-center">
-          <div class="rounded-2xl border border-violet-500/30 bg-violet-500/10 p-8">
+          <div class="premium-surface premium-ring rounded-2xl p-8">
             <h3 class="mb-2 text-2xl font-bold text-white">
               Still have questions?
             </h3>
