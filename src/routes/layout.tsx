@@ -11,6 +11,7 @@ import { Header } from "~/components/header/header";
 export default component$(() => {
   const cursorX = useSignal(0);
   const cursorY = useSignal(0);
+  const showCursor = useSignal(false);
   const isHovering = useSignal(false);
   const isMobile = useSignal(true);
   const enableCursorFx = useSignal(false);
@@ -66,6 +67,7 @@ export default component$(() => {
     const handleMouseMove = (e: MouseEvent) => {
       cursorX.value = e.clientX;
       cursorY.value = e.clientY;
+      showCursor.value = true;
     };
 
     const handleMouseOver = (e: MouseEvent) => {
@@ -82,19 +84,45 @@ export default component$(() => {
       }
     };
 
+    const handleMouseLeave = () => {
+      showCursor.value = false;
+    };
+
+    const handleMouseEnter = () => {
+      showCursor.value = true;
+    };
+
+    const handleWindowBlur = () => {
+      showCursor.value = false;
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState !== "visible") {
+        showCursor.value = false;
+      }
+    };
+
     document.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("mouseover", handleMouseOver);
+    document.addEventListener("mouseleave", handleMouseLeave);
+    document.addEventListener("mouseenter", handleMouseEnter);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    window.addEventListener("blur", handleWindowBlur);
 
     return () => {
       document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseover", handleMouseOver);
+      document.removeEventListener("mouseleave", handleMouseLeave);
+      document.removeEventListener("mouseenter", handleMouseEnter);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      window.removeEventListener("blur", handleWindowBlur);
     };
   });
 
   return (
     <div class="min-h-screen cursor-none bg-gray-950 lg:cursor-auto">
       {/* Custom Cursor - Desktop Only */}
-      {!isMobile.value && enableCursorFx.value && (
+      {!isMobile.value && enableCursorFx.value && showCursor.value && (
         <div
           class="pointer-events-none fixed z-[9999] rounded-full bg-violet-500 mix-blend-difference transition-transform duration-100"
           style={{
