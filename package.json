@@ -8,7 +8,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "qwik build",
+    "build": "qwik build && bun run fix:netlify-edge",
     "build.client": "vite build",
     "build.preview": "vite build --ssr src/entry.preview.tsx",
     "build.server": "qwik check-client src dist && vite build -c adapters/netlify-edge/vite.config.ts",
@@ -23,6 +23,7 @@
     "preview": "qwik build preview && vite preview --open",
     "serve": "bunx netlify dev",
     "start": "vite --open --mode ssr",
+    "fix:netlify-edge": "node scripts/fix-netlify-edge.mjs",
     "qwik": "qwik"
   },
   "devDependencies": {
