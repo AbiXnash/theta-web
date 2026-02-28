@@ -1,0 +1,34 @@
+{
+  "sponsors": {
+    "platinum": [
+      { "name": "TechCorp", "logo": "/sponsors/techcorp.png" },
+      { "name": "InnovateHub", "logo": "/sponsors/innovatehub.png" },
+      { "name": "FutureTech", "logo": "/sponsors/futuretech.png" },
+      { "name": "CodeLabs", "logo": "/sponsors/codelabs.png" }
+    ],
+    "gold": [
+      { "name": "StartUp", "logo": "/sponsors/startup.png" },
+      { "name": "DevCo", "logo": "/sponsors/devco.png" },
+      { "name": "CloudSys", "logo": "/sponsors/cloudsys.png" },
+      { "name": "DataFlow", "logo": "/sponsors/dataflow.png" },
+      { "name": "AI Labs", "logo": "/sponsors/ailabs.png" },
+      { "name": "WebWorks", "logo": "/sponsors/webworks.png" }
+    ],
+    "silver": [
+      { "name": "TechStart", "logo": "/sponsors/techstart.png" },
+      { "name": "ByteSize", "logo": "/sponsors/bytesize.png" },
+      { "name": "CodeCraft", "logo": "/sponsors/codecraft.png" },
+      { "name": "DataSync", "logo": "/sponsors/datasync.png" },
+      { "name": "InnoTech", "logo": "/sponsors/innotech.png" },
+      { "name": "TechWise", "logo": "/sponsors/techwise.png" },
+      { "name": "DevHub", "logo": "/sponsors/devhub.png" },
+      { "name": "CloudNine", "logo": "/sponsors/cloudnine.png" }
+    ],
+    "general": [
+      { "name": "Local Shop", "logo": "/sponsors/local.png" },
+      { "name": "Cafe", "logo": "/sponsors/cafe.png" },
+      { "name": "Print Shop", "logo": "/sponsors/print.png" },
+      { "name": "Stationery", "logo": "/sponsors/stationery.png" }
+    ]
+  }
+}

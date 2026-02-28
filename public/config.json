@@ -1,0 +1,201 @@
+{
+  "meta": {
+    "eventName": "Theta 2026",
+    "tagline": "National Level Techno-Management Fest",
+    "dates": "March 15-17, 2026",
+    "venue": "SASTRA Deemed University",
+    "underDevelopment": true
+  },
+  "team": {
+    "order": [
+      { "key": "coordinators", "label": "Coordinators" },
+      { "key": "president", "label": "President" },
+      { "key": "vicePresidents", "label": "Vice Presidents" },
+      { "key": "sponsorship", "label": "Sponsorship" },
+      { "key": "publicRelation", "label": "Public Relations" }
+    ],
+    "webtek": {
+      "github": "https://github.com/theta-web",
+      "linkedin": "https://linkedin.com/company/theta",
+      "email": "abinash@theabx.in"
+    }
+  },
+  "clusters": [
+    {
+      "id": "csi",
+      "name": "CSI",
+      "color": "#6366f1",
+      "description": "Computer Society of India"
+    },
+    {
+      "id": "iedc",
+      "name": "IEDC",
+      "color": "#ec4899",
+      "description": "Innovation Entrepreneurship Development Cell"
+    },
+    {
+      "id": "ieee",
+      "name": "IEEE",
+      "color": "#14b8a6",
+      "description": "Institute of Electrical and Electronics Engineers"
+    },
+    {
+      "id": "asme",
+      "name": "ASME",
+      "color": "#f59e0b",
+      "description": "American Society of Mechanical Engineers"
+    },
+    {
+      "id": "sae",
+      "name": "SAE",
+      "color": "#ef4444",
+      "description": "Society of Automotive Engineers"
+    },
+    {
+      "id": "nss",
+      "name": "NSS",
+      "color": "#10b981",
+      "description": "National Service Scheme"
+    },
+    {
+      "id": "theta",
+      "name": "Theta",
+      "color": "#8b5cf6",
+      "description": "Theta Technical Club"
+    },
+    {
+      "id": "iste",
+      "name": "ISTE",
+      "color": "#06b6d4",
+      "description": "Indian Society for Technical Education"
+    },
+    {
+      "id": "rotaract",
+      "name": "Rotaract",
+      "color": "#f97316",
+      "description": "Rotaract Club"
+    },
+    {
+      "id": "tedx",
+      "name": "TEDx",
+      "color": "#e11d48",
+      "description": "TEDx SASTRA"
+    },
+    {
+      "id": "aero",
+      "name": "Aerospace",
+      "color": "#0ea5e9",
+      "description": "Aerospace Club"
+    },
+    {
+      "id": "robotics",
+      "name": "Robotics",
+      "color": "#84cc16",
+      "description": "Robotics Club"
+    },
+    {
+      "id": "code",
+      "name": "Code",
+      "color": "#a855f7",
+      "description": "Coding Club"
+    },
+    {
+      "id": "design",
+      "name": "Design",
+      "color": "#d946ef",
+      "description": "Design Club"
+    },
+    {
+      "id": "eco",
+      "name": "E-Cell",
+      "color": "#14b8a6",
+      "description": "Entrepreneurship Cell"
+    }
+  ],
+  "sponsors": {
+    "order": ["platinum", "gold", "silver", "general"],
+    "platinum": [
+      { "name": "TechCorp", "logo": "/sponsors/techcorp.png" },
+      { "name": "InnovateHub", "logo": "/sponsors/innovatehub.png" },
+      { "name": "FutureTech", "logo": "/sponsors/futuretech.png" },
+      { "name": "CodeLabs", "logo": "/sponsors/codelabs.png" }
+    ],
+    "gold": [
+      { "name": "StartUp", "logo": "/sponsors/startup.png" },
+      { "name": "DevCo", "logo": "/sponsors/devco.png" },
+      { "name": "CloudSys", "logo": "/sponsors/cloudsys.png" },
+      { "name": "DataFlow", "logo": "/sponsors/dataflow.png" },
+      { "name": "AI Labs", "logo": "/sponsors/ailabs.png" },
+      { "name": "WebWorks", "logo": "/sponsors/webworks.png" }
+    ],
+    "silver": [
+      { "name": "TechStart", "logo": "/sponsors/techstart.png" },
+      { "name": "ByteSize", "logo": "/sponsors/bytesize.png" },
+      { "name": "CodeCraft", "logo": "/sponsors/codecraft.png" },
+      { "name": "DataSync", "logo": "/sponsors/datasync.png" },
+      { "name": "InnoTech", "logo": "/sponsors/innotech.png" },
+      { "name": "TechWise", "logo": "/sponsors/techwise.png" },
+      { "name": "DevHub", "logo": "/sponsors/devhub.png" },
+      { "name": "CloudNine", "logo": "/sponsors/cloudnine.png" }
+    ],
+    "general": [
+      { "name": "Local Shop", "logo": "/sponsors/local.png" },
+      { "name": "Cafe", "logo": "/sponsors/cafe.png" },
+      { "name": "Print Shop", "logo": "/sponsors/print.png" },
+      { "name": "Stationery", "logo": "/sponsors/stationery.png" }
+    ]
+  },
+  "stats": {
+    "events": "50+",
+    "participants": "5000+",
+    "colleges": "100+",
+    "prizes": "₹5L+"
+  },
+  "about": {
+    "title": "About Theta",
+    "description": "Theta is a national-level techno-management fest organized by SASTRA Deemed University, bringing together the brightest minds from across the country. Since its inception, Theta has been a platform for students to showcase their technical skills, creativity, and innovation. With a legacy of excellence, Theta 2026 promises to be bigger and better than ever.",
+    "features": [
+      {
+        "title": "Innovation",
+        "description": "Showcasing groundbreaking ideas and cutting-edge technology from the brightest minds."
+      },
+      {
+        "title": "Collaboration",
+        "description": "Connect with like-minded peers, form teams, and build something extraordinary."
+      },
+      {
+        "title": "Creativity",
+        "description": "Push your boundaries and unleash your imagination in competitions."
+      }
+    ]
+  },
+  "days": [
+    {
+      "day": "Day One",
+      "date": "March 15, 2026",
+      "events": ["Inauguration", "Robotics Workshop", "Tech Quiz"],
+      "highlight": "SASTRA Singing Team Performance",
+      "bgImage": "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=800"
+    },
+    {
+      "day": "Day Two",
+      "date": "March 16, 2026",
+      "events": ["Code Battle", "Hackathon", "Project Expo"],
+      "highlight": "SASTRA Dance Team Performance",
+      "bgImage": "https://images.unsplash.com/photo-1504609813442-a8924e83f76e?w=800"
+    },
+    {
+      "day": "Day Three",
+      "date": "March 17, 2026",
+      "events": ["Prize Distribution", "Valedictory"],
+      "highlight": "External Team Pro Nite",
+      "bgImage": "https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?w=800"
+    }
+  ],
+  "cta": {
+    "registerTitle": "Ready to Shine?",
+    "registerDescription": "Join thousands of innovators at Theta 2026. Register now and be part of something extraordinary.",
+    "registerButton": "Register Now",
+    "eventsButton": "Browse Events"
+  }
+}
