@@ -236,6 +236,39 @@ export default component$(() => {
                     Contact
                   </Link>
                 </li>
+                <li class="pt-2 text-xs font-semibold tracking-wide text-slate-500 uppercase">
+                  Project Repo
+                </li>
+                <li>
+                  <a
+                    href="https://github.com/AbiXnash/theta-web"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-base text-slate-400 transition-colors hover:text-cyan-300"
+                  >
+                    Repository
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://github.com/AbiXnash/theta-web/issues"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-base text-slate-400 transition-colors hover:text-cyan-300"
+                  >
+                    Issues
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://github.com/AbiXnash/theta-web/pulls"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-base text-slate-400 transition-colors hover:text-cyan-300"
+                  >
+                    Contribute
+                  </a>
+                </li>
               </ul>
             </div>
 
