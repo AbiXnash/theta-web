@@ -28,19 +28,19 @@ export const Header = component$(() => {
   return (
     <header class="fixed top-0 right-0 left-0 z-50 border-b border-cyan-300/20 bg-slate-950/70 backdrop-blur-2xl">
       <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.18),transparent_45%),radial-gradient(circle_at_85%_10%,rgba(244,114,182,0.14),transparent_40%)]"></div>
-      <div class="relative mx-auto flex h-20 max-w-7xl items-center justify-between px-5 sm:h-24 sm:px-8 lg:h-28">
+      <div class="relative mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:h-[4.5rem] sm:px-6 lg:h-20 lg:px-8">
         {/* Logo */}
         <Link href="/" class="group flex items-center gap-3">
           <div class="relative">
             <img
               src="/theta-logo.png"
               alt="Theta"
-              width="96"
-              height="48"
+              width="192"
+              height="96"
               loading="eager"
               fetchPriority="high"
               decoding="async"
-              class="h-11 w-auto transition-transform duration-300 group-hover:scale-110 sm:h-14 lg:h-16"
+              class="h-12 w-auto transition-transform duration-300 group-hover:scale-110 sm:h-16 lg:h-20"
             />
             <div class="absolute -inset-2 rounded-full bg-cyan-400/20 opacity-0 blur-lg transition-opacity duration-300 group-hover:opacity-100"></div>
           </div>
@@ -52,7 +52,7 @@ export const Header = component$(() => {
             <Link
               key={item.href}
               href={item.href}
-              class="group relative rounded-full border border-transparent bg-white/3 px-6 py-3 text-base font-semibold tracking-wide text-slate-200 transition-all hover:border-cyan-300/40 hover:bg-white/10 hover:text-white"
+              class="group relative rounded-full border border-transparent bg-white/3 px-5 py-2 text-sm font-semibold tracking-wide text-slate-200 transition-all hover:border-cyan-300/40 hover:bg-white/10 hover:text-white"
             >
               <span class="relative z-10">{item.label}</span>
               <div class="absolute right-3 bottom-1.5 h-1.5 w-1.5 rounded-full bg-cyan-300 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
@@ -70,7 +70,7 @@ export const Header = component$(() => {
         <button
           type="button"
           onClick$={toggleMenu}
-          class="flex h-11 w-11 items-center justify-center rounded-xl border border-cyan-300/30 bg-white/5 text-slate-200 transition-all hover:bg-white/10 sm:h-12 sm:w-12 lg:hidden"
+          class="flex h-10 w-10 items-center justify-center rounded-xl border border-cyan-300/30 bg-white/5 text-slate-200 transition-all hover:bg-white/10 sm:h-11 sm:w-11 lg:hidden"
         >
           {isMenuOpen.value ? (
             <svg
