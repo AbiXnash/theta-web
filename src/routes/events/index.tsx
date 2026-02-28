@@ -12,6 +12,7 @@ interface Event {
   name: string;
   category: "tech" | "fun" | "quiz" | "workshop" | "pro-night";
   cluster?: string;
+  day?: string;
   timing: string;
   location: string;
   fee: string;
@@ -19,7 +20,87 @@ interface Event {
   description: string;
   image: string;
   registrationUrl?: string;
+  registrationCloseAt?: string;
 }
+
+const FEST_YEAR = 2026;
+
+const dayCutoffMap: Record<string, string> = {
+  "Day 1": `${FEST_YEAR}-03-15`,
+  "Day 2": `${FEST_YEAR}-03-16`,
+  "Day 3": `${FEST_YEAR}-03-17`,
+  "Day One": `${FEST_YEAR}-03-15`,
+  "Day Two": `${FEST_YEAR}-03-16`,
+  "Day Three": `${FEST_YEAR}-03-17`,
+};
+
+const hasRegistrationLink = (event: Event) =>
+  Boolean(event.registrationUrl && event.registrationUrl.trim().length > 0);
+
+const parseDateFromTiming = (timing: string): Date | null => {
+  const monthDayRegex =
+    /\b(Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:t(?:ember)?)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s+(\d{1,2})(?:,\s*(\d{4}))?/i;
+  const match = timing.match(monthDayRegex);
+  if (!match) return null;
+
+  const [, month, day, year] = match;
+  const parsed = new Date(`${month} ${day}, ${year || FEST_YEAR} 00:00:00`);
+  if (Number.isNaN(parsed.getTime())) return null;
+  return parsed;
+};
+
+const getRegistrationCutoff = (event: Event): Date | null => {
+  if (event.registrationCloseAt) {
+    const explicitDate = new Date(event.registrationCloseAt);
+    if (!Number.isNaN(explicitDate.getTime())) {
+      return new Date(
+        explicitDate.getFullYear(),
+        explicitDate.getMonth(),
+        explicitDate.getDate(),
+        0,
+        0,
+        0,
+        0,
+      );
+    }
+  }
+
+  const dateFromTiming = parseDateFromTiming(event.timing);
+  if (dateFromTiming) {
+    return new Date(
+      dateFromTiming.getFullYear(),
+      dateFromTiming.getMonth(),
+      dateFromTiming.getDate(),
+      0,
+      0,
+      0,
+      0,
+    );
+  }
+
+  if (event.day && dayCutoffMap[event.day]) {
+    const mappedDate = new Date(`${dayCutoffMap[event.day]}T00:00:00`);
+    if (!Number.isNaN(mappedDate.getTime())) return mappedDate;
+  }
+
+  return null;
+};
+
+const isRegistrationClosed = (event: Event): boolean => {
+  if (!hasRegistrationLink(event)) return true;
+  if (event.status === "over") return true;
+
+  const cutoff = getRegistrationCutoff(event);
+  if (!cutoff) return false;
+
+  return Date.now() >= cutoff.getTime();
+};
+
+const getEffectiveStatus = (event: Event): Event["status"] => {
+  if (event.status === "coming-soon") return "coming-soon";
+  if (isRegistrationClosed(event)) return "over";
+  return "active";
+};
 
 const defaultClusters: Cluster[] = [
   { id: "csi", name: "CSI", color: "#6366f1" },
@@ -151,7 +232,7 @@ export default component$(() => {
 
   if (activeStatus.value !== "all") {
     filteredEvents = filteredEvents.filter(
-      (e) => e.status === activeStatus.value,
+      (e) => getEffectiveStatus(e) === activeStatus.value,
     );
   }
 
@@ -336,12 +417,15 @@ export default component$(() => {
 
         {/* Events Grid */}
         <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {filteredEvents.map((event) => (
-            <div
-              key={event.id}
-              onClick$={() => openEventModal(event)}
-              class="premium-surface premium-card group cursor-pointer overflow-hidden rounded-2xl transition-all hover:border-violet-400/50 hover:shadow-xl hover:shadow-violet-500/10"
-            >
+          {filteredEvents.map((event) => {
+            const effectiveStatus = getEffectiveStatus(event);
+            const closed = isRegistrationClosed(event);
+            return (
+              <div
+                key={event.id}
+                onClick$={() => openEventModal(event)}
+                class="premium-surface premium-card group cursor-pointer overflow-hidden rounded-2xl transition-all hover:border-violet-400/50 hover:shadow-xl hover:shadow-violet-500/10"
+              >
               <div class="relative h-40 overflow-hidden">
                 <div
                   class="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
@@ -362,18 +446,18 @@ export default component$(() => {
                   <span
                     class={[
                       "rounded-full px-2.5 py-1 text-xs font-medium",
-                      event.status === "active"
+                      effectiveStatus === "active"
                         ? "border border-emerald-500/30 bg-emerald-500/20 text-emerald-400"
-                        : event.status === "coming-soon"
+                        : effectiveStatus === "coming-soon"
                           ? "border border-amber-500/30 bg-amber-500/20 text-amber-400"
                           : "border border-slate-500/30 bg-slate-500/20 text-slate-400",
                     ]}
                   >
-                    {event.status === "active"
+                    {effectiveStatus === "active"
                       ? "Active"
-                      : event.status === "coming-soon"
+                      : effectiveStatus === "coming-soon"
                         ? "Coming Soon"
-                        : "Over"}
+                        : "Closed"}
                   </span>
                 </div>
               </div>
@@ -450,15 +534,27 @@ export default component$(() => {
                     </span>
                   </div>
                 )}
+                {closed && (
+                  <div class="mt-3">
+                    <span class="inline-flex rounded-full border border-amber-500/30 bg-amber-500/10 px-2.5 py-1 text-xs font-semibold text-amber-300">
+                      Regret registration closed
+                    </span>
+                  </div>
+                )}
               </div>
-            </div>
-          ))}
+              </div>
+            );
+          })}
         </div>
       </div>
 
       {/* Event Modal */}
       {showModal.value && selectedEvent.value && (
-        <div class="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4">
+        (() => {
+          const effectiveStatus = getEffectiveStatus(selectedEvent.value);
+          const closed = isRegistrationClosed(selectedEvent.value);
+          return (
+          <div class="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4">
           {/* Backdrop with blur */}
           <div
             class="animate-fade-in-up absolute inset-0 bg-gray-950/80 backdrop-blur-md"
@@ -597,18 +693,18 @@ export default component$(() => {
                     <span
                       class={[
                         "rounded-full border px-4 py-1.5 text-sm font-semibold",
-                        selectedEvent.value.status === "active"
+                        effectiveStatus === "active"
                           ? "border-emerald-500/30 bg-emerald-500/20 text-emerald-400"
-                          : selectedEvent.value.status === "coming-soon"
+                          : effectiveStatus === "coming-soon"
                             ? "border-amber-500/30 bg-amber-500/20 text-amber-400"
                             : "border-slate-500/30 bg-slate-500/20 text-slate-400",
                       ]}
                     >
-                      {selectedEvent.value.status === "active"
+                      {effectiveStatus === "active"
                         ? "✓ Register Now"
-                        : selectedEvent.value.status === "coming-soon"
+                        : effectiveStatus === "coming-soon"
                           ? "Coming Soon"
-                          : "Ended"}
+                          : "Regret registration closed"}
                     </span>
                   </div>
 
@@ -618,7 +714,7 @@ export default component$(() => {
                   </div>
 
                   {/* Action Button */}
-                  {selectedEvent.value.registrationUrl ? (
+                  {!closed && selectedEvent.value.registrationUrl ? (
                     <a
                       href={selectedEvent.value.registrationUrl}
                       target="_blank"
@@ -656,7 +752,7 @@ export default component$(() => {
                   ) : (
                     <div class="rounded-xl border border-amber-500/30 bg-amber-500/10 p-6 text-center">
                       <p class="text-base text-amber-400">
-                        Registration closed for this event
+                        Regret registration closed
                       </p>
                     </div>
                   )}
@@ -665,6 +761,8 @@ export default component$(() => {
             </div>
           </div>
         </div>
+          );
+        })()
       )}
     </div>
   );
