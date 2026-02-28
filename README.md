@@ -80,3 +80,77 @@ Editable content lives in:
 - `public/events.json`
 - `public/sponsors.json`
 - `public/team.json`
+
+## Route Map
+
+- `/` (`src/routes/index.tsx`)
+  - Landing page with hero, countdown, day-wise highlights, sponsor sections, and CTA.
+  - Loads `config.json`, `sponsors.json`, and `events.json` on client for dynamic sections.
+- `/events` (`src/routes/events/index.tsx`)
+  - Event explorer with search, category/status/cluster filters, and event detail modal.
+  - Loads `events.json` for events and cluster metadata.
+- `/contact` (`src/routes/contact/index.tsx`)
+  - Team/contact directory with member cards and direct mail/phone links.
+  - Loads `team.json`.
+- Shared layout (`src/routes/layout.tsx`)
+  - Global wrapper for all routes: header, footer, optional custom cursor, and under-dev badge.
+
+## Codebase File Guide
+
+### Root
+
+- `package.json` - scripts and dependencies.
+- `bun.lock` - Bun lockfile (primary package manager lock).
+- `package-lock.json` - npm lockfile (kept for compatibility).
+- `vite.config.ts` - base Vite + QwikCity config used by all builds.
+- `netlify.toml` - Netlify build settings (`bun run build`, publish dir, Bun version).
+- `eslint.config.js` - lint configuration.
+- `prettier.config.js` - formatting configuration.
+- `tsconfig.json` - TypeScript compiler config.
+- `qwik.env.d.ts` - Qwik/Vite env typing.
+- `README.md` - project documentation.
+- `adapters/netlify-edge/vite.config.ts` - Netlify Edge SSR adapter build config.
+
+### `src/`
+
+- `src/root.tsx` - app root (`QwikCityProvider`, `RouterOutlet`, document shell).
+- `src/global.css` - global styles, animations, utility classes, and accessibility motion fallback.
+- `src/entry.dev.tsx` - dev/client entry.
+- `src/entry.ssr.tsx` - SSR render entry.
+- `src/entry.preview.tsx` - local preview server entry.
+- `src/entry.netlify-edge.tsx` - Netlify Edge entry for production deployment.
+
+### `src/components/`
+
+- `src/components/header/header.tsx` - top navigation (desktop + mobile menu).
+- `src/components/router-head/router-head.tsx` - dynamic `<head>` tags (meta, canonical, manifest, preconnect).
+- `src/components/digit-input.tsx` - reusable digit input component.
+- `src/components/theme/theme-context.tsx` - theme context provider/hooks.
+- `src/components/theme/theme-toggle.tsx` - theme toggle UI.
+
+### `src/routes/`
+
+- `src/routes/layout.tsx` - shared route layout wrapper.
+- `src/routes/index.tsx` - homepage route.
+- `src/routes/events/index.tsx` - events listing/filter/detail route.
+- `src/routes/contact/index.tsx` - contact/team route.
+
+### `public/`
+
+- `public/theta-logo.png` - main brand/logo asset.
+- `public/favicon.svg` - browser favicon.
+- `public/icon.svg` - app icon used by PWA manifest.
+- `public/manifest.json` - web app manifest metadata.
+- `public/robots.txt` - crawler rules.
+- `public/_headers` - Netlify cache headers for static assets.
+- `public/config.json` - homepage/site-level content config.
+- `public/events.json` - events + clusters content dataset.
+- `public/sponsors.json` - sponsor tiers dataset.
+- `public/team.json` - contact/team dataset.
+
+### Generated/Local-Only Directories
+
+- `dist/` - build output (generated).
+- `.netlify/` - Netlify local/runtime artifacts (generated).
+- `node_modules/` - installed dependencies.
+- `tmp/` - temporary local files.
