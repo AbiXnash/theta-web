@@ -1,4 +1,10 @@
-import { component$, Slot, useSignal, useVisibleTask$ } from "@builder.io/qwik";
+import {
+  $,
+  component$,
+  Slot,
+  useSignal,
+  useVisibleTask$,
+} from "@builder.io/qwik";
 import { Link } from "@builder.io/qwik-city";
 import { Header } from "~/components/header/header";
 
@@ -9,6 +15,8 @@ export default component$(() => {
   const isMobile = useSignal(true);
   const enableCursorFx = useSignal(false);
   const underDev = useSignal(true);
+  const showUnderDevNote = useSignal(false);
+  const hideUnderDevTimer = useSignal<ReturnType<typeof setTimeout>>();
 
   useVisibleTask$(() => {
     const computeUiMode = () => {
@@ -32,6 +40,24 @@ export default component$(() => {
 
   useVisibleTask$(() => {
     underDev.value = import.meta.env.PUBLIC_UNDER_DEV !== "false";
+  });
+
+  useVisibleTask$(() => {
+    return () => {
+      if (hideUnderDevTimer.value) {
+        clearTimeout(hideUnderDevTimer.value);
+      }
+    };
+  });
+
+  const showUnderDevNotice = $(() => {
+    showUnderDevNote.value = true;
+    if (hideUnderDevTimer.value) {
+      clearTimeout(hideUnderDevTimer.value);
+    }
+    hideUnderDevTimer.value = setTimeout(() => {
+      showUnderDevNote.value = false;
+    }, 5000);
   });
 
   useVisibleTask$(() => {
@@ -84,8 +110,13 @@ export default component$(() => {
       {/* Under Development Indicator */}
       {underDev.value && (
         <div class="fixed right-4 bottom-4 z-[100]">
-          <div class="group relative">
-            <div class="flex h-10 w-10 cursor-help items-center justify-center rounded-full border border-amber-500/30 bg-amber-500/20 text-amber-400 backdrop-blur-sm transition-all hover:bg-amber-500/30">
+          <div class="relative">
+            <button
+              type="button"
+              onClick$={showUnderDevNotice}
+              class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-amber-500/30 bg-amber-500/20 text-amber-400 backdrop-blur-sm transition-all hover:bg-amber-500/30"
+              aria-label="Show development notice"
+            >
               <svg
                 class="h-5 w-5"
                 fill="none"
@@ -99,8 +130,15 @@ export default component$(() => {
                   d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
                 />
               </svg>
-            </div>
-            <div class="absolute right-0 bottom-full mb-2 hidden w-48 rounded-lg border border-amber-500/30 bg-gray-900/95 p-3 text-center text-xs text-amber-200 shadow-xl backdrop-blur-sm group-hover:block">
+            </button>
+            <div
+              class={[
+                "absolute right-0 bottom-full mb-2 w-48 rounded-lg border border-amber-500/30 bg-gray-900/95 p-3 text-center text-xs text-amber-200 shadow-xl backdrop-blur-sm transition-all duration-200",
+                showUnderDevNote.value
+                  ? "pointer-events-auto translate-y-0 opacity-100"
+                  : "pointer-events-none translate-y-1 opacity-0",
+              ]}
+            >
               🚧 Website Under Development
               <br />
               <span class="text-amber-400/60">Changes may occur</span>
@@ -117,9 +155,10 @@ export default component$(() => {
       </main>
 
       {/* Footer */}
-      <footer class="border-t border-white/15 bg-gray-950/80 py-16 backdrop-blur-xl">
+      <footer class="relative overflow-hidden border-t border-cyan-300/20 bg-slate-950 py-16">
+        <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_10%_10%,rgba(56,189,248,0.15),transparent_40%),radial-gradient(circle_at_90%_85%,rgba(251,191,36,0.12),transparent_42%)]"></div>
         <div class="mx-auto max-w-7xl px-6 sm:px-8">
-          <div class="premium-surface premium-ring rounded-3xl p-8 md:p-10">
+          <div class="relative rounded-3xl border border-white/12 bg-slate-900/70 p-8 shadow-[0_30px_80px_rgba(2,8,23,0.55)] backdrop-blur-2xl md:p-10">
             <div class="grid gap-10 md:grid-cols-4">
             {/* Logo & Description */}
             <div class="md:col-span-2">
@@ -141,7 +180,7 @@ export default component$(() => {
               <div class="mt-6 flex gap-4">
                 <a
                   href="#"
-                  class="premium-card premium-surface flex h-12 w-12 items-center justify-center rounded-xl text-slate-300 transition-all hover:border-violet-300/70 hover:text-violet-200"
+                  class="flex h-12 w-12 items-center justify-center rounded-xl border border-white/12 bg-white/5 text-slate-300 transition-all hover:border-cyan-300/60 hover:text-cyan-200"
                 >
                   <span class="sr-only">Instagram</span>
                   <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
@@ -150,7 +189,7 @@ export default component$(() => {
                 </a>
                 <a
                   href="#"
-                  class="premium-card premium-surface flex h-12 w-12 items-center justify-center rounded-xl text-slate-300 transition-all hover:border-violet-300/70 hover:text-violet-200"
+                  class="flex h-12 w-12 items-center justify-center rounded-xl border border-white/12 bg-white/5 text-slate-300 transition-all hover:border-cyan-300/60 hover:text-cyan-200"
                 >
                   <span class="sr-only">Twitter</span>
                   <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
@@ -159,7 +198,7 @@ export default component$(() => {
                 </a>
                 <a
                   href="#"
-                  class="premium-card premium-surface flex h-12 w-12 items-center justify-center rounded-xl text-slate-300 transition-all hover:border-violet-300/70 hover:text-violet-200"
+                  class="flex h-12 w-12 items-center justify-center rounded-xl border border-white/12 bg-white/5 text-slate-300 transition-all hover:border-cyan-300/60 hover:text-cyan-200"
                 >
                   <span class="sr-only">YouTube</span>
                   <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
@@ -176,7 +215,7 @@ export default component$(() => {
                 <li>
                   <Link
                     href="/"
-                    class="text-base text-slate-400 transition-colors hover:text-violet-400"
+                    class="text-base text-slate-400 transition-colors hover:text-cyan-300"
                   >
                     Home
                   </Link>
@@ -184,7 +223,7 @@ export default component$(() => {
                 <li>
                   <Link
                     href="/events"
-                    class="text-base text-slate-400 transition-colors hover:text-violet-400"
+                    class="text-base text-slate-400 transition-colors hover:text-cyan-300"
                   >
                     Events
                   </Link>
@@ -192,7 +231,7 @@ export default component$(() => {
                 <li>
                   <Link
                     href="/contact"
-                    class="text-base text-slate-400 transition-colors hover:text-violet-400"
+                    class="text-base text-slate-400 transition-colors hover:text-cyan-300"
                   >
                     Contact
                   </Link>
@@ -204,9 +243,9 @@ export default component$(() => {
             <div>
               <h4 class="text-lg font-bold text-white">Contact</h4>
               <ul class="mt-4 space-y-3">
-                <li class="flex items-center gap-2 text-base text-slate-400">
+                <li class="flex min-w-0 items-center gap-2 text-base text-slate-400">
                   <svg
-                    class="h-5 w-5 shrink-0 text-violet-400"
+                    class="h-5 w-5 shrink-0 text-cyan-300"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -228,7 +267,7 @@ export default component$(() => {
                 </li>
                 <li class="flex items-center gap-2 text-base text-slate-400">
                   <svg
-                    class="h-5 w-5 shrink-0 text-violet-400"
+                    class="h-5 w-5 shrink-0 text-cyan-300"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -244,7 +283,7 @@ export default component$(() => {
                 </li>
                 <li class="flex items-center gap-2 text-base text-slate-400">
                   <svg
-                    class="h-5 w-5 shrink-0 text-violet-400"
+                    class="h-5 w-5 shrink-0 text-cyan-300"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -256,7 +295,7 @@ export default component$(() => {
                       d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                     />
                   </svg>
-                  theta@sastra.edu
+                  <span class="break-all">theta@sastra.edu</span>
                 </li>
               </ul>
             </div>
@@ -266,7 +305,7 @@ export default component$(() => {
                 © 2026 Theta. All rights reserved.
               </p>
               <p class="text-base text-slate-500">
-                Made with <span class="text-violet-400">♥</span> by WebTek Team
+                Made with <span class="text-amber-300">♥</span> by WebTek Team
               </p>
             </div>
           </div>
