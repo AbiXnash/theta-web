@@ -58,7 +58,29 @@ export default component$(() => {
     }
     hideUnderDevTimer.value = setTimeout(() => {
       showUnderDevNote.value = false;
-    }, 5000);
+    }, 2000);
+  });
+
+  useVisibleTask$(() => {
+    const hideNoticeOnInteraction = () => {
+      if (!showUnderDevNote.value) return;
+      showUnderDevNote.value = false;
+      if (hideUnderDevTimer.value) {
+        clearTimeout(hideUnderDevTimer.value);
+      }
+    };
+
+    window.addEventListener("scroll", hideNoticeOnInteraction, {
+      passive: true,
+    });
+    document.addEventListener("click", hideNoticeOnInteraction);
+    document.addEventListener("keydown", hideNoticeOnInteraction);
+
+    return () => {
+      window.removeEventListener("scroll", hideNoticeOnInteraction);
+      document.removeEventListener("click", hideNoticeOnInteraction);
+      document.removeEventListener("keydown", hideNoticeOnInteraction);
+    };
   });
 
   useVisibleTask$(() => {
