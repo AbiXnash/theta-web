@@ -1,4 +1,4 @@
-import { component$, $ } from "@builder.io/qwik";
+import { component$ } from "@builder.io/qwik";
 import { useTheme } from "./theme-context";
 
 export const ThemeToggle = component$(() => {

@@ -1,4 +1,4 @@
-import { component$, useSignal, $, type PropFunction } from "@builder.io/qwik";
+import { component$, $, type PropFunction } from "@builder.io/qwik";
 
 interface DigitInputProps {
   value: string;
