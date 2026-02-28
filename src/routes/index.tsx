@@ -2,31 +2,28 @@ import { component$, useSignal, useVisibleTask$, $ } from "@builder.io/qwik";
 import { type DocumentHead } from "@builder.io/qwik-city";
 
 interface ConfigData {
-  config: {
-    meta: {
-      eventName: string;
-      tagline: string;
-      dates: string;
-      venue: string;
-    };
-    stats: {
-      events: string;
-      participants: string;
-      colleges: string;
-      prizes: string;
-    };
-    about: {
-      title: string;
-      description: string;
-      features: { title: string; description: string }[];
-    };
-    days: DayEvent[];
-    cta: {
-      registerTitle: string;
-      registerDescription: string;
-      registerButton: string;
-      eventsButton: string;
-    };
+  meta: {
+    eventName: string;
+    tagline: string;
+    dates: string;
+    venue: string;
+  };
+  stats: {
+    events: string;
+    participants: string;
+    colleges: string;
+  };
+  about: {
+    title: string;
+    description: string;
+    features: { title: string; description: string }[];
+  };
+  days: DayEvent[];
+  cta: {
+    registerTitle: string;
+    registerDescription: string;
+    registerButton: string;
+    eventsButton: string;
   };
 }
 
@@ -219,6 +216,15 @@ export default component$(() => {
     const interval = setInterval(updateCountdown, 1000);
     return () => clearInterval(interval);
   });
+
+  const homeStats = [
+    { value: configData.value?.stats.events ?? "50+", label: "Events" },
+    {
+      value: configData.value?.stats.participants ?? "5000+",
+      label: "Participants",
+    },
+    { value: configData.value?.stats.colleges ?? "100+", label: "Colleges" },
+  ];
 
   return (
     <div class="bg-gray-950">
@@ -447,13 +453,8 @@ export default component$(() => {
         <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1920&q=60')] bg-cover bg-center opacity-5"></div>
 
         <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div class="grid grid-cols-2 gap-6 text-center sm:grid-cols-4 sm:gap-8">
-            {[
-              { value: "50+", label: "Events" },
-              { value: "5000+", label: "Participants" },
-              { value: "100+", label: "Colleges" },
-              { value: "₹5L+", label: "Prizes" },
-            ].map((stat) => (
+          <div class="grid grid-cols-1 gap-6 text-center sm:grid-cols-3 sm:gap-8">
+            {homeStats.map((stat) => (
               <div key={stat.label}>
                 <div class="mb-1 text-3xl font-bold text-white sm:text-5xl">
                   {stat.value}
