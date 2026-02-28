@@ -8,6 +8,69 @@ import {
 import { Link } from "@builder.io/qwik-city";
 import { Header } from "~/components/header/header";
 
+interface LayoutCopy {
+  underDevelopment: {
+    ariaLabel: string;
+    title: string;
+    subtitle: string;
+  };
+  footer: {
+    description: string;
+    quickLinksTitle: string;
+    contactTitle: string;
+    homeLabel: string;
+    eventsLabel: string;
+    contactLabel: string;
+    repoSectionLabel: string;
+    repoLabel: string;
+    issuesLabel: string;
+    contributeLabel: string;
+    locationLabel: string;
+    dateLabel: string;
+    emailLabel: string;
+    copyright: string;
+    madeWithPrefix: string;
+    madeBy: string;
+    social: {
+      instagram: string;
+      twitter: string;
+      youtube: string;
+    };
+  };
+}
+
+const defaultLayoutCopy: LayoutCopy = {
+  underDevelopment: {
+    ariaLabel: "Show development notice",
+    title: "Website Under Development",
+    subtitle: "Changes may occur",
+  },
+  footer: {
+    description:
+      "Theta is a national-level techno-management fest organized by SASTRA Deemed University. Join us for three days of innovation, competition, and excitement.",
+    quickLinksTitle: "Quick Links",
+    contactTitle: "Contact",
+    homeLabel: "Home",
+    eventsLabel: "Events",
+    contactLabel: "Contact",
+    repoSectionLabel: "Project Repo",
+    repoLabel: "Repository",
+    issuesLabel: "Issues",
+    contributeLabel: "Contribute",
+    locationLabel: "SASTRA Deemed University",
+    dateLabel: "March 15-17, 2026",
+    emailLabel: "theta@sastra.edu",
+    copyright: "© 2026 Theta. All rights reserved.",
+    madeWithPrefix: "Made with",
+    madeBy: "by WebTek Team",
+    social: {
+      instagram: "Instagram",
+      twitter: "Twitter",
+      youtube: "YouTube",
+    },
+  },
+};
+
 export default component$(() => {
   const cursorX = useSignal(0);
   const cursorY = useSignal(0);
@@ -16,6 +79,7 @@ export default component$(() => {
   const isMobile = useSignal(true);
   const enableCursorFx = useSignal(false);
   const underDev = useSignal(true);
+  const layoutCopy = useSignal<LayoutCopy>(defaultLayoutCopy);
   const showUnderDevNote = useSignal(false);
   const hideUnderDevTimer = useSignal<ReturnType<typeof setTimeout>>();
 
@@ -41,6 +105,31 @@ export default component$(() => {
 
   useVisibleTask$(() => {
     underDev.value = import.meta.env.PUBLIC_UNDER_DEV !== "false";
+  });
+
+  useVisibleTask$(async () => {
+    try {
+      const res = await fetch("/content.json");
+      const data = await res.json();
+      if (data?.layout) {
+        layoutCopy.value = {
+          underDevelopment: {
+            ...defaultLayoutCopy.underDevelopment,
+            ...(data.layout.underDevelopment || {}),
+          },
+          footer: {
+            ...defaultLayoutCopy.footer,
+            ...(data.layout.footer || {}),
+            social: {
+              ...defaultLayoutCopy.footer.social,
+              ...(data.layout.footer?.social || {}),
+            },
+          },
+        };
+      }
+    } catch {
+      layoutCopy.value = defaultLayoutCopy;
+    }
   });
 
   useVisibleTask$(() => {
@@ -165,7 +254,7 @@ export default component$(() => {
               type="button"
               onClick$={showUnderDevNotice}
               class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-amber-500/30 bg-amber-500/20 text-amber-400 backdrop-blur-sm transition-all hover:bg-amber-500/30"
-              aria-label="Show development notice"
+              aria-label={layoutCopy.value.underDevelopment.ariaLabel}
             >
               <svg
                 class="h-5 w-5"
@@ -189,9 +278,11 @@ export default component$(() => {
                   : "pointer-events-none translate-y-1 opacity-0",
               ]}
             >
-              🚧 Website Under Development
+              🚧 {layoutCopy.value.underDevelopment.title}
               <br />
-              <span class="text-amber-400/60">Changes may occur</span>
+              <span class="text-amber-400/60">
+                {layoutCopy.value.underDevelopment.subtitle}
+              </span>
             </div>
           </div>
         </div>
@@ -223,16 +314,16 @@ export default component$(() => {
                 />
               </Link>
               <p class="mt-4 max-w-md text-base text-slate-400">
-                Theta is a national-level techno-management fest organized by
-                SASTRA Deemed University. Join us for three days of innovation,
-                competition, and excitement.
+                {layoutCopy.value.footer.description}
               </p>
               <div class="mt-6 flex gap-4">
                 <a
                   href="#"
                   class="flex h-12 w-12 items-center justify-center rounded-xl border border-white/12 bg-white/5 text-slate-300 transition-all hover:border-cyan-300/60 hover:text-cyan-200"
                 >
-                  <span class="sr-only">Instagram</span>
+                  <span class="sr-only">
+                    {layoutCopy.value.footer.social.instagram}
+                  </span>
                   <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
                   </svg>
@@ -241,7 +332,9 @@ export default component$(() => {
                   href="#"
                   class="flex h-12 w-12 items-center justify-center rounded-xl border border-white/12 bg-white/5 text-slate-300 transition-all hover:border-cyan-300/60 hover:text-cyan-200"
                 >
-                  <span class="sr-only">Twitter</span>
+                  <span class="sr-only">
+                    {layoutCopy.value.footer.social.twitter}
+                  </span>
                   <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                   </svg>
@@ -250,7 +343,9 @@ export default component$(() => {
                   href="#"
                   class="flex h-12 w-12 items-center justify-center rounded-xl border border-white/12 bg-white/5 text-slate-300 transition-all hover:border-cyan-300/60 hover:text-cyan-200"
                 >
-                  <span class="sr-only">YouTube</span>
+                  <span class="sr-only">
+                    {layoutCopy.value.footer.social.youtube}
+                  </span>
                   <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
                   </svg>
@@ -260,14 +355,16 @@ export default component$(() => {
 
             {/* Quick Links */}
             <div>
-              <h4 class="text-lg font-bold text-white">Quick Links</h4>
+              <h4 class="text-lg font-bold text-white">
+                {layoutCopy.value.footer.quickLinksTitle}
+              </h4>
               <ul class="mt-4 space-y-3">
                 <li>
                   <Link
                     href="/"
                     class="text-base text-slate-400 transition-colors hover:text-cyan-300"
                   >
-                    Home
+                    {layoutCopy.value.footer.homeLabel}
                   </Link>
                 </li>
                 <li>
@@ -275,7 +372,7 @@ export default component$(() => {
                     href="/events"
                     class="text-base text-slate-400 transition-colors hover:text-cyan-300"
                   >
-                    Events
+                    {layoutCopy.value.footer.eventsLabel}
                   </Link>
                 </li>
                 <li>
@@ -283,11 +380,11 @@ export default component$(() => {
                     href="/contact"
                     class="text-base text-slate-400 transition-colors hover:text-cyan-300"
                   >
-                    Contact
+                    {layoutCopy.value.footer.contactLabel}
                   </Link>
                 </li>
                 <li class="pt-2 text-xs font-semibold tracking-wide text-slate-500 uppercase">
-                  Project Repo
+                  {layoutCopy.value.footer.repoSectionLabel}
                 </li>
                 <li>
                   <a
@@ -296,7 +393,7 @@ export default component$(() => {
                     rel="noopener noreferrer"
                     class="text-base text-slate-400 transition-colors hover:text-cyan-300"
                   >
-                    Repository
+                    {layoutCopy.value.footer.repoLabel}
                   </a>
                 </li>
                 <li>
@@ -306,7 +403,7 @@ export default component$(() => {
                     rel="noopener noreferrer"
                     class="text-base text-slate-400 transition-colors hover:text-cyan-300"
                   >
-                    Issues
+                    {layoutCopy.value.footer.issuesLabel}
                   </a>
                 </li>
                 <li>
@@ -316,7 +413,7 @@ export default component$(() => {
                     rel="noopener noreferrer"
                     class="text-base text-slate-400 transition-colors hover:text-cyan-300"
                   >
-                    Contribute
+                    {layoutCopy.value.footer.contributeLabel}
                   </a>
                 </li>
               </ul>
@@ -324,7 +421,9 @@ export default component$(() => {
 
             {/* Contact Info */}
             <div>
-              <h4 class="text-lg font-bold text-white">Contact</h4>
+              <h4 class="text-lg font-bold text-white">
+                {layoutCopy.value.footer.contactTitle}
+              </h4>
               <ul class="mt-4 space-y-3">
                 <li class="flex min-w-0 items-center gap-2 text-base text-slate-400">
                   <svg
@@ -346,7 +445,7 @@ export default component$(() => {
                       d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
                     />
                   </svg>
-                  SASTRA Deemed University
+                  {layoutCopy.value.footer.locationLabel}
                 </li>
                 <li class="flex items-center gap-2 text-base text-slate-400">
                   <svg
@@ -362,7 +461,7 @@ export default component$(() => {
                       d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
                     />
                   </svg>
-                  March 15-17, 2026
+                  {layoutCopy.value.footer.dateLabel}
                 </li>
                 <li class="flex items-center gap-2 text-base text-slate-400">
                   <svg
@@ -378,17 +477,19 @@ export default component$(() => {
                       d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                     />
                   </svg>
-                  <span class="break-all">theta@sastra.edu</span>
+                  <span class="break-all">{layoutCopy.value.footer.emailLabel}</span>
                 </li>
               </ul>
             </div>
             </div>
             <div class="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 md:flex-row">
               <p class="text-base text-slate-500">
-                © 2026 Theta. All rights reserved.
+                {layoutCopy.value.footer.copyright}
               </p>
               <p class="text-base text-slate-500">
-                Made with <span class="text-amber-300">♥</span> by WebTek Team
+                {layoutCopy.value.footer.madeWithPrefix}{" "}
+                <span class="text-amber-300">♥</span>{" "}
+                {layoutCopy.value.footer.madeBy}
               </p>
             </div>
           </div>

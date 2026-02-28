@@ -1,5 +1,4 @@
 import { component$, useSignal, $, useVisibleTask$ } from "@builder.io/qwik";
-import { type DocumentHead } from "@builder.io/qwik-city";
 
 interface Cluster {
   id: string;
@@ -22,6 +21,60 @@ interface Event {
   registrationUrl?: string;
   registrationCloseAt?: string;
 }
+
+interface EventsPageCopy {
+  title: string;
+  subtitle: string;
+  searchPlaceholder: string;
+  categoryLabels: {
+    all: string;
+    events: string;
+    workshop: string;
+  };
+  statusLabels: {
+    all: string;
+    active: string;
+    "coming-soon": string;
+    over: string;
+    closed: string;
+  };
+  allClustersLabel: string;
+  resultsPrefix: string;
+  singleEvent: string;
+  multipleEvents: string;
+  organizedByPrefix: string;
+  registrationClosed: string;
+  entryFee: string;
+  perParticipant: string;
+  registerNow: string;
+}
+
+const defaultEventsPageCopy: EventsPageCopy = {
+  title: "Events",
+  subtitle: "Discover and register for Theta 2026 events",
+  searchPlaceholder: "Search events...",
+  categoryLabels: {
+    all: "All",
+    events: "Events",
+    workshop: "Workshops",
+  },
+  statusLabels: {
+    all: "All",
+    active: "Active",
+    "coming-soon": "Coming Soon",
+    over: "Over",
+    closed: "Closed",
+  },
+  allClustersLabel: "All Clusters",
+  resultsPrefix: "Showing",
+  singleEvent: "event",
+  multipleEvents: "events",
+  organizedByPrefix: "Organized by",
+  registrationClosed: "Regret registration closed",
+  entryFee: "Entry Fee",
+  perParticipant: "per participant",
+  registerNow: "Register Now",
+};
 
 const FEST_YEAR = 2026;
 
@@ -189,6 +242,7 @@ export default component$(() => {
   const searchQuery = useSignal("");
   const selectedEvent = useSignal<Event | null>(null);
   const showModal = useSignal(false);
+  const eventsPageCopy = useSignal<EventsPageCopy>(defaultEventsPageCopy);
 
   const events = useSignal<Event[]>(defaultEvents);
   const clusters = useSignal<Cluster[]>(defaultClusters);
@@ -209,6 +263,45 @@ export default component$(() => {
       }
     } catch {
       console.log("Using default events");
+    }
+  });
+
+  useVisibleTask$(async () => {
+    try {
+      const res = await fetch("/content.json");
+      const data = await res.json();
+      if (data?.eventsPage) {
+        eventsPageCopy.value = {
+          ...defaultEventsPageCopy,
+          ...data.eventsPage,
+          categoryLabels: {
+            ...defaultEventsPageCopy.categoryLabels,
+            ...(data.eventsPage.categoryLabels || {}),
+          },
+          statusLabels: {
+            ...defaultEventsPageCopy.statusLabels,
+            ...(data.eventsPage.statusLabels || {}),
+          },
+        };
+      }
+      if (data?.seo) {
+        if (data.seo.eventsTitle) {
+          document.title = data.seo.eventsTitle;
+        }
+        if (data.seo.eventsDescription) {
+          let metaDescription = document.querySelector(
+            'meta[name="description"]',
+          );
+          if (!metaDescription) {
+            metaDescription = document.createElement("meta");
+            metaDescription.setAttribute("name", "description");
+            document.head.appendChild(metaDescription);
+          }
+          metaDescription.setAttribute("content", data.seo.eventsDescription);
+        }
+      }
+    } catch {
+      eventsPageCopy.value = defaultEventsPageCopy;
     }
   });
 
@@ -279,9 +372,11 @@ export default component$(() => {
       <div class="relative mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         {/* Header */}
         <div class="mb-8 text-center">
-          <h1 class="mb-2 text-4xl font-bold text-white sm:text-5xl">Events</h1>
+          <h1 class="mb-2 text-4xl font-bold text-white sm:text-5xl">
+            {eventsPageCopy.value.title}
+          </h1>
           <p class="text-slate-400">
-            Discover and register for Theta 2026 events
+            {eventsPageCopy.value.subtitle}
           </p>
         </div>
 
@@ -310,7 +405,7 @@ export default component$(() => {
                   (searchQuery.value = (e.target as HTMLInputElement).value)
                 }
                 class="w-full rounded-full border border-slate-700 bg-slate-800/50 py-2.5 pr-4 pl-10 text-sm text-white placeholder:text-slate-500 focus:border-violet-500 focus:ring-2 focus:ring-violet-500/50 focus:outline-none"
-                placeholder="Search events..."
+                placeholder={eventsPageCopy.value.searchPlaceholder}
               />
             </div>
           </div>
@@ -331,10 +426,10 @@ export default component$(() => {
                   ]}
                 >
                   {cat === "all"
-                    ? "All"
+                    ? eventsPageCopy.value.categoryLabels.all
                     : cat === "events"
-                      ? "Events"
-                      : "Workshops"}
+                      ? eventsPageCopy.value.categoryLabels.events
+                      : eventsPageCopy.value.categoryLabels.workshop}
                 </button>
               ))}
             </div>
@@ -343,10 +438,22 @@ export default component$(() => {
             <div class="flex flex-wrap justify-center gap-2">
               {(
                 [
-                  { value: "all", label: "All" },
-                  { value: "active", label: "Active" },
-                  { value: "coming-soon", label: "Coming Soon" },
-                  { value: "over", label: "Over" },
+                  {
+                    value: "all",
+                    label: eventsPageCopy.value.statusLabels.all,
+                  },
+                  {
+                    value: "active",
+                    label: eventsPageCopy.value.statusLabels.active,
+                  },
+                  {
+                    value: "coming-soon",
+                    label: eventsPageCopy.value.statusLabels["coming-soon"],
+                  },
+                  {
+                    value: "over",
+                    label: eventsPageCopy.value.statusLabels.over,
+                  },
                 ] as const
               ).map((status) => (
                 <button
@@ -376,7 +483,7 @@ export default component$(() => {
                   : "border border-slate-700 bg-slate-800/30 text-slate-500 hover:border-slate-600",
               ]}
             >
-              All Clusters
+              {eventsPageCopy.value.allClustersLabel}
             </button>
             {clusters.value.map((cluster) => (
               <button
@@ -411,8 +518,10 @@ export default component$(() => {
 
         {/* Results Count */}
         <div class="mb-6 text-center text-sm text-slate-400">
-          Showing {filteredEvents.length}{" "}
-          {filteredEvents.length === 1 ? "event" : "events"}
+          {eventsPageCopy.value.resultsPrefix} {filteredEvents.length}{" "}
+          {filteredEvents.length === 1
+            ? eventsPageCopy.value.singleEvent
+            : eventsPageCopy.value.multipleEvents}
         </div>
 
         {/* Events Grid */}
@@ -454,10 +563,10 @@ export default component$(() => {
                     ]}
                   >
                     {effectiveStatus === "active"
-                      ? "Active"
+                      ? eventsPageCopy.value.statusLabels.active
                       : effectiveStatus === "coming-soon"
-                        ? "Coming Soon"
-                        : "Closed"}
+                        ? eventsPageCopy.value.statusLabels["coming-soon"]
+                        : eventsPageCopy.value.statusLabels.closed}
                   </span>
                 </div>
               </div>
@@ -530,14 +639,15 @@ export default component$(() => {
                         color: getClusterColor(event.cluster),
                       }}
                     >
-                      Organized by {getClusterName(event.cluster)}
+                      {eventsPageCopy.value.organizedByPrefix}{" "}
+                      {getClusterName(event.cluster)}
                     </span>
                   </div>
                 )}
                 {closed && (
                   <div class="mt-3">
                     <span class="inline-flex rounded-full border border-amber-500/30 bg-amber-500/10 px-2.5 py-1 text-xs font-semibold text-amber-300">
-                      Regret registration closed
+                      {eventsPageCopy.value.registrationClosed}
                     </span>
                   </div>
                 )}
@@ -653,13 +763,13 @@ export default component$(() => {
                       </div>
                       <div class="rounded-2xl border border-violet-400/30 bg-gradient-to-br from-violet-500/20 via-fuchsia-500/10 to-cyan-500/20 px-4 py-4 shadow-lg shadow-violet-500/20 backdrop-blur-sm">
                         <p class="text-xs font-semibold tracking-[0.2em] text-violet-200/80 uppercase">
-                          Entry Fee
+                          {eventsPageCopy.value.entryFee}
                         </p>
                         <span class="mt-1 block bg-gradient-to-r from-violet-300 via-fuchsia-300 to-cyan-300 bg-clip-text text-3xl font-black tracking-tight text-transparent sm:text-4xl">
                           {selectedEvent.value.fee}
                         </span>
                         <p class="mt-1 text-xs text-slate-300/80">
-                          per participant
+                          {eventsPageCopy.value.perParticipant}
                         </p>
                       </div>
                     </div>
@@ -701,10 +811,10 @@ export default component$(() => {
                       ]}
                     >
                       {effectiveStatus === "active"
-                        ? "✓ Register Now"
+                        ? `✓ ${eventsPageCopy.value.registerNow}`
                         : effectiveStatus === "coming-soon"
-                          ? "Coming Soon"
-                          : "Regret registration closed"}
+                          ? eventsPageCopy.value.statusLabels["coming-soon"]
+                          : eventsPageCopy.value.registrationClosed}
                     </span>
                   </div>
 
@@ -734,7 +844,7 @@ export default component$(() => {
                           d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
                         />
                       </svg>
-                      Register Now
+                      {eventsPageCopy.value.registerNow}
                       <svg
                         class="h-5 w-5 transition-transform group-hover:translate-x-1"
                         fill="none"
@@ -752,7 +862,7 @@ export default component$(() => {
                   ) : (
                     <div class="rounded-xl border border-amber-500/30 bg-amber-500/10 p-6 text-center">
                       <p class="text-base text-amber-400">
-                        Regret registration closed
+                        {eventsPageCopy.value.registrationClosed}
                       </p>
                     </div>
                   )}
@@ -767,14 +877,3 @@ export default component$(() => {
     </div>
   );
 });
-
-export const head: DocumentHead = {
-  title: "Events - Theta 2026",
-  meta: [
-    {
-      name: "description",
-      content:
-        "Browse Theta 2026 events and workshops, filter by category, status, and cluster, and register online.",
-    },
-  ],
-};

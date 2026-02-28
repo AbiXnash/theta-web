@@ -1,4 +1,4 @@
-import { component$ } from "@builder.io/qwik";
+import { component$, useSignal, useVisibleTask$ } from "@builder.io/qwik";
 import { useDocumentHead, useLocation } from "@builder.io/qwik-city";
 
 /**
@@ -8,6 +8,19 @@ export const RouterHead = component$(() => {
   const head = useDocumentHead();
   const loc = useLocation();
   const hasDescription = head.meta.some((m) => m.name === "description");
+  const defaultDescription = useSignal("Theta 2026 techno-management fest website.");
+
+  useVisibleTask$(async () => {
+    try {
+      const res = await fetch("/content.json");
+      const data = await res.json();
+      if (data?.seo?.defaultDescription) {
+        defaultDescription.value = data.seo.defaultDescription;
+      }
+    } catch {
+      defaultDescription.value = "Theta 2026 techno-management fest website.";
+    }
+  });
 
   return (
     <>
@@ -19,7 +32,7 @@ export const RouterHead = component$(() => {
       {!hasDescription && (
         <meta
           name="description"
-          content="Theta 2026 techno-management fest website."
+          content={defaultDescription.value}
         />
       )}
       <link rel="icon" type="image/svg+xml" href="/favicon.svg" />

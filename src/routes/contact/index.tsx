@@ -1,5 +1,4 @@
 import { component$, useSignal, useVisibleTask$ } from "@builder.io/qwik";
-import { type DocumentHead } from "@builder.io/qwik-city";
 
 interface TeamMember {
   name: string;
@@ -23,8 +22,31 @@ interface TeamData {
   };
 }
 
+interface ContactCopy {
+  titlePrefix: string;
+  titleAccent: string;
+  subtitle: string;
+  webtekLabel: string;
+  contactPrefix: string;
+  stillQuestionsTitle: string;
+  stillQuestionsSubtitle: string;
+  sendEmailLabel: string;
+}
+
+const defaultContactCopy: ContactCopy = {
+  titlePrefix: "Get in",
+  titleAccent: "Touch",
+  subtitle: "Have questions? We'd love to hear from you. Reach out to our team!",
+  webtekLabel: "WebTek Team",
+  contactPrefix: "Contact:",
+  stillQuestionsTitle: "Still have questions?",
+  stillQuestionsSubtitle: "Feel free to reach out to any of our team members",
+  sendEmailLabel: "Send us an email",
+};
+
 export default component$(() => {
   const teamData = useSignal<TeamData | null>(null);
+  const contactCopy = useSignal<ContactCopy>(defaultContactCopy);
 
   useVisibleTask$(async () => {
     try {
@@ -33,6 +55,34 @@ export default component$(() => {
       teamData.value = data;
     } catch (e) {
       console.error("Failed to load team data", e);
+    }
+  });
+
+  useVisibleTask$(async () => {
+    try {
+      const res = await fetch("/content.json");
+      const data = await res.json();
+      if (data?.contactPage) {
+        contactCopy.value = { ...defaultContactCopy, ...data.contactPage };
+      }
+      if (data?.seo) {
+        if (data.seo.contactTitle) {
+          document.title = data.seo.contactTitle;
+        }
+        if (data.seo.contactDescription) {
+          let metaDescription = document.querySelector(
+            'meta[name="description"]',
+          );
+          if (!metaDescription) {
+            metaDescription = document.createElement("meta");
+            metaDescription.setAttribute("name", "description");
+            document.head.appendChild(metaDescription);
+          }
+          metaDescription.setAttribute("content", data.seo.contactDescription);
+        }
+      }
+    } catch {
+      contactCopy.value = defaultContactCopy;
     }
   });
 
@@ -119,13 +169,13 @@ export default component$(() => {
       <div class="relative mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div class="mb-16 text-center">
           <h1 class="mb-4 text-4xl font-bold text-white sm:text-5xl lg:text-6xl">
-            Get in{" "}
+            {contactCopy.value.titlePrefix}{" "}
             <span class="bg-gradient-to-r from-violet-400 to-purple-400 bg-clip-text text-transparent">
-              Touch
+              {contactCopy.value.titleAccent}
             </span>
           </h1>
           <p class="mx-auto max-w-2xl text-lg text-slate-400">
-            Have questions? We'd love to hear from you. Reach out to our team!
+            {contactCopy.value.subtitle}
           </p>
         </div>
 
@@ -164,7 +214,7 @@ export default component$(() => {
             <div>
               <div class="mb-10 text-center">
                 <span class="inline-block rounded-full border border-violet-500/30 bg-violet-500/10 px-6 py-2 text-lg font-medium text-violet-400">
-                  WebTek Team
+                  {contactCopy.value.webtekLabel}
                 </span>
               </div>
               <div class="flex flex-col items-center justify-center gap-6">
@@ -222,7 +272,7 @@ export default component$(() => {
                 </div>
                 <div class="text-center">
                   <p class="text-lg text-slate-400">
-                    Contact:{" "}
+                    {contactCopy.value.contactPrefix}{" "}
                     <a
                       href={`mailto:${teamData.value.webtek.email}`}
                       class="text-violet-400 hover:underline"
@@ -245,10 +295,10 @@ export default component$(() => {
         <div class="mt-20 text-center">
           <div class="premium-surface premium-ring rounded-2xl p-8">
             <h3 class="mb-2 text-2xl font-bold text-white">
-              Still have questions?
+              {contactCopy.value.stillQuestionsTitle}
             </h3>
             <p class="mb-4 text-slate-400">
-              Feel free to reach out to any of our team members
+              {contactCopy.value.stillQuestionsSubtitle}
             </p>
             <a
               href="mailto:abinash@theabx.in"
@@ -267,7 +317,7 @@ export default component$(() => {
                   d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                 />
               </svg>
-              Send us an email
+              {contactCopy.value.sendEmailLabel}
             </a>
           </div>
         </div>
@@ -275,14 +325,3 @@ export default component$(() => {
     </div>
   );
 });
-
-export const head: DocumentHead = {
-  title: "Contact - Theta 2026",
-  meta: [
-    {
-      name: "description",
-      content:
-        "Contact the Theta 2026 organizing team, coordinators, and WebTek support for event or sponsorship queries.",
-    },
-  ],
-};

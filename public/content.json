@@ -1,0 +1,151 @@
+{
+  "header": {
+    "logoAlt": "Theta",
+    "navItems": [
+      { "href": "/", "label": "Home" },
+      { "href": "/events", "label": "Events" },
+      { "href": "/contact", "label": "Contact" }
+    ],
+    "merchLabel": "Merch",
+    "merchSoon": "Soon",
+    "merchComingSoon": "Coming Soon"
+  },
+  "layout": {
+    "underDevelopment": {
+      "ariaLabel": "Show development notice",
+      "title": "Website Under Development",
+      "subtitle": "Changes may occur"
+    },
+    "footer": {
+      "description": "Theta is a national-level techno-management fest organized by SASTRA Deemed University. Join us for three days of innovation, competition, and excitement.",
+      "quickLinksTitle": "Quick Links",
+      "contactTitle": "Contact",
+      "homeLabel": "Home",
+      "eventsLabel": "Events",
+      "contactLabel": "Contact",
+      "repoSectionLabel": "Project Repo",
+      "repoLabel": "Repository",
+      "issuesLabel": "Issues",
+      "contributeLabel": "Contribute",
+      "locationLabel": "SASTRA Deemed University",
+      "dateLabel": "March 15-17, 2026",
+      "emailLabel": "theta@sastra.edu",
+      "copyright": "© 2026 Theta. All rights reserved.",
+      "madeWithPrefix": "Made with",
+      "madeBy": "by WebTek Team",
+      "social": {
+        "instagram": "Instagram",
+        "twitter": "Twitter",
+        "youtube": "YouTube"
+      }
+    }
+  },
+  "home": {
+    "hero": {
+      "bannerDate": "March 15-17, 2026",
+      "titleMain": "THETA",
+      "titleAccent": "2026",
+      "description": "Where innovation meets excitement. Three days of cutting-edge technology, competitions, and unforgettable moments.",
+      "exploreEvents": "Explore Events",
+      "contactUs": "Contact Us"
+    },
+    "countdownLabels": {
+      "days": "Days",
+      "hours": "Hours",
+      "minutes": "Mins",
+      "seconds": "Secs"
+    },
+    "about": {
+      "badge": "About Theta",
+      "titlePrefix": "India's Premier",
+      "titleAccent": "Techno-Management",
+      "titleSuffix": "Fest",
+      "features": [
+        {
+          "title": "Innovation",
+          "description": "Showcasing groundbreaking ideas and cutting-edge technology from the brightest minds."
+        },
+        {
+          "title": "Collaboration",
+          "description": "Connect with like-minded peers, form teams, and build something extraordinary."
+        },
+        {
+          "title": "Creativity",
+          "description": "Push your boundaries and unleash your imagination in competitions."
+        }
+      ]
+    },
+    "statsLabels": {
+      "events": "Events",
+      "participants": "Participants",
+      "colleges": "Colleges"
+    },
+    "sponsors": {
+      "badge": "Our Sponsors",
+      "titlePrefix": "Powered by",
+      "titleAccent": "Excellence",
+      "platinum": "Platinum Sponsors",
+      "gold": "Gold Sponsors",
+      "silver": "Silver Sponsors",
+      "general": "General Sponsors",
+      "sponsorPrompt": "Want to sponsor Theta 2026?",
+      "sponsorButton": "Become a Sponsor"
+    },
+    "cta": {
+      "titlePrefix": "Ready to",
+      "titleAccent": "Shine?",
+      "description": "Join thousands of innovators at Theta 2026. Explore our events and be part of something extraordinary.",
+      "browseEvents": "Browse Events"
+    },
+    "dayModal": {
+      "scheduleTitle": "Events Schedule",
+      "emptyState": "Events will be announced soon!",
+      "viewAllEvents": "View All Events"
+    }
+  },
+  "eventsPage": {
+    "title": "Events",
+    "subtitle": "Discover and register for Theta 2026 events",
+    "searchPlaceholder": "Search events...",
+    "categoryLabels": {
+      "all": "All",
+      "events": "Events",
+      "workshop": "Workshops"
+    },
+    "statusLabels": {
+      "all": "All",
+      "active": "Active",
+      "coming-soon": "Coming Soon",
+      "over": "Over",
+      "closed": "Closed"
+    },
+    "allClustersLabel": "All Clusters",
+    "resultsPrefix": "Showing",
+    "singleEvent": "event",
+    "multipleEvents": "events",
+    "organizedByPrefix": "Organized by",
+    "registrationClosed": "Regret registration closed",
+    "entryFee": "Entry Fee",
+    "perParticipant": "per participant",
+    "registerNow": "Register Now"
+  },
+  "contactPage": {
+    "titlePrefix": "Get in",
+    "titleAccent": "Touch",
+    "subtitle": "Have questions? We'd love to hear from you. Reach out to our team!",
+    "webtekLabel": "WebTek Team",
+    "contactPrefix": "Contact:",
+    "stillQuestionsTitle": "Still have questions?",
+    "stillQuestionsSubtitle": "Feel free to reach out to any of our team members",
+    "sendEmailLabel": "Send us an email"
+  },
+  "seo": {
+    "defaultDescription": "Theta 2026 techno-management fest website.",
+    "homeTitle": "Theta 2026 - Home",
+    "homeDescription": "Theta 2026 is SASTRA's national-level techno-management fest with events, workshops, sponsors, and registrations.",
+    "eventsTitle": "Events - Theta 2026",
+    "eventsDescription": "Browse Theta 2026 events and workshops, filter by category, status, and cluster, and register online.",
+    "contactTitle": "Contact - Theta 2026",
+    "contactDescription": "Contact the Theta 2026 organizing team, coordinators, and WebTek support for event or sponsorship queries."
+  }
+}

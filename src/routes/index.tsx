@@ -1,5 +1,4 @@
 import { component$, useSignal, useVisibleTask$, $ } from "@builder.io/qwik";
-import { type DocumentHead } from "@builder.io/qwik-city";
 
 interface ConfigData {
   meta: {
@@ -62,6 +61,108 @@ interface DayEvent {
   bgImage: string;
 }
 
+interface HomeCopy {
+  hero: {
+    bannerDate: string;
+    titleMain: string;
+    titleAccent: string;
+    description: string;
+    exploreEvents: string;
+    contactUs: string;
+  };
+  countdownLabels: {
+    days: string;
+    hours: string;
+    minutes: string;
+    seconds: string;
+  };
+  about: {
+    badge: string;
+    titlePrefix: string;
+    titleAccent: string;
+    titleSuffix: string;
+  };
+  statsLabels: {
+    events: string;
+    participants: string;
+    colleges: string;
+  };
+  sponsors: {
+    badge: string;
+    titlePrefix: string;
+    titleAccent: string;
+    platinum: string;
+    gold: string;
+    silver: string;
+    general: string;
+    sponsorPrompt: string;
+    sponsorButton: string;
+  };
+  cta: {
+    titlePrefix: string;
+    titleAccent: string;
+    description: string;
+    browseEvents: string;
+  };
+  dayModal: {
+    scheduleTitle: string;
+    emptyState: string;
+    viewAllEvents: string;
+  };
+}
+
+const defaultHomeCopy: HomeCopy = {
+  hero: {
+    bannerDate: "March 15-17, 2026",
+    titleMain: "THETA",
+    titleAccent: "2026",
+    description:
+      "Where innovation meets excitement. Three days of cutting-edge technology, competitions, and unforgettable moments.",
+    exploreEvents: "Explore Events",
+    contactUs: "Contact Us",
+  },
+  countdownLabels: {
+    days: "Days",
+    hours: "Hours",
+    minutes: "Mins",
+    seconds: "Secs",
+  },
+  about: {
+    badge: "About Theta",
+    titlePrefix: "India's Premier",
+    titleAccent: "Techno-Management",
+    titleSuffix: "Fest",
+  },
+  statsLabels: {
+    events: "Events",
+    participants: "Participants",
+    colleges: "Colleges",
+  },
+  sponsors: {
+    badge: "Our Sponsors",
+    titlePrefix: "Powered by",
+    titleAccent: "Excellence",
+    platinum: "Platinum Sponsors",
+    gold: "Gold Sponsors",
+    silver: "Silver Sponsors",
+    general: "General Sponsors",
+    sponsorPrompt: "Want to sponsor Theta 2026?",
+    sponsorButton: "Become a Sponsor",
+  },
+  cta: {
+    titlePrefix: "Ready to",
+    titleAccent: "Shine?",
+    description:
+      "Join thousands of innovators at Theta 2026. Explore our events and be part of something extraordinary.",
+    browseEvents: "Browse Events",
+  },
+  dayModal: {
+    scheduleTitle: "Events Schedule",
+    emptyState: "Events will be announced soon!",
+    viewAllEvents: "View All Events",
+  },
+};
+
 export default component$(() => {
   const defaultDays: DayEvent[] = [
     {
@@ -101,6 +202,7 @@ export default component$(() => {
   const eventsData = useSignal<Event[]>([]);
   const selectedDay = useSignal<string | null>(null);
   const showDayModal = useSignal(false);
+  const homeCopy = useSignal<HomeCopy>(defaultHomeCopy);
 
   const defaultSponsors: SponsorsConfig = {
     platinum: [
@@ -153,6 +255,53 @@ export default component$(() => {
       }
     } catch {
       console.log("Using default events");
+    }
+  });
+
+  useVisibleTask$(async () => {
+    try {
+      const res = await fetch("/content.json");
+      const data = await res.json();
+      if (data?.home) {
+        homeCopy.value = {
+          ...defaultHomeCopy,
+          ...data.home,
+          hero: { ...defaultHomeCopy.hero, ...(data.home.hero || {}) },
+          countdownLabels: {
+            ...defaultHomeCopy.countdownLabels,
+            ...(data.home.countdownLabels || {}),
+          },
+          about: { ...defaultHomeCopy.about, ...(data.home.about || {}) },
+          statsLabels: {
+            ...defaultHomeCopy.statsLabels,
+            ...(data.home.statsLabels || {}),
+          },
+          sponsors: {
+            ...defaultHomeCopy.sponsors,
+            ...(data.home.sponsors || {}),
+          },
+          cta: { ...defaultHomeCopy.cta, ...(data.home.cta || {}) },
+          dayModal: { ...defaultHomeCopy.dayModal, ...(data.home.dayModal || {}) },
+        };
+      }
+      if (data?.seo) {
+        if (data.seo.homeTitle) {
+          document.title = data.seo.homeTitle;
+        }
+        if (data.seo.homeDescription) {
+          let metaDescription = document.querySelector(
+            'meta[name="description"]',
+          );
+          if (!metaDescription) {
+            metaDescription = document.createElement("meta");
+            metaDescription.setAttribute("name", "description");
+            document.head.appendChild(metaDescription);
+          }
+          metaDescription.setAttribute("content", data.seo.homeDescription);
+        }
+      }
+    } catch {
+      homeCopy.value = defaultHomeCopy;
     }
   });
 
@@ -218,12 +367,18 @@ export default component$(() => {
   });
 
   const homeStats = [
-    { value: configData.value?.stats.events ?? "50+", label: "Events" },
+    {
+      value: configData.value?.stats.events ?? "50+",
+      label: homeCopy.value.statsLabels.events,
+    },
     {
       value: configData.value?.stats.participants ?? "5000+",
-      label: "Participants",
+      label: homeCopy.value.statsLabels.participants,
     },
-    { value: configData.value?.stats.colleges ?? "100+", label: "Colleges" },
+    {
+      value: configData.value?.stats.colleges ?? "100+",
+      label: homeCopy.value.statsLabels.colleges,
+    },
   ];
 
   return (
@@ -244,7 +399,7 @@ export default component$(() => {
             <div class="inline-flex items-center gap-2 rounded-full border border-violet-500/30 bg-violet-500/10 px-4 py-2 backdrop-blur-sm">
               <span class="h-2 w-2 animate-pulse rounded-full bg-violet-400"></span>
               <span class="text-sm font-medium text-violet-300">
-                March 15-17, 2026
+                {homeCopy.value.hero.bannerDate}
               </span>
             </div>
           </div>
@@ -253,25 +408,36 @@ export default component$(() => {
             {/* Left Content */}
             <div class="flex flex-col justify-center">
               <h1 class="mb-6 text-5xl leading-tight font-bold tracking-tight text-white sm:text-6xl lg:text-8xl">
-                THETA
+                {homeCopy.value.hero.titleMain}
                 <br />
                 <span class="bg-gradient-to-r from-violet-400 via-purple-400 to-fuchsia-400 bg-clip-text text-transparent">
-                  2026
+                  {homeCopy.value.hero.titleAccent}
                 </span>
               </h1>
 
               <p class="mb-6 max-w-xl text-base font-light text-slate-400 sm:text-xl">
-                Where innovation meets excitement. Three days of cutting-edge
-                technology, competitions, and unforgettable moments.
+                {homeCopy.value.hero.description}
               </p>
 
               {/* Countdown - Responsive */}
               <div class="mb-8 grid grid-cols-4 gap-2 sm:gap-4">
                 {[
-                  { value: timeLeft.value.days, label: "Days" },
-                  { value: timeLeft.value.hours, label: "Hours" },
-                  { value: timeLeft.value.minutes, label: "Mins" },
-                  { value: timeLeft.value.seconds, label: "Secs" },
+                  {
+                    value: timeLeft.value.days,
+                    label: homeCopy.value.countdownLabels.days,
+                  },
+                  {
+                    value: timeLeft.value.hours,
+                    label: homeCopy.value.countdownLabels.hours,
+                  },
+                  {
+                    value: timeLeft.value.minutes,
+                    label: homeCopy.value.countdownLabels.minutes,
+                  },
+                  {
+                    value: timeLeft.value.seconds,
+                    label: homeCopy.value.countdownLabels.seconds,
+                  },
                 ].map((item) => (
                   <div
                     key={item.label}
@@ -292,13 +458,13 @@ export default component$(() => {
                   href="/events"
                   class="rounded-xl bg-gradient-to-r from-violet-500 to-purple-500 px-6 py-3 text-center text-sm font-semibold text-white shadow-lg shadow-violet-500/25 transition-all hover:scale-105 hover:shadow-xl sm:px-8 sm:py-4"
                 >
-                  Explore Events
+                  {homeCopy.value.hero.exploreEvents}
                 </a>
                 <a
                   href="/contact"
                   class="rounded-xl border border-slate-700 bg-slate-800/50 px-6 py-3 text-center text-sm font-semibold text-white backdrop-blur-sm transition-all hover:border-slate-600 hover:bg-slate-800 sm:px-8 sm:py-4"
                 >
-                  Contact Us
+                  {homeCopy.value.hero.contactUs}
                 </a>
               </div>
             </div>
@@ -383,43 +549,25 @@ export default component$(() => {
         <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div class="mb-10 text-center sm:mb-16">
             <span class="mb-3 inline-block rounded-full border border-violet-500/30 bg-violet-500/10 px-3 py-1.5 text-xs font-medium text-violet-400 sm:mb-4 sm:text-sm">
-              About Theta
+              {homeCopy.value.about.badge}
             </span>
             <h2 class="text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
-              India's Premier{" "}
+              {homeCopy.value.about.titlePrefix}{" "}
               <span class="bg-gradient-to-r from-violet-400 to-purple-400 bg-clip-text text-transparent">
-                Techno-Management
+                {homeCopy.value.about.titleAccent}
               </span>{" "}
-              Fest
+              {homeCopy.value.about.titleSuffix}
             </h2>
           </div>
 
           <div class="mx-auto mb-10 max-w-3xl text-center">
             <p class="text-base leading-relaxed text-slate-400 sm:text-lg">
-              Theta is a national-level techno-management fest organized by
-              SASTRA Deemed University, bringing together the brightest minds
-              from across the country. Since its inception, Theta has been a
-              platform for students to showcase their technical skills,
-              creativity, and innovation. With a legacy of excellence, Theta
-              2026 promises to be bigger and better than ever.
+              {configData.value?.about.description}
             </p>
           </div>
 
           <div class="grid gap-6 sm:gap-8 md:grid-cols-3">
-            {[
-              {
-                title: "Innovation",
-                desc: "Showcasing groundbreaking ideas and cutting-edge technology from the brightest minds.",
-              },
-              {
-                title: "Collaboration",
-                desc: "Connect with like-minded peers, form teams, and build something extraordinary.",
-              },
-              {
-                title: "Creativity",
-                desc: "Push your boundaries and unleash your imagination in competitions.",
-              },
-            ].map((item) => (
+            {(configData.value?.about.features || []).map((item) => (
               <div
                 key={item.title}
                 class="premium-surface premium-card rounded-2xl p-6 transition-all hover:border-violet-400/50 sm:p-8"
@@ -440,7 +588,7 @@ export default component$(() => {
                   </svg>
                 </div>
                 <h3 class="mb-2 text-xl font-bold text-white">{item.title}</h3>
-                <p class="text-slate-400">{item.desc}</p>
+                <p class="text-slate-400">{item.description}</p>
               </div>
             ))}
           </div>
@@ -474,12 +622,12 @@ export default component$(() => {
         <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div class="mb-12 text-center">
             <span class="mb-4 inline-block rounded-full border border-violet-500/30 bg-violet-500/10 px-4 py-1.5 text-sm font-medium text-violet-400">
-              Our Sponsors
+              {homeCopy.value.sponsors.badge}
             </span>
             <h2 class="text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
-              Powered by{" "}
+              {homeCopy.value.sponsors.titlePrefix}{" "}
               <span class="bg-gradient-to-r from-violet-400 to-purple-400 bg-clip-text text-transparent">
-                Excellence
+                {homeCopy.value.sponsors.titleAccent}
               </span>
             </h2>
           </div>
@@ -487,7 +635,7 @@ export default component$(() => {
           {/* Platinum Sponsors - Largest */}
           <div class="mb-10">
             <h3 class="mb-6 text-center text-sm font-medium tracking-widest text-violet-400 uppercase">
-              Platinum Sponsors
+              {homeCopy.value.sponsors.platinum}
             </h3>
             <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
               {(sponsorsData.value?.platinum || defaultSponsors.platinum).map(
@@ -524,7 +672,7 @@ export default component$(() => {
           {/* Gold Sponsors */}
           <div class="mb-10">
             <h3 class="mb-6 text-center text-sm font-medium tracking-widest text-yellow-500/80 uppercase">
-              Gold Sponsors
+              {homeCopy.value.sponsors.gold}
             </h3>
             <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
               {(sponsorsData.value?.gold || defaultSponsors.gold).map(
@@ -561,7 +709,7 @@ export default component$(() => {
           {/* Silver Sponsors */}
           <div class="mb-10">
             <h3 class="mb-6 text-center text-sm font-medium tracking-widest text-slate-400 uppercase">
-              Silver Sponsors
+              {homeCopy.value.sponsors.silver}
             </h3>
             <div class="grid grid-cols-3 gap-3 sm:grid-cols-4 lg:grid-cols-8">
               {(sponsorsData.value?.silver || defaultSponsors.silver || []).map(
@@ -598,7 +746,7 @@ export default component$(() => {
           {/* General Sponsors - Smallest */}
           <div class="mb-10">
             <h3 class="mb-8 text-center text-lg font-bold tracking-widest text-slate-400 uppercase">
-              Our Partners
+              {homeCopy.value.sponsors.general}
             </h3>
             <div class="flex flex-wrap items-center justify-center gap-6">
               {(
@@ -636,12 +784,14 @@ export default component$(() => {
 
           {/* Become a Sponsor */}
           <div class="text-center">
-            <p class="mb-4 text-slate-400">Want to sponsor Theta 2026?</p>
+            <p class="mb-4 text-slate-400">
+              {homeCopy.value.sponsors.sponsorPrompt}
+            </p>
             <a
               href="/contact"
               class="inline-flex items-center gap-2 rounded-full border border-violet-500/30 bg-violet-500/10 px-6 py-2.5 text-sm font-medium text-violet-400 transition-all hover:bg-violet-500/20"
             >
-              Become a Sponsor
+              {homeCopy.value.sponsors.sponsorButton}
               <svg
                 class="h-4 w-4"
                 fill="none"
@@ -667,21 +817,20 @@ export default component$(() => {
 
         <div class="relative mx-auto max-w-4xl px-4 text-center sm:px-6">
           <h2 class="mb-4 text-3xl font-bold text-white sm:mb-6 sm:text-4xl lg:text-6xl">
-            Ready to{" "}
+            {homeCopy.value.cta.titlePrefix}{" "}
             <span class="bg-gradient-to-r from-violet-400 to-purple-400 bg-clip-text text-transparent">
-              Shine?
+              {homeCopy.value.cta.titleAccent}
             </span>
           </h2>
           <p class="mb-8 text-base text-slate-400 sm:mb-10 sm:text-xl">
-            Join thousands of innovators at Theta 2026. Explore our events and
-            be part of something extraordinary.
+            {homeCopy.value.cta.description}
           </p>
           <div class="flex justify-center">
             <a
               href="/events"
               class="rounded-xl bg-gradient-to-r from-violet-500 to-purple-500 px-8 py-3 text-base font-semibold text-white shadow-lg shadow-violet-500/25 transition-all hover:scale-105 hover:shadow-xl sm:px-10 sm:py-4"
             >
-              Browse Events
+              {homeCopy.value.cta.browseEvents}
             </a>
           </div>
         </div>
@@ -722,7 +871,7 @@ export default component$(() => {
                 {selectedDay.value}
               </span>
               <h2 class="text-2xl font-bold text-white sm:text-3xl">
-                Events Schedule
+                {homeCopy.value.dayModal.scheduleTitle}
               </h2>
             </div>
 
@@ -827,7 +976,7 @@ export default component$(() => {
                 ))
               ) : (
                 <div class="py-8 text-center text-slate-400">
-                  <p>Events will be announced soon!</p>
+                  <p>{homeCopy.value.dayModal.emptyState}</p>
                 </div>
               )}
             </div>
@@ -837,7 +986,7 @@ export default component$(() => {
                 href="/events"
                 class="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-violet-500 to-purple-500 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-violet-500/25 transition-all hover:scale-105 hover:shadow-xl"
               >
-                View All Events
+                {homeCopy.value.dayModal.viewAllEvents}
                 <svg
                   class="h-4 w-4"
                   fill="none"
@@ -859,14 +1008,3 @@ export default component$(() => {
     </div>
   );
 });
-
-export const head: DocumentHead = {
-  title: "Theta 2026 - Home",
-  meta: [
-    {
-      name: "description",
-      content:
-        "Theta 2026 is SASTRA's national-level techno-management fest with events, workshops, sponsors, and registrations.",
-    },
-  ],
-};
