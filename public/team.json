@@ -1,0 +1,115 @@
+{
+  "order": [
+    { "key": "coordinators", "label": "Coordinators" },
+    { "key": "president", "label": "President" },
+    { "key": "vicePresidents", "label": "Vice Presidents" },
+    { "key": "sponsorship", "label": "Sponsorship" },
+    { "key": "publicRelation", "label": "Public Relations" }
+  ],
+  "president": [
+    {
+      "name": "Arjun Sharma",
+      "role": "President",
+      "email": "arjun.sharma@theta2026.in",
+      "phone": "+91 98765 43210",
+      "image": "/team/president.jpg"
+    }
+  ],
+  "vicePresidents": [
+    {
+      "name": "Priya Venkatesh",
+      "role": "Vice President",
+      "email": "priya.v@theta2026.in",
+      "phone": "+91 98765 43211",
+      "image": "/team/vp1.jpg"
+    },
+    {
+      "name": "Karthik Raj",
+      "role": "Vice President",
+      "email": "karthik.r@theta2026.in",
+      "phone": "+91 98765 43212",
+      "image": "/team/vp2.jpg"
+    }
+  ],
+  "coordinators": [
+    {
+      "name": "Sneha Krishnan",
+      "role": "Event Coordinator",
+      "email": "sneha.k@theta2026.in",
+      "phone": "+91 98765 43213",
+      "image": "/team/coord1.jpg"
+    },
+    {
+      "name": "Rohan Patel",
+      "role": "Event Coordinator",
+      "email": "rohan.p@theta2026.in",
+      "phone": "+91 98765 43214",
+      "image": "/team/coord2.jpg"
+    },
+    {
+      "name": "Ananya Gupta",
+      "role": "Event Coordinator",
+      "email": "ananya.g@theta2026.in",
+      "phone": "+91 98765 43215",
+      "image": "/team/coord3.jpg"
+    },
+    {
+      "name": "Vikram Singh",
+      "role": "Event Coordinator",
+      "email": "vikram.s@theta2026.in",
+      "phone": "+91 98765 43216",
+      "image": "/team/coord4.jpg"
+    },
+    {
+      "name": "Meera Nair",
+      "role": "Event Coordinator",
+      "email": "meera.n@theta2026.in",
+      "phone": "+91 98765 43217",
+      "image": "/team/coord5.jpg"
+    },
+    {
+      "name": "Aditya Kumar",
+      "role": "Event Coordinator",
+      "email": "aditya.k@theta2026.in",
+      "phone": "+91 98765 43218",
+      "image": "/team/coord6.jpg"
+    }
+  ],
+  "sponsorship": [
+    {
+      "name": "Sanjay Menon",
+      "role": "Sponsorship Lead",
+      "email": "sanjay.m@theta2026.in",
+      "phone": "+91 98765 43219",
+      "image": "/team/sponsor1.jpg"
+    },
+    {
+      "name": "Divya Prakash",
+      "role": "Sponsorship Lead",
+      "email": "divya.p@theta2026.in",
+      "phone": "+91 98765 43220",
+      "image": "/team/sponsor2.jpg"
+    }
+  ],
+  "publicRelation": [
+    {
+      "name": "Rahul Joshi",
+      "role": "Public Relations",
+      "email": "rahul.j@theta2026.in",
+      "phone": "+91 98765 43221",
+      "image": "/team/pr.jpg"
+    },
+    {
+      "name": "Shweta Iyer",
+      "role": "Public Relations",
+      "email": "shweta.i@theta2026.in",
+      "phone": "+91 98765 43222",
+      "image": "/team/pr2.jpg"
+    }
+  ],
+  "webtek": {
+    "github": "https://github.com/theta-web",
+    "linkedin": "https://linkedin.com/company/theta",
+    "email": "abinash@theabx.in"
+  }
+}

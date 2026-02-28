@@ -1,0 +1,306 @@
+{
+  "clusters": [
+    {
+      "id": "csi",
+      "name": "CSI",
+      "color": "#6366f1",
+      "description": "Computer Society of India"
+    },
+    {
+      "id": "iedc",
+      "name": "IEDC",
+      "color": "#ec4899",
+      "description": "Innovation Entrepreneurship Development Cell"
+    },
+    {
+      "id": "ieee",
+      "name": "IEEE",
+      "color": "#14b8a6",
+      "description": "Institute of Electrical and Electronics Engineers"
+    },
+    {
+      "id": "asme",
+      "name": "ASME",
+      "color": "#f59e0b",
+      "description": "American Society of Mechanical Engineers"
+    },
+    {
+      "id": "sae",
+      "name": "SAE",
+      "color": "#ef4444",
+      "description": "Society of Automotive Engineers"
+    },
+    {
+      "id": "nss",
+      "name": "NSS",
+      "color": "#10b981",
+      "description": "National Service Scheme"
+    },
+    {
+      "id": "theta",
+      "name": "Theta",
+      "color": "#8b5cf6",
+      "description": "Theta Technical Club"
+    },
+    {
+      "id": "iste",
+      "name": "ISTE",
+      "color": "#06b6d4",
+      "description": "Indian Society for Technical Education"
+    },
+    {
+      "id": "rotaract",
+      "name": "Rotaract",
+      "color": "#f97316",
+      "description": "Rotaract Club"
+    },
+    {
+      "id": "tedx",
+      "name": "TEDx",
+      "color": "#e11d48",
+      "description": "TEDx SASTRA"
+    },
+    {
+      "id": "aero",
+      "name": "Aerospace",
+      "color": "#0ea5e9",
+      "description": "Aerospace Club"
+    },
+    {
+      "id": "robotics",
+      "name": "Robotics",
+      "color": "#84cc16",
+      "description": "Robotics Club"
+    },
+    {
+      "id": "code",
+      "name": "Code",
+      "color": "#a855f7",
+      "description": "Coding Club"
+    },
+    {
+      "id": "design",
+      "name": "Design",
+      "color": "#d946ef",
+      "description": "Design Club"
+    },
+    {
+      "id": "eco",
+      "name": "E-Cell",
+      "color": "#14b8a6",
+      "description": "Entrepreneurship Cell"
+    }
+  ],
+  "events": [
+    {
+      "id": 1,
+      "name": "Robotics Workshop",
+      "category": "workshop",
+      "cluster": "robotics",
+      "day": "Day 1",
+      "timing": "10:00 AM - 1:00 PM",
+      "location": "Robotics Lab",
+      "fee": "₹300",
+      "status": "active",
+      "description": "Learn the fundamentals of robotics and build your own robot. Includes basic electronics, Arduino programming, sensor integration, and building your first robot.",
+      "image": "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800",
+      "registrationUrl": "https://forms.google.com/example"
+    },
+    {
+      "id": 2,
+      "name": "Tech Quiz",
+      "category": "quiz",
+      "cluster": "csi",
+      "day": "Day 1",
+      "timing": "4:00 PM - 6:00 PM",
+      "location": "Auditorium",
+      "fee": "₹100",
+      "status": "active",
+      "description": "Test your technical knowledge in this thrilling quiz with technical rounds, rapid fire, and buzzer round.",
+      "image": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800",
+      "registrationUrl": "https://forms.google.com/example"
+    },
+    {
+      "id": 3,
+      "name": "Debugging",
+      "category": "tech",
+      "cluster": "code",
+      "day": "Day 1",
+      "timing": "2:00 PM - 4:00 PM",
+      "location": "Lab 1",
+      "fee": "₹100",
+      "status": "active",
+      "description": "Find and fix bugs in given code. Test your debugging skills.",
+      "image": "https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=800",
+      "registrationUrl": "https://forms.google.com/example"
+    },
+    {
+      "id": 4,
+      "name": "Web Development Workshop",
+      "category": "workshop",
+      "cluster": "design",
+      "day": "Day 1",
+      "timing": "2:00 PM - 5:00 PM",
+      "location": "Web Lab",
+      "fee": "₹250",
+      "status": "active",
+      "description": "Build modern websites with latest technologies including HTML, CSS, and JavaScript.",
+      "image": "https://images.unsplash.com/photo-1627398242454-45a1465c2479?w=800",
+      "registrationUrl": "https://forms.google.com/example"
+    },
+    {
+      "id": 5,
+      "name": "Code Battle",
+      "category": "tech",
+      "cluster": "iedc",
+      "day": "Day 2",
+      "timing": "2:00 PM - 6:00 PM",
+      "location": "Computer Lab",
+      "fee": "₹150",
+      "status": "active",
+      "description": "Competitive coding event with multiple rounds: MCQ, Coding, and Debugging.",
+      "image": "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800",
+      "registrationUrl": "https://forms.google.com/example"
+    },
+    {
+      "id": 6,
+      "name": "Hackathon",
+      "category": "tech",
+      "cluster": "theta",
+      "day": "Day 2",
+      "timing": "9:00 AM - 9:00 AM (24 hrs)",
+      "location": "Innovation Hub",
+      "fee": "₹500",
+      "status": "active",
+      "description": "24-hour hackathon to build innovative solutions. Team size: 2-4 members.",
+      "image": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800",
+      "registrationUrl": "https://forms.google.com/example"
+    },
+    {
+      "id": 7,
+      "name": "Project Expo",
+      "category": "tech",
+      "cluster": "iedc",
+      "day": "Day 2",
+      "timing": "11:00 AM - 4:00 PM",
+      "location": "Exhibition Hall",
+      "fee": "₹200",
+      "status": "active",
+      "description": "Showcase your projects to industry experts. Present your innovative ideas and network with professionals.",
+      "image": "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800",
+      "registrationUrl": "https://forms.google.com/example"
+    },
+    {
+      "id": 8,
+      "name": "Blind Coding",
+      "category": "tech",
+      "cluster": "csi",
+      "day": "Day 2",
+      "timing": "3:00 PM - 5:00 PM",
+      "location": "Computer Lab",
+      "fee": "₹100",
+      "status": "active",
+      "description": "Code without looking at the screen! A challenging event for true coders.",
+      "image": "https://images.unsplash.com/photo-1550439062-609e1531270e?w=800",
+      "registrationUrl": "https://forms.google.com/example"
+    },
+    {
+      "id": 9,
+      "name": "CAD Workshop",
+      "category": "workshop",
+      "cluster": "asme",
+      "day": "Day 2",
+      "timing": "10:00 AM - 1:00 PM",
+      "location": "CAD Lab",
+      "fee": "₹350",
+      "status": "active",
+      "description": "Hands-on workshop on Computer Aided Design. Learn to create 3D models.",
+      "image": "https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=800",
+      "registrationUrl": "https://forms.google.com/example"
+    },
+    {
+      "id": 10,
+      "name": "General Quiz",
+      "category": "quiz",
+      "cluster": "nss",
+      "day": "Day 2",
+      "timing": "4:00 PM - 6:00 PM",
+      "location": "Auditorium",
+      "fee": "₹100",
+      "status": "active",
+      "description": "General knowledge quiz with exciting prizes. Test your overall knowledge.",
+      "image": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800",
+      "registrationUrl": "https://forms.google.com/example"
+    },
+    {
+      "id": 11,
+      "name": "Photography Contest",
+      "category": "fun",
+      "cluster": "tedx",
+      "day": "Day 2",
+      "timing": "5:00 PM - 7:00 PM",
+      "location": "Campus",
+      "fee": "₹100",
+      "status": "active",
+      "description": "Capture the best moments of Theta 2026. Bring your camera or phone!",
+      "image": "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=800",
+      "registrationUrl": "https://forms.google.com/example"
+    },
+    {
+      "id": 12,
+      "name": "Poster Presentation",
+      "category": "tech",
+      "cluster": "ieee",
+      "day": "Day 3",
+      "timing": "10:00 AM - 1:00 PM",
+      "location": "Gallery Area",
+      "fee": "₹150",
+      "status": "active",
+      "description": "Present your research through creative posters. Showcase your innovative ideas.",
+      "image": "https://images.unsplash.com/photo-1567427017947-545c5f8d16ad?w=800",
+      "registrationUrl": "https://forms.google.com/example"
+    },
+    {
+      "id": 13,
+      "name": "Tech Debate",
+      "category": "tech",
+      "cluster": "rotaract",
+      "day": "Day 3",
+      "timing": "11:00 AM - 1:00 PM",
+      "location": "Seminar Hall",
+      "fee": "₹150",
+      "status": "active",
+      "description": "Debate on trending tech topics. Present your opinions and argue your point.",
+      "image": "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800",
+      "registrationUrl": "https://forms.google.com/example"
+    },
+    {
+      "id": 14,
+      "name": "AI/ML Workshop",
+      "category": "workshop",
+      "cluster": "iste",
+      "day": "Day 3",
+      "timing": "10:00 AM - 1:00 PM",
+      "location": "AI Lab",
+      "fee": "₹400",
+      "status": "active",
+      "description": "Introduction to Artificial Intelligence and Machine Learning. Learn the basics of AI.",
+      "image": "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800",
+      "registrationUrl": "https://forms.google.com/example"
+    },
+    {
+      "id": 15,
+      "name": "Prize Distribution",
+      "category": "tech",
+      "cluster": "theta",
+      "day": "Day 3",
+      "timing": "3:00 PM - 5:00 PM",
+      "location": "Auditorium",
+      "fee": "Free",
+      "status": "active",
+      "description": "Grand prize distribution ceremony. Winners will be announced and awarded.",
+      "image": "https://images.unsplash.com/photo-1567427017947-545c5f8d16ad?w=800",
+      "registrationUrl": ""
+    }
+  ]
+}
