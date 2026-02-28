@@ -14,6 +14,7 @@ const navItems: NavItem[] = [
 
 export const Header = component$(() => {
   const isMenuOpen = useSignal(false);
+  const headerRef = useSignal<HTMLElement>();
   const location = useLocation();
 
   useVisibleTask$(({ track }) => {
@@ -25,8 +26,26 @@ export const Header = component$(() => {
     isMenuOpen.value = !isMenuOpen.value;
   });
 
+  useVisibleTask$(() => {
+    const handleDocumentClick = (event: MouseEvent) => {
+      if (!isMenuOpen.value || !headerRef.value) return;
+      const target = event.target as Node | null;
+      if (target && !headerRef.value.contains(target)) {
+        isMenuOpen.value = false;
+      }
+    };
+
+    document.addEventListener("click", handleDocumentClick);
+    return () => {
+      document.removeEventListener("click", handleDocumentClick);
+    };
+  });
+
   return (
-    <header class="fixed top-0 right-0 left-0 z-50 border-b border-cyan-300/20 bg-slate-950/70 backdrop-blur-2xl">
+    <header
+      ref={headerRef}
+      class="fixed top-0 right-0 left-0 z-50 border-b border-cyan-300/20 bg-slate-950/70 backdrop-blur-2xl"
+    >
       <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.18),transparent_45%),radial-gradient(circle_at_85%_10%,rgba(244,114,182,0.14),transparent_40%)]"></div>
       <div class="relative mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:h-[4.5rem] sm:px-6 lg:h-20 lg:px-8">
         {/* Logo */}
