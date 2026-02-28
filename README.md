@@ -86,14 +86,16 @@ Editable content lives in:
 - `/` (`src/routes/index.tsx`)
   - Landing page with hero, countdown, day-wise highlights, sponsor sections, and CTA.
   - Loads `config.json`, `sponsors.json`, and `events.json` on client for dynamic sections.
+  - Stats cards (`Events`, `Participants`, `Colleges`) are sourced from `config.json -> stats`.
 - `/events` (`src/routes/events/index.tsx`)
   - Event explorer with search, category/status/cluster filters, and event detail modal.
   - Loads `events.json` for events and cluster metadata.
 - `/contact` (`src/routes/contact/index.tsx`)
   - Team/contact directory with member cards and direct mail/phone links.
-  - Loads `team.json`.
+  - Loads `team.json` (including WebTek social links).
 - Shared layout (`src/routes/layout.tsx`)
   - Global wrapper for all routes: header, footer, optional custom cursor, and under-dev badge.
+  - Footer includes project repo shortcuts (`Repository`, `Issues`, `Contribute`).
 
 ## Codebase File Guide
 
@@ -144,9 +146,10 @@ Editable content lives in:
 - `public/robots.txt` - crawler rules.
 - `public/_headers` - Netlify cache headers for static assets.
 - `public/config.json` - homepage/site-level content config.
+  - Includes homepage stats under `stats.events`, `stats.participants`, and `stats.colleges`.
 - `public/events.json` - events + clusters content dataset.
 - `public/sponsors.json` - sponsor tiers dataset.
-- `public/team.json` - contact/team dataset.
+- `public/team.json` - contact/team dataset, including WebTek links (`github`, `linkedin`, `email`).
 
 ### Generated/Local-Only Directories
 
