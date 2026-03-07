@@ -36,293 +36,157 @@ interface ContactCopy {
 const defaultContactCopy: ContactCopy = {
   titlePrefix: "Get in",
   titleAccent: "Touch",
-  subtitle:
-    "Have questions? We'd love to hear from you. Reach out to our team!",
+  subtitle: "Have questions? Reach out to the Theta 2026 team.",
   webtekLabel: "WebTek Team",
   contactPrefix: "Contact:",
   stillQuestionsTitle: "Still have questions?",
-  stillQuestionsSubtitle: "Feel free to reach out to any of our team members",
+  stillQuestionsSubtitle: "Feel free to connect with our coordinators.",
   sendEmailLabel: "Send us an email",
 };
 
+const defaultTeamData: TeamData = {
+  order: [
+    { key: "coordinators", label: "Coordinators" },
+    { key: "president", label: "President" },
+    { key: "vicePresidents", label: "Vice Presidents" },
+    { key: "sponsorship", label: "Sponsorship" },
+    { key: "publicRelation", label: "Public Relations" },
+  ],
+  president: [],
+  vicePresidents: [],
+  coordinators: [],
+  sponsorship: [],
+  publicRelation: [],
+  webtek: {
+    github: "#",
+    linkedin: "#",
+    email: "theta@sastra.edu",
+  },
+};
+
+const getInitials = (name: string) =>
+  name
+    .split(" ")
+    .map((part) => part[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+
 export default component$(() => {
-  const teamData = useSignal<TeamData | null>(null);
-  const contactCopy = useSignal<ContactCopy>(defaultContactCopy);
+  const teamData = useSignal<TeamData>(defaultTeamData);
+  const copy = useSignal<ContactCopy>(defaultContactCopy);
 
   useVisibleTask$(async () => {
     try {
-      const res = await fetch("/data/team.json");
-      const data = await res.json();
-      teamData.value = data;
-    } catch (e) {
-      console.error("Failed to load team data", e);
-    }
-  });
+      const [teamRes, contentRes] = await Promise.all([
+        fetch("/data/team.json"),
+        fetch("/data/content.json"),
+      ]);
 
-  useVisibleTask$(async () => {
-    try {
-      const res = await fetch("/data/content.json");
-      const data = await res.json();
-      if (data?.contactPage) {
-        contactCopy.value = { ...defaultContactCopy, ...data.contactPage };
+      const team = (await teamRes.json()) as Partial<TeamData>;
+      const content = (await contentRes.json()) as {
+        contactPage?: Partial<ContactCopy>;
+        seo?: { contactTitle?: string; contactDescription?: string };
+      };
+
+      teamData.value = {
+        ...defaultTeamData,
+        ...team,
+        webtek: { ...defaultTeamData.webtek, ...(team.webtek || {}) },
+        order: team.order || defaultTeamData.order,
+      };
+
+      if (content.contactPage) {
+        copy.value = { ...defaultContactCopy, ...content.contactPage };
       }
-      if (data?.seo) {
-        if (data.seo.contactTitle) {
-          document.title = data.seo.contactTitle;
+
+      if (content.seo?.contactTitle) document.title = content.seo.contactTitle;
+      if (content.seo?.contactDescription) {
+        let meta = document.querySelector('meta[name="description"]');
+        if (!meta) {
+          meta = document.createElement("meta");
+          meta.setAttribute("name", "description");
+          document.head.appendChild(meta);
         }
-        if (data.seo.contactDescription) {
-          let metaDescription = document.querySelector(
-            'meta[name="description"]',
-          );
-          if (!metaDescription) {
-            metaDescription = document.createElement("meta");
-            metaDescription.setAttribute("name", "description");
-            document.head.appendChild(metaDescription);
-          }
-          metaDescription.setAttribute("content", data.seo.contactDescription);
-        }
+        meta.setAttribute("content", content.seo.contactDescription);
       }
     } catch {
-      contactCopy.value = defaultContactCopy;
+      teamData.value = defaultTeamData;
+      copy.value = defaultContactCopy;
     }
   });
 
-  const TeamCard = ({
-    member,
-    size = "md",
-  }: {
-    member: TeamMember;
-    size?: "sm" | "md" | "lg";
-  }) => (
-    <div class="premium-surface premium-card group flex flex-col items-center rounded-2xl p-6 transition-all hover:border-violet-400/50 sm:p-8">
-      <div class="text-center">
-        <h4
-          class={[
-            "font-bold text-white",
-            size === "lg" ? "text-3xl" : size === "md" ? "text-2xl" : "text-xl",
-          ]}
-        >
-          {member.name}
-        </h4>
-        <p
-          class={[
-            "font-medium text-violet-400",
-            size === "lg" ? "text-lg" : "text-base",
-          ]}
-        >
-          {member.role}
-        </p>
-        <div class="mt-4 flex flex-col items-center gap-2">
-          <a
-            href={`mailto:${member.email}`}
-            class={[
-              "flex items-center gap-2 text-slate-300 transition-colors hover:text-violet-400",
-              size === "lg" ? "text-base" : "text-sm",
-            ]}
-          >
-            <svg
-              class="h-5 w-5 shrink-0"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-              />
-            </svg>
-            <span class="underline underline-offset-2">{member.email}</span>
-          </a>
-          <a
-            href={`tel:${member.phone}`}
-            class={[
-              "flex items-center gap-2 text-slate-300 transition-colors hover:text-violet-400",
-              size === "lg" ? "text-base" : "text-sm",
-            ]}
-          >
-            <svg
-              class="h-5 w-5 shrink-0"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-              />
-            </svg>
-            <span class="underline underline-offset-2">{member.phone}</span>
-          </a>
-        </div>
+  const TeamCard = ({ member }: { member: TeamMember }) => (
+    <article class="theta-panel group p-6 transition duration-200 hover:[transform:translateY(-6px)_rotate(-0.6deg)]">
+      <div class="mx-auto flex h-24 w-24 items-center justify-center overflow-hidden rounded-full border-2 border-black/20 bg-neutral-900 text-2xl font-black text-white shadow-[0_0_0_2px_rgba(124,58,237,0.35)]">
+        <div
+          class="absolute h-24 w-24 rounded-full bg-cover bg-center opacity-70"
+          style={{ backgroundImage: `url(${member.image})` }}
+        ></div>
+        <span class="relative z-10">{getInitials(member.name)}</span>
       </div>
-    </div>
+      <h3 class="mt-4 text-center text-xl font-extrabold">{member.name}</h3>
+      <p class="mt-1 text-center text-sm font-semibold text-[var(--theta-primary)]">{member.role}</p>
+      <div class="mt-4 space-y-2 text-sm text-neutral-700">
+        <a href={`tel:${member.phone}`} class="theta-focus flex items-center justify-center rounded-lg border border-black/15 px-3 py-2 hover:border-[var(--theta-primary)]">
+          {member.phone}
+        </a>
+        <a href={`mailto:${member.email}`} class="theta-focus flex items-center justify-center rounded-lg border border-black/15 px-3 py-2 hover:border-[var(--theta-primary)]">
+          {member.email}
+        </a>
+      </div>
+    </article>
   );
 
   return (
-    <div class="min-h-screen bg-gray-950">
-      <div class="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-950 to-gray-900"></div>
-      <div class="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-950/70 to-transparent"></div>
+    <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+      <section class="theta-shell p-7 text-center sm:p-10">
+        <h1 class="text-4xl font-extrabold sm:text-5xl">
+          {copy.value.titlePrefix} <span class="text-[var(--theta-primary)]">{copy.value.titleAccent}</span>
+        </h1>
+        <p class="mx-auto mt-3 max-w-2xl text-neutral-600">{copy.value.subtitle}</p>
+      </section>
 
-      <div class="relative mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-        <div class="mb-16 text-center">
-          <h1 class="mb-4 text-4xl font-bold text-white sm:text-5xl lg:text-6xl">
-            {contactCopy.value.titlePrefix}{" "}
-            <span class="bg-gradient-to-r from-violet-400 to-purple-400 bg-clip-text text-transparent">
-              {contactCopy.value.titleAccent}
-            </span>
-          </h1>
-          <p class="mx-auto max-w-2xl text-lg text-slate-400">
-            {contactCopy.value.subtitle}
-          </p>
-        </div>
+      <section class="mt-8 space-y-10">
+        {teamData.value.order.map((section) => {
+          const members = teamData.value[
+            section.key as keyof Omit<TeamData, "order" | "webtek">
+          ] as TeamMember[];
 
-        {teamData.value && (
-          <div class="space-y-20">
-            {teamData.value.order.map(({ key, label }) => {
-              const members = teamData.value?.[
-                key as keyof Omit<TeamData, "order" | "webtek">
-              ] as TeamMember[] | undefined;
-              if (!members || members.length === 0) return null;
-              return (
-                <div key={key}>
-                  <h3 class="mb-10 text-center text-2xl font-bold tracking-widest text-slate-400 uppercase">
-                    {label}
-                  </h3>
-                  <div class="flex flex-wrap justify-center gap-6">
-                    {members.map((member) => (
-                      <TeamCard
-                        key={member.name}
-                        member={member}
-                        size={
-                          key === "president"
-                            ? "lg"
-                            : key === "coordinators"
-                              ? "sm"
-                              : "md"
-                        }
-                      />
-                    ))}
-                  </div>
-                </div>
-              );
-            })}
+          if (!Array.isArray(members) || members.length === 0) return null;
 
-            {/* WebTek Team - Last */}
-            <div>
-              <div class="mb-10 text-center">
-                <span class="inline-block rounded-full border border-violet-500/30 bg-violet-500/10 px-6 py-2 text-lg font-medium text-violet-400">
-                  {contactCopy.value.webtekLabel}
-                </span>
-              </div>
-              <div class="flex flex-col items-center justify-center gap-6">
-                <div class="flex gap-6">
-                  <a
-                    href={teamData.value.webtek.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="premium-surface premium-card flex h-16 w-16 items-center justify-center rounded-full text-slate-300 transition-all hover:border-violet-300/70 hover:text-violet-200"
-                  >
-                    <svg
-                      class="h-8 w-8"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        fill-rule="evenodd"
-                        clip-rule="evenodd"
-                        d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .267.18.578.688.48C19.138 20.197 22 16.418 22 12.017 22 6.484 17.522 2 12 2z"
-                      />
-                    </svg>
-                  </a>
-                  <a
-                    href={teamData.value.webtek.linkedin}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="premium-surface premium-card flex h-16 w-16 items-center justify-center rounded-full text-slate-300 transition-all hover:border-violet-300/70 hover:text-violet-200"
-                  >
-                    <svg
-                      class="h-8 w-8"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-                    </svg>
-                  </a>
-                  <a
-                    href={`mailto:${teamData.value.webtek.email}`}
-                    class="premium-surface premium-card flex h-16 w-16 items-center justify-center rounded-full text-slate-300 transition-all hover:border-violet-300/70 hover:text-violet-200"
-                  >
-                    <svg
-                      class="h-8 w-8"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                      />
-                    </svg>
-                  </a>
-                </div>
-                <div class="text-center">
-                  <p class="text-lg text-slate-400">
-                    {contactCopy.value.contactPrefix}{" "}
-                    <a
-                      href={`mailto:${teamData.value.webtek.email}`}
-                      class="text-violet-400 hover:underline"
-                    >
-                      {teamData.value.webtek.email}
-                    </a>
-                  </p>
-                </div>
+          return (
+            <div key={section.key}>
+              <h2 class="mb-4 text-2xl font-extrabold">{section.label}</h2>
+              <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                {members.map((member) => (
+                  <TeamCard key={member.name} member={member} />
+                ))}
               </div>
             </div>
-          </div>
-        )}
+          );
+        })}
+      </section>
 
-        {!teamData.value && (
-          <div class="flex justify-center py-20">
-            <div class="h-10 w-10 animate-spin rounded-full border-2 border-violet-500 border-t-transparent"></div>
-          </div>
-        )}
-
-        <div class="mt-20 text-center">
-          <div class="premium-surface premium-ring rounded-2xl p-8">
-            <h3 class="mb-2 text-2xl font-bold text-white">
-              {contactCopy.value.stillQuestionsTitle}
-            </h3>
-            <p class="mb-4 text-slate-400">
-              {contactCopy.value.stillQuestionsSubtitle}
-            </p>
-            <a
-              href="mailto:abinash@theabx.in"
-              class="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-violet-500 to-purple-500 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-violet-500/25 transition-all hover:scale-105 hover:shadow-xl"
-            >
-              <svg
-                class="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                />
-              </svg>
-              {contactCopy.value.sendEmailLabel}
-            </a>
+      <section class="mt-12 grid gap-5 lg:grid-cols-2">
+        <div class="theta-shell p-6">
+          <span class="theta-badge border-black/20 text-neutral-900">{copy.value.webtekLabel}</span>
+          <p class="mt-3 text-sm text-neutral-600">Build and maintenance by WebTek.</p>
+          <div class="mt-4 flex flex-wrap gap-3">
+            <a href={teamData.value.webtek.github} target="_blank" rel="noopener noreferrer" class="theta-focus rounded-lg border border-black/15 px-4 py-2 text-sm font-bold">GitHub</a>
+            <a href={teamData.value.webtek.linkedin} target="_blank" rel="noopener noreferrer" class="theta-focus rounded-lg border border-black/15 px-4 py-2 text-sm font-bold">LinkedIn</a>
+            <a href={`mailto:${teamData.value.webtek.email}`} class="theta-focus rounded-lg border border-black/15 px-4 py-2 text-sm font-bold">Email</a>
           </div>
         </div>
-      </div>
+
+        <div class="theta-shell p-6">
+          <h3 class="text-2xl font-extrabold">{copy.value.stillQuestionsTitle}</h3>
+          <p class="mt-2 text-sm text-neutral-600">{copy.value.stillQuestionsSubtitle}</p>
+          <a href={`mailto:${teamData.value.webtek.email}`} class="theta-focus mt-4 inline-flex rounded-xl border-2 border-[var(--theta-primary)] bg-[var(--theta-primary)] px-5 py-3 text-sm font-bold text-white">
+            {copy.value.sendEmailLabel}
+          </a>
+        </div>
+      </section>
     </div>
   );
 });

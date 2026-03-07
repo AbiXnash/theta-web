@@ -1,10 +1,4 @@
-import {
-  $,
-  component$,
-  Slot,
-  useSignal,
-  useVisibleTask$,
-} from "@builder.io/qwik";
+import { $, component$, Slot, useSignal, useVisibleTask$ } from "@builder.io/qwik";
 import { Link } from "@builder.io/qwik-city";
 import { Header } from "~/components/header/header";
 
@@ -21,21 +15,12 @@ interface LayoutCopy {
     homeLabel: string;
     eventsLabel: string;
     contactLabel: string;
-    repoSectionLabel: string;
-    repoLabel: string;
-    issuesLabel: string;
-    contributeLabel: string;
     locationLabel: string;
     dateLabel: string;
     emailLabel: string;
     copyright: string;
     madeWithPrefix: string;
     madeBy: string;
-    social: {
-      instagram: string;
-      twitter: string;
-      youtube: string;
-    };
   };
 }
 
@@ -47,50 +32,25 @@ const defaultLayoutCopy: LayoutCopy = {
   },
   footer: {
     description:
-      "Theta is a national-level techno-management fest organized by SASTRA Deemed University. Join us for three days of innovation, competition, and excitement.",
+      "Theta is SASTRA's national-level techno-management fest. Join us for competitions, workshops, and community.",
     quickLinksTitle: "Quick Links",
     contactTitle: "Contact",
     homeLabel: "Home",
     eventsLabel: "Events",
     contactLabel: "Contact",
-    repoSectionLabel: "Project Repo",
-    repoLabel: "Repository",
-    issuesLabel: "Issues",
-    contributeLabel: "Contribute",
     locationLabel: "SASTRA Deemed University",
     dateLabel: "March 15-17, 2026",
     emailLabel: "theta@sastra.edu",
     copyright: "© 2026 Theta. All rights reserved.",
     madeWithPrefix: "Made with",
     madeBy: "by WebTek Team",
-    social: {
-      instagram: "Instagram",
-      twitter: "Twitter",
-      youtube: "YouTube",
-    },
   },
 };
 
 export default component$(() => {
-  const isMobile = useSignal(true);
   const underDev = useSignal(true);
-  const layoutCopy = useSignal<LayoutCopy>(defaultLayoutCopy);
-  const showUnderDevNote = useSignal(false);
-  const hideUnderDevTimer = useSignal<ReturnType<typeof setTimeout>>();
-
-  useVisibleTask$(() => {
-    const computeUiMode = () => {
-      const width = window.innerWidth;
-      isMobile.value = width < 1024;
-    };
-
-    computeUiMode();
-    const handleResize = () => {
-      computeUiMode();
-    };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  });
+  const toastOpen = useSignal(false);
+  const copy = useSignal<LayoutCopy>(defaultLayoutCopy);
 
   useVisibleTask$(() => {
     underDev.value = import.meta.env.PUBLIC_UNDER_DEV !== "false";
@@ -99,9 +59,12 @@ export default component$(() => {
   useVisibleTask$(async () => {
     try {
       const res = await fetch("/data/content.json");
-      const data = await res.json();
-      if (data?.layout) {
-        layoutCopy.value = {
+      const data = (await res.json()) as {
+        layout?: Partial<LayoutCopy>;
+      };
+
+      if (data.layout) {
+        copy.value = {
           underDevelopment: {
             ...defaultLayoutCopy.underDevelopment,
             ...(data.layout.underDevelopment || {}),
@@ -109,320 +72,74 @@ export default component$(() => {
           footer: {
             ...defaultLayoutCopy.footer,
             ...(data.layout.footer || {}),
-            social: {
-              ...defaultLayoutCopy.footer.social,
-              ...(data.layout.footer?.social || {}),
-            },
           },
         };
       }
     } catch {
-      layoutCopy.value = defaultLayoutCopy;
+      copy.value = defaultLayoutCopy;
     }
   });
 
-  useVisibleTask$(() => {
-    return () => {
-      if (hideUnderDevTimer.value) {
-        clearTimeout(hideUnderDevTimer.value);
-      }
-    };
-  });
-
-  const showUnderDevNotice = $(() => {
-    showUnderDevNote.value = true;
-    if (hideUnderDevTimer.value) {
-      clearTimeout(hideUnderDevTimer.value);
-    }
-    hideUnderDevTimer.value = setTimeout(() => {
-      showUnderDevNote.value = false;
-    }, 2000);
-  });
-
-  useVisibleTask$(() => {
-    const hideNoticeOnInteraction = () => {
-      if (!showUnderDevNote.value) return;
-      showUnderDevNote.value = false;
-      if (hideUnderDevTimer.value) {
-        clearTimeout(hideUnderDevTimer.value);
-      }
-    };
-
-    window.addEventListener("scroll", hideNoticeOnInteraction, {
-      passive: true,
-    });
-    document.addEventListener("click", hideNoticeOnInteraction);
-    document.addEventListener("keydown", hideNoticeOnInteraction);
-
-    return () => {
-      window.removeEventListener("scroll", hideNoticeOnInteraction);
-      document.removeEventListener("click", hideNoticeOnInteraction);
-      document.removeEventListener("keydown", hideNoticeOnInteraction);
-    };
+  const showDev = $(() => {
+    toastOpen.value = true;
+    setTimeout(() => {
+      toastOpen.value = false;
+    }, 1700);
   });
 
   return (
-    <div class="min-h-screen bg-gray-950">
-      {/* Under Development Indicator */}
-      {underDev.value && (
-        <div class="fixed right-4 bottom-4 z-[100]">
-          <div class="relative">
-            <button
-              type="button"
-              onClick$={showUnderDevNotice}
-              class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-amber-500/30 bg-amber-500/20 text-amber-400 backdrop-blur-sm transition-all hover:bg-amber-500/30"
-              aria-label={layoutCopy.value.underDevelopment.ariaLabel}
-            >
-              <svg
-                class="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                />
-              </svg>
-            </button>
-            <div
-              class={[
-                "absolute right-0 bottom-full mb-2 w-48 rounded-lg border border-amber-500/30 bg-gray-900/95 p-3 text-center text-xs text-amber-200 shadow-xl backdrop-blur-sm transition-all duration-200",
-                showUnderDevNote.value
-                  ? "pointer-events-auto translate-y-0 opacity-100"
-                  : "pointer-events-none translate-y-1 opacity-0",
-              ]}
-            >
-              🚧 {layoutCopy.value.underDevelopment.title}
-              <br />
-              <span class="text-amber-400/60">
-                {layoutCopy.value.underDevelopment.subtitle}
-              </span>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Header */}
+    <div class="min-h-screen bg-neutral-100 text-neutral-900">
       <Header />
-
-      <main class="pt-16">
+      <main class="pt-20">
         <Slot />
       </main>
 
-      {/* Footer */}
-      <footer class="relative overflow-hidden border-t border-cyan-300/20 bg-slate-950 py-16">
-        <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_10%_10%,rgba(56,189,248,0.15),transparent_40%),radial-gradient(circle_at_90%_85%,rgba(251,191,36,0.12),transparent_42%)]"></div>
-        <div class="mx-auto max-w-7xl px-6 sm:px-8">
-          <div class="relative rounded-3xl border border-white/12 bg-slate-900/70 p-8 shadow-[0_30px_80px_rgba(2,8,23,0.55)] backdrop-blur-2xl md:p-10">
-            <div class="grid gap-10 md:grid-cols-4">
-              {/* Logo & Description */}
-              <div class="md:col-span-2">
-                <Link href="/" class="flex items-center gap-3">
-                  <img
-                    src="/theta-logo.png"
-                    alt="Theta"
-                    width="128"
-                    height="64"
-                    decoding="async"
-                    class="h-16 w-auto"
-                  />
-                </Link>
-                <p class="mt-4 max-w-md text-base text-slate-400">
-                  {layoutCopy.value.footer.description}
-                </p>
-                <div class="mt-6 flex gap-4">
-                  <a
-                    href="#"
-                    class="flex h-12 w-12 items-center justify-center rounded-xl border border-white/12 bg-white/5 text-slate-300 transition-all hover:border-cyan-300/60 hover:text-cyan-200"
-                  >
-                    <span class="sr-only">
-                      {layoutCopy.value.footer.social.instagram}
-                    </span>
-                    <svg
-                      class="h-6 w-6"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-                    </svg>
-                  </a>
-                  <a
-                    href="#"
-                    class="flex h-12 w-12 items-center justify-center rounded-xl border border-white/12 bg-white/5 text-slate-300 transition-all hover:border-cyan-300/60 hover:text-cyan-200"
-                  >
-                    <span class="sr-only">
-                      {layoutCopy.value.footer.social.twitter}
-                    </span>
-                    <svg
-                      class="h-6 w-6"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                    </svg>
-                  </a>
-                  <a
-                    href="#"
-                    class="flex h-12 w-12 items-center justify-center rounded-xl border border-white/12 bg-white/5 text-slate-300 transition-all hover:border-cyan-300/60 hover:text-cyan-200"
-                  >
-                    <span class="sr-only">
-                      {layoutCopy.value.footer.social.youtube}
-                    </span>
-                    <svg
-                      class="h-6 w-6"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-                    </svg>
-                  </a>
-                </div>
-              </div>
+      {underDev.value && (
+        <div class="fixed right-4 bottom-4 z-[95]">
+          <button
+            type="button"
+            onClick$={showDev}
+            aria-label={copy.value.underDevelopment.ariaLabel}
+            class="theta-focus flex h-10 w-10 items-center justify-center rounded-full border border-black/20 bg-neutral-100"
+          >
+            !
+          </button>
+          {toastOpen.value && (
+            <div class="theta-shell absolute right-0 bottom-12 w-48 p-3 text-xs">
+              <p>{copy.value.underDevelopment.title}</p>
+              <p class="mt-1 text-neutral-600">{copy.value.underDevelopment.subtitle}</p>
+            </div>
+          )}
+        </div>
+      )}
 
-              {/* Quick Links */}
-              <div>
-                <h4 class="text-lg font-bold text-white">
-                  {layoutCopy.value.footer.quickLinksTitle}
-                </h4>
-                <ul class="mt-4 space-y-3">
-                  <li>
-                    <Link
-                      href="/"
-                      class="text-base text-slate-400 transition-colors hover:text-cyan-300"
-                    >
-                      {layoutCopy.value.footer.homeLabel}
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="/events"
-                      class="text-base text-slate-400 transition-colors hover:text-cyan-300"
-                    >
-                      {layoutCopy.value.footer.eventsLabel}
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="/contact"
-                      class="text-base text-slate-400 transition-colors hover:text-cyan-300"
-                    >
-                      {layoutCopy.value.footer.contactLabel}
-                    </Link>
-                  </li>
-                  <li class="pt-2 text-xs font-semibold tracking-wide text-slate-500 uppercase">
-                    {layoutCopy.value.footer.repoSectionLabel}
-                  </li>
-                  <li>
-                    <a
-                      href="https://github.com/AbiXnash/theta-web"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="text-base text-slate-400 transition-colors hover:text-cyan-300"
-                    >
-                      {layoutCopy.value.footer.repoLabel}
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="https://github.com/AbiXnash/theta-web/issues"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="text-base text-slate-400 transition-colors hover:text-cyan-300"
-                    >
-                      {layoutCopy.value.footer.issuesLabel}
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="https://github.com/AbiXnash/theta-web/pulls"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="text-base text-slate-400 transition-colors hover:text-cyan-300"
-                    >
-                      {layoutCopy.value.footer.contributeLabel}
-                    </a>
-                  </li>
-                </ul>
-              </div>
-
-              {/* Contact Info */}
-              <div>
-                <h4 class="text-lg font-bold text-white">
-                  {layoutCopy.value.footer.contactTitle}
-                </h4>
-                <ul class="mt-4 space-y-3">
-                  <li class="flex min-w-0 items-center gap-2 text-base text-slate-400">
-                    <svg
-                      class="h-5 w-5 shrink-0 text-cyan-300"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                      />
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                      />
-                    </svg>
-                    {layoutCopy.value.footer.locationLabel}
-                  </li>
-                  <li class="flex items-center gap-2 text-base text-slate-400">
-                    <svg
-                      class="h-5 w-5 shrink-0 text-cyan-300"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                      />
-                    </svg>
-                    {layoutCopy.value.footer.dateLabel}
-                  </li>
-                  <li class="flex items-center gap-2 text-base text-slate-400">
-                    <svg
-                      class="h-5 w-5 shrink-0 text-cyan-300"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                      />
-                    </svg>
-                    <span class="break-all">
-                      {layoutCopy.value.footer.emailLabel}
-                    </span>
-                  </li>
-                </ul>
+      <footer class="mx-auto mt-16 max-w-7xl px-4 pb-8 sm:px-6 lg:px-8">
+        <div class="theta-shell p-6 sm:p-8">
+          <div class="grid gap-8 md:grid-cols-3">
+            <div>
+              <img src="/theta-logo.png" alt="Theta" width={140} height={70} class="h-12 w-auto" />
+              <p class="mt-3 text-sm text-neutral-600">{copy.value.footer.description}</p>
+            </div>
+            <div>
+              <h3 class="text-sm font-bold tracking-wider uppercase">{copy.value.footer.quickLinksTitle}</h3>
+              <div class="mt-3 space-y-2 text-sm text-neutral-700">
+                <Link href="/" class="theta-focus block rounded px-2 py-1 hover:text-[var(--theta-primary)]">{copy.value.footer.homeLabel}</Link>
+                <Link href="/events" class="theta-focus block rounded px-2 py-1 hover:text-[var(--theta-primary)]">{copy.value.footer.eventsLabel}</Link>
+                <Link href="/contact" class="theta-focus block rounded px-2 py-1 hover:text-[var(--theta-primary)]">{copy.value.footer.contactLabel}</Link>
               </div>
             </div>
-            <div class="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 md:flex-row">
-              <p class="text-base text-slate-500">
-                {layoutCopy.value.footer.copyright}
-              </p>
-              <p class="text-base text-slate-500">
-                {layoutCopy.value.footer.madeWithPrefix}{" "}
-                <span class="text-amber-300">♥</span>{" "}
-                {layoutCopy.value.footer.madeBy}
-              </p>
+            <div>
+              <h3 class="text-sm font-bold tracking-wider uppercase">{copy.value.footer.contactTitle}</h3>
+              <div class="mt-3 space-y-2 text-sm text-neutral-600">
+                <p>{copy.value.footer.locationLabel}</p>
+                <p>{copy.value.footer.dateLabel}</p>
+                <p>{copy.value.footer.emailLabel}</p>
+              </div>
             </div>
+          </div>
+          <div class="mt-8 border-t border-black/15 pt-4 text-xs text-neutral-700 sm:flex sm:items-center sm:justify-between">
+            <p>{copy.value.footer.copyright}</p>
+            <p class="mt-2 sm:mt-0">{copy.value.footer.madeWithPrefix} Qwik {copy.value.footer.madeBy}</p>
           </div>
         </div>
       </footer>

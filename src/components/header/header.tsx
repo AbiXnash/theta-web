@@ -1,4 +1,4 @@
-import { component$, useSignal, $, useVisibleTask$ } from "@builder.io/qwik";
+import { $, component$, useSignal, useVisibleTask$ } from "@builder.io/qwik";
 import { Link, useLocation } from "@builder.io/qwik-city";
 
 interface NavItem {
@@ -7,17 +7,15 @@ interface NavItem {
   active?: boolean;
 }
 
-interface MerchConfig {
-  label: string;
-  comingSoon: boolean;
-  labelSoon: string;
-  labelComingSoon: string;
-}
-
 interface HeaderCopy {
   logoAlt: string;
   navItems: NavItem[];
-  merch: MerchConfig;
+  merch: {
+    label: string;
+    comingSoon: boolean;
+    labelSoon: string;
+    labelComingSoon: string;
+  };
 }
 
 const defaultHeaderCopy: HeaderCopy = {
@@ -36,27 +34,25 @@ const defaultHeaderCopy: HeaderCopy = {
 };
 
 export const Header = component$(() => {
-  const isMenuOpen = useSignal(false);
-  const headerRef = useSignal<HTMLElement>();
   const location = useLocation();
+  const open = useSignal(false);
   const headerCopy = useSignal<HeaderCopy>(defaultHeaderCopy);
-
-  useVisibleTask$(({ track }) => {
-    track(() => location.url.pathname);
-    isMenuOpen.value = false;
-  });
 
   useVisibleTask$(async () => {
     try {
       const res = await fetch("/data/content.json");
-      const data = await res.json();
-      if (data?.header) {
+      const data = (await res.json()) as { header?: Partial<HeaderCopy> };
+      if (data.header) {
         headerCopy.value = {
           ...defaultHeaderCopy,
           ...data.header,
           navItems: Array.isArray(data.header.navItems)
             ? data.header.navItems
             : defaultHeaderCopy.navItems,
+          merch: {
+            ...defaultHeaderCopy.merch,
+            ...(data.header.merch || {}),
+          },
         };
       }
     } catch {
@@ -64,169 +60,136 @@ export const Header = component$(() => {
     }
   });
 
-  const toggleMenu = $(() => {
-    isMenuOpen.value = !isMenuOpen.value;
+  useVisibleTask$(({ track }) => {
+    track(() => location.url.pathname);
+    open.value = false;
   });
 
-  useVisibleTask$(() => {
-    const handleDocumentClick = (event: MouseEvent) => {
-      if (!isMenuOpen.value || !headerRef.value) return;
-      const target = event.target as Node | null;
-      if (target && !headerRef.value.contains(target)) {
-        isMenuOpen.value = false;
-      }
-    };
+  const toggleMenu = $(() => {
+    open.value = !open.value;
+  });
 
-    document.addEventListener("click", handleDocumentClick);
-    return () => {
-      document.removeEventListener("click", handleDocumentClick);
-    };
+  const closeMenu = $(() => {
+    open.value = false;
   });
 
   return (
-    <header
-      ref={headerRef}
-      class="fixed top-0 right-0 left-0 z-50 border-b border-cyan-300/20 bg-slate-950/70 backdrop-blur-2xl"
-    >
-      <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.18),transparent_45%),radial-gradient(circle_at_85%_10%,rgba(244,114,182,0.14),transparent_40%)]"></div>
-      <div class="relative mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:h-[4.5rem] sm:px-6 lg:h-20 lg:px-8">
-        {/* Logo */}
-        <Link href="/" class="group flex items-center gap-3">
-          <div class="relative">
-            <img
-              src="/theta-logo.png"
-              alt={headerCopy.value.logoAlt}
-              width="192"
-              height="96"
-              loading="eager"
-              fetchPriority="high"
-              decoding="async"
-              class="h-12 w-auto transition-transform duration-300 group-hover:scale-110 sm:h-16 lg:h-20"
-            />
-            <div class="absolute -inset-2 rounded-full bg-cyan-400/20 opacity-0 blur-lg transition-opacity duration-300 group-hover:opacity-100"></div>
-          </div>
+    <header class="fixed top-0 right-0 left-0 z-50 border-b border-black/10 bg-white/90 backdrop-blur-xl">
+      <div class="theta-noise pointer-events-none absolute inset-0 opacity-20"></div>
+      <div class="relative mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        <Link href="/" class="theta-focus flex items-center gap-3 rounded-xl p-1">
+          <img
+            src="/theta-logo.png"
+            alt={headerCopy.value.logoAlt}
+            width={120}
+            height={60}
+            class="h-10 w-auto sm:h-12"
+            loading="eager"
+            fetchPriority="high"
+          />
+          <span class="hidden text-lg font-extrabold tracking-[0.18em] text-neutral-900 sm:inline">
+            THETA<span class="text-[var(--theta-primary)]">2026</span>
+          </span>
         </Link>
 
-        {/* Desktop Nav */}
-        <nav class="hidden items-center gap-3 lg:flex">
+        <nav class="hidden items-center gap-1 rounded-2xl border-2 border-black/10 bg-white p-1 shadow-[6px_6px_0_#111] lg:flex">
+          {headerCopy.value.navItems.map((item) => {
+            if (!item.active) {
+              return (
+                <span
+                  key={item.href}
+                  class="rounded-xl px-4 py-2 text-sm font-bold text-neutral-500"
+                >
+                  {item.label}
+                </span>
+              );
+            }
+
+            const isActive = location.url.pathname === item.href;
+
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                data-active={isActive ? "true" : "false"}
+                class={[
+                  "theta-focus theta-underline relative rounded-xl px-4 py-2 text-sm font-bold tracking-wide text-neutral-700 transition hover:bg-neutral-100",
+                  isActive && "bg-neutral-900 text-white",
+                ]}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
+        </nav>
+
+        <div class="hidden items-center gap-3 lg:flex">
+          {headerCopy.value.merch.comingSoon ? (
+            <span class="theta-badge border-black/25 bg-white text-neutral-900">
+              {headerCopy.value.merch.label} • {headerCopy.value.merch.labelSoon}
+            </span>
+          ) : (
+            <Link
+              href="/merch"
+              class="theta-focus rounded-xl border-2 border-black/20 bg-white px-4 py-2 text-sm font-bold text-black"
+            >
+              {headerCopy.value.merch.label}
+            </Link>
+          )}
+          <Link
+            href="/events"
+            class="theta-focus rounded-xl border-2 border-[var(--theta-primary)] bg-[var(--theta-primary)] px-4 py-2 text-sm font-bold text-white shadow-[0_8px_20px_rgba(124,58,237,0.35)]"
+          >
+            Register Now
+          </Link>
+        </div>
+
+        <button
+          type="button"
+          onClick$={toggleMenu}
+          aria-expanded={open.value}
+          aria-label="Toggle navigation"
+          class="theta-focus flex h-11 w-11 items-center justify-center rounded-xl border-2 border-black/20 bg-white lg:hidden"
+        >
+          <span class="text-xl text-neutral-900">{open.value ? "✕" : "☰"}</span>
+        </button>
+      </div>
+
+      <div
+        class={[
+          "relative z-10 lg:hidden border-t border-black/10 bg-white px-4 pb-4",
+          open.value ? "block" : "hidden",
+        ]}
+      >
+        <div class="mt-4 space-y-2">
           {headerCopy.value.navItems.map((item) =>
             item.active ? (
               <Link
                 key={item.href}
                 href={item.href}
-                class="group relative rounded-full border border-transparent bg-white/3 px-5 py-2 text-sm font-semibold tracking-wide text-slate-200 transition-all hover:border-cyan-300/40 hover:bg-white/10 hover:text-white"
+                onClick$={closeMenu}
+                class="theta-focus block rounded-xl border border-black/15 bg-white px-4 py-3 font-semibold text-neutral-900"
               >
-                <span class="relative z-10">{item.label}</span>
-                <div class="absolute right-3 bottom-1.5 h-1.5 w-1.5 rounded-full bg-cyan-300 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
+                {item.label}
               </Link>
             ) : (
               <span
                 key={item.href}
-                class="cursor-not-allowed rounded-full border border-white/5 bg-white/5 px-5 py-2 text-sm font-semibold tracking-wide text-slate-500 opacity-50"
+                class="block rounded-xl border border-black/10 px-4 py-3 font-semibold text-neutral-500"
               >
                 {item.label}
               </span>
             ),
           )}
-          {headerCopy.value.merch.comingSoon ? (
-            <div class="ml-3 flex items-center gap-2 rounded-full border border-amber-300/35 bg-amber-300/10 px-4 py-2">
-              <span class="text-xs font-medium text-amber-300">
-                {headerCopy.value.merch.label}
-              </span>
-              <span class="rounded-full bg-amber-200/20 px-2 py-0.5 text-[10px] text-amber-100">
-                {headerCopy.value.merch.labelSoon}
-              </span>
-            </div>
-          ) : (
-            <Link
-              href="/merch"
-              class="ml-3 rounded-full border border-cyan-300/40 bg-cyan-300/10 px-4 py-2 text-xs font-medium text-cyan-200 transition-all hover:bg-cyan-300/20"
-            >
-              {headerCopy.value.merch.label}
-            </Link>
-          )}
-        </nav>
-
-        {/* Mobile Menu Button */}
-        <button
-          type="button"
-          onClick$={toggleMenu}
-          class="flex h-10 w-10 items-center justify-center rounded-xl border border-cyan-300/30 bg-white/5 text-slate-200 transition-all hover:bg-white/10 sm:h-11 sm:w-11 lg:hidden"
-        >
-          {isMenuOpen.value ? (
-            <svg
-              class="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          ) : (
-            <svg
-              class="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
-          )}
-        </button>
-      </div>
-
-      {/* Mobile Menu Dropdown */}
-      {isMenuOpen.value && (
-        <div class="border-t border-cyan-300/20 bg-slate-950/85 backdrop-blur-2xl lg:hidden">
-          <div class="space-y-2 px-6 py-6">
-            {headerCopy.value.navItems.map((item) =>
-              item.active ? (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  class="block rounded-xl border border-white/10 bg-white/5 px-6 py-4 text-lg font-medium text-slate-200 transition-all hover:border-cyan-300/40 hover:bg-white/10 hover:text-white"
-                >
-                  {item.label}
-                </Link>
-              ) : (
-                <span
-                  key={item.href}
-                  class="block cursor-not-allowed rounded-xl border border-white/5 bg-white/5 px-6 py-4 text-lg font-medium text-slate-500 opacity-50"
-                >
-                  {item.label}
-                </span>
-              ),
-            )}
-            {headerCopy.value.merch.comingSoon ? (
-              <div class="flex items-center gap-3 px-6 py-4">
-                <span class="text-base font-medium text-slate-400">
-                  {headerCopy.value.merch.label}
-                </span>
-                <span class="rounded-full bg-amber-300/20 px-3 py-1 text-xs text-amber-200">
-                  {headerCopy.value.merch.labelComingSoon}
-                </span>
-              </div>
-            ) : (
-              <Link
-                href="/merch"
-                class="block rounded-xl border border-white/10 bg-white/5 px-6 py-4 text-lg font-medium text-slate-200 transition-all hover:border-cyan-300/40 hover:bg-white/10 hover:text-white"
-              >
-                {headerCopy.value.merch.label}
-              </Link>
-            )}
-          </div>
+          <Link
+            href="/events"
+            onClick$={closeMenu}
+            class="theta-focus mt-2 block rounded-xl border-2 border-[var(--theta-primary)] bg-[var(--theta-primary)] px-4 py-3 text-center font-bold text-white"
+          >
+            Register Now
+          </Link>
         </div>
-      )}
+      </div>
     </header>
   );
 });
