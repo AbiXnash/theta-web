@@ -72,12 +72,7 @@ const defaultLayoutCopy: LayoutCopy = {
 };
 
 export default component$(() => {
-  const cursorX = useSignal(0);
-  const cursorY = useSignal(0);
-  const showCursor = useSignal(false);
-  const isHovering = useSignal(false);
   const isMobile = useSignal(true);
-  const enableCursorFx = useSignal(false);
   const underDev = useSignal(true);
   const layoutCopy = useSignal<LayoutCopy>(defaultLayoutCopy);
   const showUnderDevNote = useSignal(false);
@@ -87,12 +82,6 @@ export default component$(() => {
     const computeUiMode = () => {
       const width = window.innerWidth;
       isMobile.value = width < 1024;
-      const prefersReducedMotion = window.matchMedia(
-        "(prefers-reduced-motion: reduce)",
-      ).matches;
-      const supportsFinePointer = window.matchMedia("(pointer:fine)").matches;
-      enableCursorFx.value =
-        !prefersReducedMotion && supportsFinePointer && width >= 1024;
     };
 
     computeUiMode();
@@ -172,80 +161,8 @@ export default component$(() => {
     };
   });
 
-  useVisibleTask$(() => {
-    if (!enableCursorFx.value) return;
-
-    const handleMouseMove = (e: MouseEvent) => {
-      cursorX.value = e.clientX;
-      cursorY.value = e.clientY;
-      showCursor.value = true;
-    };
-
-    const handleMouseOver = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (
-        target.tagName === "A" ||
-        target.tagName === "BUTTON" ||
-        target.closest("a") ||
-        target.closest("button")
-      ) {
-        isHovering.value = true;
-      } else {
-        isHovering.value = false;
-      }
-    };
-
-    const handleMouseLeave = () => {
-      showCursor.value = false;
-    };
-
-    const handleMouseEnter = () => {
-      showCursor.value = true;
-    };
-
-    const handleWindowBlur = () => {
-      showCursor.value = false;
-    };
-
-    const handleVisibilityChange = () => {
-      if (document.visibilityState !== "visible") {
-        showCursor.value = false;
-      }
-    };
-
-    document.addEventListener("mousemove", handleMouseMove);
-    document.addEventListener("mouseover", handleMouseOver);
-    document.addEventListener("mouseleave", handleMouseLeave);
-    document.addEventListener("mouseenter", handleMouseEnter);
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-    window.addEventListener("blur", handleWindowBlur);
-
-    return () => {
-      document.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseover", handleMouseOver);
-      document.removeEventListener("mouseleave", handleMouseLeave);
-      document.removeEventListener("mouseenter", handleMouseEnter);
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-      window.removeEventListener("blur", handleWindowBlur);
-    };
-  });
-
   return (
-    <div class="min-h-screen cursor-none bg-gray-950 lg:cursor-auto">
-      {/* Custom Cursor - Desktop Only */}
-      {!isMobile.value && enableCursorFx.value && showCursor.value && (
-        <div
-          class="pointer-events-none fixed z-[9999] rounded-full bg-violet-500 mix-blend-difference transition-transform duration-100"
-          style={{
-            left: `${cursorX.value}px`,
-            top: `${cursorY.value}px`,
-            width: isHovering.value ? "40px" : "12px",
-            height: isHovering.value ? "40px" : "12px",
-            transform: "translate(-50%, -50%)",
-          }}
-        ></div>
-      )}
-
+    <div class="min-h-screen bg-gray-950">
       {/* Under Development Indicator */}
       {underDev.value && (
         <div class="fixed right-4 bottom-4 z-[100]">
