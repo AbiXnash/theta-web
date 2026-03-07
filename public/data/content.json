@@ -2,13 +2,16 @@
   "header": {
     "logoAlt": "Theta",
     "navItems": [
-      { "href": "/", "label": "Home" },
-      { "href": "/events", "label": "Events" },
-      { "href": "/contact", "label": "Contact" }
+      { "href": "/", "label": "Home", "active": true },
+      { "href": "/events", "label": "Events", "active": true },
+      { "href": "/contact", "label": "Contact", "active": true }
     ],
-    "merchLabel": "Merch",
-    "merchSoon": "Soon",
-    "merchComingSoon": "Coming Soon"
+    "merch": {
+      "label": "Merch",
+      "comingSoon": true,
+      "labelSoon": "Soon",
+      "labelComingSoon": "Coming Soon"
+    }
   },
   "layout": {
     "underDevelopment": {

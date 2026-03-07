@@ -36,7 +36,8 @@ interface ContactCopy {
 const defaultContactCopy: ContactCopy = {
   titlePrefix: "Get in",
   titleAccent: "Touch",
-  subtitle: "Have questions? We'd love to hear from you. Reach out to our team!",
+  subtitle:
+    "Have questions? We'd love to hear from you. Reach out to our team!",
   webtekLabel: "WebTek Team",
   contactPrefix: "Contact:",
   stillQuestionsTitle: "Still have questions?",
@@ -50,7 +51,7 @@ export default component$(() => {
 
   useVisibleTask$(async () => {
     try {
-      const res = await fetch("/team.json");
+      const res = await fetch("/data/team.json");
       const data = await res.json();
       teamData.value = data;
     } catch (e) {
@@ -60,7 +61,7 @@ export default component$(() => {
 
   useVisibleTask$(async () => {
     try {
-      const res = await fetch("/content.json");
+      const res = await fetch("/data/content.json");
       const data = await res.json();
       if (data?.contactPage) {
         contactCopy.value = { ...defaultContactCopy, ...data.contactPage };

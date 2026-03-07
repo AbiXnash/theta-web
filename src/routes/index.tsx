@@ -29,13 +29,14 @@ interface ConfigData {
 interface Sponsor {
   name: string;
   logo: string;
+  order?: number;
 }
 
 interface SponsorsConfig {
   platinum: Sponsor[];
   gold: Sponsor[];
   silver?: Sponsor[];
-  general?: Sponsor[];
+  media?: Sponsor[];
 }
 
 interface Event {
@@ -206,29 +207,64 @@ export default component$(() => {
 
   const defaultSponsors: SponsorsConfig = {
     platinum: [
-      { name: "TechCorp", logo: "/sponsors/techcorp.png" },
-      { name: "InnovateHub", logo: "/sponsors/innovatehub.png" },
-      { name: "FutureTech", logo: "/sponsors/futuretech.png" },
-      { name: "CodeLabs", logo: "/sponsors/codelabs.png" },
+      { name: "CUB", logo: "/sponsors/platinum/cub-logo.jpg", order: 1 },
+      {
+        name: "Temple City Sports Club",
+        logo: "/sponsors/platinum/temple-city-sports-club.jpg",
+        order: 2,
+      },
+      { name: "MRS", logo: "/sponsors/platinum/mrs-logo.jpg", order: 3 },
+      {
+        name: "Lee Benz",
+        logo: "/sponsors/platinum/lee-benz-logo.png",
+        order: 4,
+      },
     ],
     gold: [
-      { name: "StartUp", logo: "/sponsors/startup.png" },
-      { name: "DevCo", logo: "/sponsors/devco.png" },
-      { name: "CloudSys", logo: "/sponsors/cloudsys.png" },
-      { name: "DataFlow", logo: "/sponsors/dataflow.png" },
-      { name: "AI Labs", logo: "/sponsors/ailabs.png" },
-      { name: "WebWorks", logo: "/sponsors/webworks.png" },
+      { name: "Fuel", logo: "/sponsors/gold/fuel-logo.jpg", order: 1 },
+      {
+        name: "Dude's Mens Wear",
+        logo: "/sponsors/gold/dudes-mens-wear-logo.jpg",
+        order: 2,
+      },
     ],
     silver: [
-      { name: "TechStart", logo: "/sponsors/techstart.png" },
-      { name: "ByteSize", logo: "/sponsors/bytesize.png" },
+      {
+        name: "Triple C",
+        logo: "/sponsors/silver/triple-c-logo.jpg",
+        order: 1,
+      },
+      {
+        name: "Dasarathy TVS",
+        logo: "/sponsors/silver/dasarathy-tvs-logo.png",
+        order: 2,
+      },
+      {
+        name: "Eye Roast Photography",
+        logo: "/sponsors/silver/eye-roast-photography-logo.png",
+        order: 3,
+      },
+      {
+        name: "Frozen Bottle",
+        logo: "/sponsors/silver/frozen-bottle-logo.jpeg",
+        order: 4,
+      },
+      {
+        name: "Jawa Yezdi",
+        logo: "/sponsors/silver/jawa-yezdi-logo.png",
+        order: 5,
+      },
     ],
-    general: [{ name: "Local Shop", logo: "/sponsors/local.png" }],
+    media: [{ name: "RDG", logo: "/sponsors/media/rdg-logo.jpg", order: 1 }],
+  };
+
+  const sortByOrder = (sponsors: Sponsor[]) => {
+    return [...sponsors].sort((a, b) => (a.order || 999) - (b.order || 999));
   };
 
   useVisibleTask$(async () => {
     try {
-      const res = await fetch("/config.json");
+      const res = await fetch("/data/config.json");
       const data = await res.json();
       configData.value = data;
     } catch {
@@ -238,7 +274,7 @@ export default component$(() => {
 
   useVisibleTask$(async () => {
     try {
-      const res = await fetch("/sponsors.json");
+      const res = await fetch("/data/sponsors.json");
       const data = await res.json();
       sponsorsData.value = data.sponsors || data;
     } catch {
@@ -248,7 +284,7 @@ export default component$(() => {
 
   useVisibleTask$(async () => {
     try {
-      const res = await fetch("/events.json");
+      const res = await fetch("/data/events.json");
       const data = await res.json();
       if (data.events) {
         eventsData.value = data.events;
@@ -260,7 +296,7 @@ export default component$(() => {
 
   useVisibleTask$(async () => {
     try {
-      const res = await fetch("/content.json");
+      const res = await fetch("/data/content.json");
       const data = await res.json();
       if (data?.home) {
         homeCopy.value = {
@@ -281,7 +317,10 @@ export default component$(() => {
             ...(data.home.sponsors || {}),
           },
           cta: { ...defaultHomeCopy.cta, ...(data.home.cta || {}) },
-          dayModal: { ...defaultHomeCopy.dayModal, ...(data.home.dayModal || {}) },
+          dayModal: {
+            ...defaultHomeCopy.dayModal,
+            ...(data.home.dayModal || {}),
+          },
         };
       }
       if (data?.seo) {
@@ -632,40 +671,40 @@ export default component$(() => {
             </h2>
           </div>
 
-          {/* Platinum Sponsors - Largest */}
+          {/* Platinum Sponsors */}
           <div class="mb-10">
             <h3 class="mb-6 text-center text-sm font-medium tracking-widest text-violet-400 uppercase">
               {homeCopy.value.sponsors.platinum}
             </h3>
-            <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-              {(sponsorsData.value?.platinum || defaultSponsors.platinum).map(
-                (sponsor) => (
-                  <div
-                    key={sponsor.name}
-                    class="premium-surface premium-card group flex flex-col items-center justify-center rounded-2xl p-6 transition-all hover:border-violet-400/50"
-                  >
-                    <div class="flex h-20 w-40 items-center justify-center">
-                      <img
-                        src={sponsor.logo}
-                        alt={sponsor.name}
-                        width="160"
-                        height="80"
-                        loading="lazy"
-                        decoding="async"
-                        class="max-h-full max-w-full object-contain opacity-90 transition-all group-hover:opacity-100"
-                        onError$={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          target.src = "/theta-logo.png";
-                          target.style.filter = "brightness(0) invert(1)";
-                        }}
-                      />
-                    </div>
-                    <span class="mt-2 text-sm font-medium text-slate-300">
-                      {sponsor.name}
-                    </span>
+            <div class="flex flex-wrap justify-center gap-6">
+              {sortByOrder(
+                sponsorsData.value?.platinum || defaultSponsors.platinum,
+              ).map((sponsor) => (
+                <div
+                  key={sponsor.name}
+                  class="flex flex-col items-center justify-center rounded-2xl border border-slate-800 bg-slate-900/50 p-6 transition-all hover:border-violet-500/50 hover:bg-slate-800/50"
+                >
+                  <div class="flex h-20 w-full items-center justify-center">
+                    <img
+                      src={sponsor.logo}
+                      alt={sponsor.name}
+                      width="160"
+                      height="80"
+                      loading="lazy"
+                      decoding="async"
+                      class="max-h-20 max-w-full object-contain opacity-90 transition-all group-hover:opacity-100"
+                      onError$={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = "/theta-logo.png";
+                        target.style.filter = "brightness(0) invert(1)";
+                      }}
+                    />
                   </div>
-                ),
-              )}
+                  <span class="mt-3 text-sm font-medium text-slate-300">
+                    {sponsor.name}
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
 
@@ -674,35 +713,35 @@ export default component$(() => {
             <h3 class="mb-6 text-center text-sm font-medium tracking-widest text-yellow-500/80 uppercase">
               {homeCopy.value.sponsors.gold}
             </h3>
-            <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-              {(sponsorsData.value?.gold || defaultSponsors.gold).map(
-                (sponsor) => (
-                  <div
-                    key={sponsor.name}
-                    class="group flex flex-col items-center justify-center rounded-xl border border-slate-800 bg-slate-900/50 p-4 transition-all hover:border-yellow-500/30"
-                  >
-                    <div class="flex h-16 w-32 items-center justify-center">
-                      <img
-                        src={sponsor.logo}
-                        alt={sponsor.name}
-                        width="128"
-                        height="64"
-                        loading="lazy"
-                        decoding="async"
-                        class="max-h-full max-w-full object-contain opacity-70 transition-all group-hover:opacity-100"
-                        onError$={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          target.src = "/theta-logo.png";
-                          target.style.filter = "brightness(0) invert(1)";
-                        }}
-                      />
-                    </div>
-                    <span class="mt-1 text-xs font-medium text-slate-300">
-                      {sponsor.name}
-                    </span>
+            <div class="flex flex-wrap justify-center gap-6">
+              {sortByOrder(
+                sponsorsData.value?.gold || defaultSponsors.gold,
+              ).map((sponsor) => (
+                <div
+                  key={sponsor.name}
+                  class="flex flex-col items-center justify-center rounded-xl border border-slate-800 bg-slate-900/50 p-4 transition-all hover:border-yellow-500/50 hover:bg-slate-800/50"
+                >
+                  <div class="flex h-16 w-full items-center justify-center">
+                    <img
+                      src={sponsor.logo}
+                      alt={sponsor.name}
+                      width="128"
+                      height="64"
+                      loading="lazy"
+                      decoding="async"
+                      class="max-h-16 max-w-full object-contain opacity-70 transition-all group-hover:opacity-100"
+                      onError$={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = "/theta-logo.png";
+                        target.style.filter = "brightness(0) invert(1)";
+                      }}
+                    />
                   </div>
-                ),
-              )}
+                  <span class="mt-2 text-xs font-medium text-slate-300">
+                    {sponsor.name}
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
 
@@ -711,62 +750,23 @@ export default component$(() => {
             <h3 class="mb-6 text-center text-sm font-medium tracking-widest text-slate-400 uppercase">
               {homeCopy.value.sponsors.silver}
             </h3>
-            <div class="grid grid-cols-3 gap-3 sm:grid-cols-4 lg:grid-cols-8">
-              {(sponsorsData.value?.silver || defaultSponsors.silver || []).map(
-                (sponsor) => (
-                  <div
-                    key={sponsor.name}
-                    class="group flex flex-col items-center justify-center rounded-lg border border-slate-800 bg-slate-900/30 p-3 transition-all hover:border-slate-600"
-                  >
-                    <div class="flex h-14 w-24 items-center justify-center">
-                      <img
-                        src={sponsor.logo}
-                        alt={sponsor.name}
-                        width="96"
-                        height="56"
-                        loading="lazy"
-                        decoding="async"
-                        class="max-h-full max-w-full object-contain opacity-60 transition-all group-hover:opacity-100"
-                        onError$={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          target.src = "/theta-logo.png";
-                          target.style.filter = "brightness(0) invert(1)";
-                        }}
-                      />
-                    </div>
-                    <span class="mt-1 text-[10px] font-medium text-slate-400">
-                      {sponsor.name}
-                    </span>
-                  </div>
-                ),
-              )}
-            </div>
-          </div>
-
-          {/* General Sponsors - Smallest */}
-          <div class="mb-10">
-            <h3 class="mb-8 text-center text-lg font-bold tracking-widest text-slate-400 uppercase">
-              {homeCopy.value.sponsors.general}
-            </h3>
-            <div class="flex flex-wrap items-center justify-center gap-6">
-              {(
-                sponsorsData.value?.general ||
-                defaultSponsors.general ||
-                []
+            <div class="flex flex-wrap justify-center gap-4">
+              {sortByOrder(
+                sponsorsData.value?.silver || defaultSponsors.silver || [],
               ).map((sponsor) => (
                 <div
                   key={sponsor.name}
-                  class="premium-surface premium-card group flex flex-col items-center justify-center rounded-2xl p-6 transition-all hover:border-violet-400/50 hover:bg-white/10"
+                  class="flex flex-col items-center justify-center rounded-lg border border-slate-800 bg-slate-900/30 p-3 transition-all hover:border-slate-500 hover:bg-slate-800/50"
                 >
-                  <div class="flex h-12 w-24 items-center justify-center">
+                  <div class="flex h-14 w-full items-center justify-center">
                     <img
                       src={sponsor.logo}
                       alt={sponsor.name}
                       width="96"
-                      height="48"
+                      height="56"
                       loading="lazy"
                       decoding="async"
-                      class="max-h-full max-w-full object-contain opacity-70 transition-all group-hover:opacity-100"
+                      class="max-h-14 max-w-full object-contain opacity-60 transition-all group-hover:opacity-100"
                       onError$={(e) => {
                         const target = e.target as HTMLImageElement;
                         target.src = "/theta-logo.png";
@@ -774,13 +774,53 @@ export default component$(() => {
                       }}
                     />
                   </div>
-                  <span class="mt-3 text-sm font-medium text-slate-400">
+                  <span class="mt-2 text-[10px] font-medium text-slate-400">
                     {sponsor.name}
                   </span>
                 </div>
               ))}
             </div>
           </div>
+
+          {/* Media Sponsors */}
+          {(sponsorsData.value?.media || defaultSponsors.media || []).length >
+            0 && (
+            <div class="mb-10">
+              <h3 class="mb-6 text-center text-sm font-medium tracking-widest text-cyan-400 uppercase">
+                Media Partners
+              </h3>
+              <div class="flex flex-wrap justify-center gap-6">
+                {sortByOrder(
+                  sponsorsData.value?.media || defaultSponsors.media || [],
+                ).map((sponsor) => (
+                  <div
+                    key={sponsor.name}
+                    class="flex flex-col items-center justify-center rounded-xl border border-cyan-500/30 bg-cyan-500/10 p-6 transition-all hover:border-cyan-400/50 hover:bg-cyan-500/20"
+                  >
+                    <div class="flex h-16 w-full items-center justify-center">
+                      <img
+                        src={sponsor.logo}
+                        alt={sponsor.name}
+                        width="128"
+                        height="64"
+                        loading="lazy"
+                        decoding="async"
+                        class="max-h-16 max-w-full object-contain opacity-80 transition-all hover:opacity-100"
+                        onError$={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.src = "/theta-logo.png";
+                          target.style.filter = "brightness(0) invert(1)";
+                        }}
+                      />
+                    </div>
+                    <span class="mt-3 text-sm font-medium text-cyan-300">
+                      {sponsor.name}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Become a Sponsor */}
           <div class="text-center">

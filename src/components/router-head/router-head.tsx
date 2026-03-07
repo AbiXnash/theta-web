@@ -8,11 +8,13 @@ export const RouterHead = component$(() => {
   const head = useDocumentHead();
   const loc = useLocation();
   const hasDescription = head.meta.some((m) => m.name === "description");
-  const defaultDescription = useSignal("Theta 2026 techno-management fest website.");
+  const defaultDescription = useSignal(
+    "Theta 2026 techno-management fest website.",
+  );
 
   useVisibleTask$(async () => {
     try {
-      const res = await fetch("/content.json");
+      const res = await fetch("/data/content.json");
       const data = await res.json();
       if (data?.seo?.defaultDescription) {
         defaultDescription.value = data.seo.defaultDescription;
@@ -30,10 +32,7 @@ export const RouterHead = component$(() => {
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <meta name="theme-color" content="#4f46e5" />
       {!hasDescription && (
-        <meta
-          name="description"
-          content={defaultDescription.value}
-        />
+        <meta name="description" content={defaultDescription.value} />
       )}
       <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
       <link rel="manifest" href="/manifest.json" />

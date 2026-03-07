@@ -1,0 +1,56 @@
+{
+  "sponsors": {
+    "platinum": [
+      { "name": "CUB", "logo": "/sponsors/platinum/cub-logo.jpg", "order": 1 },
+      {
+        "name": "Temple City Sports Club",
+        "logo": "/sponsors/platinum/temple-city-sports-club.jpg",
+        "order": 2
+      },
+      { "name": "MRS", "logo": "/sponsors/platinum/mrs-logo.jpg", "order": 3 },
+      {
+        "name": "Lee Benz",
+        "logo": "/sponsors/platinum/lee-benz-logo.png",
+        "order": 4
+      }
+    ],
+    "gold": [
+      { "name": "Fuel", "logo": "/sponsors/gold/fuel-logo.jpg", "order": 1 },
+      {
+        "name": "Dude's Mens Wear",
+        "logo": "/sponsors/gold/dudes-mens-wear-logo.jpg",
+        "order": 2
+      }
+    ],
+    "silver": [
+      {
+        "name": "Triple C",
+        "logo": "/sponsors/silver/triple-c-logo.jpg",
+        "order": 1
+      },
+      {
+        "name": "Dasarathy TVS",
+        "logo": "/sponsors/silver/dasarathy-tvs-logo.png",
+        "order": 2
+      },
+      {
+        "name": "Eye Roast Photography",
+        "logo": "/sponsors/silver/eye-roast-photography-logo.png",
+        "order": 3
+      },
+      {
+        "name": "Frozen Bottle",
+        "logo": "/sponsors/silver/frozen-bottle-logo.jpeg",
+        "order": 4
+      },
+      {
+        "name": "Jawa Yezdi",
+        "logo": "/sponsors/silver/jawa-yezdi-logo.png",
+        "order": 5
+      }
+    ],
+    "media": [
+      { "name": "RDG", "logo": "/sponsors/media/rdg-logo.jpg", "order": 1 }
+    ]
+  }
+}

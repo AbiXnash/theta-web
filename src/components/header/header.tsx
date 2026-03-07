@@ -4,26 +4,35 @@ import { Link, useLocation } from "@builder.io/qwik-city";
 interface NavItem {
   href: string;
   label: string;
+  active?: boolean;
+}
+
+interface MerchConfig {
+  label: string;
+  comingSoon: boolean;
+  labelSoon: string;
+  labelComingSoon: string;
 }
 
 interface HeaderCopy {
   logoAlt: string;
   navItems: NavItem[];
-  merchLabel: string;
-  merchSoon: string;
-  merchComingSoon: string;
+  merch: MerchConfig;
 }
 
 const defaultHeaderCopy: HeaderCopy = {
   logoAlt: "Theta",
   navItems: [
-    { href: "/", label: "Home" },
-    { href: "/events", label: "Events" },
-    { href: "/contact", label: "Contact" },
+    { href: "/", label: "Home", active: true },
+    { href: "/events", label: "Events", active: true },
+    { href: "/contact", label: "Contact", active: true },
   ],
-  merchLabel: "Merch",
-  merchSoon: "Soon",
-  merchComingSoon: "Coming Soon",
+  merch: {
+    label: "Merch",
+    comingSoon: true,
+    labelSoon: "Soon",
+    labelComingSoon: "Coming Soon",
+  },
 };
 
 export const Header = component$(() => {
@@ -39,7 +48,7 @@ export const Header = component$(() => {
 
   useVisibleTask$(async () => {
     try {
-      const res = await fetch("/content.json");
+      const res = await fetch("/data/content.json");
       const data = await res.json();
       if (data?.header) {
         headerCopy.value = {
@@ -100,24 +109,42 @@ export const Header = component$(() => {
 
         {/* Desktop Nav */}
         <nav class="hidden items-center gap-3 lg:flex">
-          {headerCopy.value.navItems.map((item) => (
+          {headerCopy.value.navItems.map((item) =>
+            item.active ? (
+              <Link
+                key={item.href}
+                href={item.href}
+                class="group relative rounded-full border border-transparent bg-white/3 px-5 py-2 text-sm font-semibold tracking-wide text-slate-200 transition-all hover:border-cyan-300/40 hover:bg-white/10 hover:text-white"
+              >
+                <span class="relative z-10">{item.label}</span>
+                <div class="absolute right-3 bottom-1.5 h-1.5 w-1.5 rounded-full bg-cyan-300 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
+              </Link>
+            ) : (
+              <span
+                key={item.href}
+                class="cursor-not-allowed rounded-full border border-white/5 bg-white/5 px-5 py-2 text-sm font-semibold tracking-wide text-slate-500 opacity-50"
+              >
+                {item.label}
+              </span>
+            ),
+          )}
+          {headerCopy.value.merch.comingSoon ? (
+            <div class="ml-3 flex items-center gap-2 rounded-full border border-amber-300/35 bg-amber-300/10 px-4 py-2">
+              <span class="text-xs font-medium text-amber-300">
+                {headerCopy.value.merch.label}
+              </span>
+              <span class="rounded-full bg-amber-200/20 px-2 py-0.5 text-[10px] text-amber-100">
+                {headerCopy.value.merch.labelSoon}
+              </span>
+            </div>
+          ) : (
             <Link
-              key={item.href}
-              href={item.href}
-              class="group relative rounded-full border border-transparent bg-white/3 px-5 py-2 text-sm font-semibold tracking-wide text-slate-200 transition-all hover:border-cyan-300/40 hover:bg-white/10 hover:text-white"
+              href="/merch"
+              class="ml-3 rounded-full border border-cyan-300/40 bg-cyan-300/10 px-4 py-2 text-xs font-medium text-cyan-200 transition-all hover:bg-cyan-300/20"
             >
-              <span class="relative z-10">{item.label}</span>
-              <div class="absolute right-3 bottom-1.5 h-1.5 w-1.5 rounded-full bg-cyan-300 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
+              {headerCopy.value.merch.label}
             </Link>
-          ))}
-          <div class="ml-3 flex items-center gap-2 rounded-full border border-amber-300/35 bg-amber-300/10 px-4 py-2">
-            <span class="text-xs font-medium text-amber-300">
-              {headerCopy.value.merchLabel}
-            </span>
-            <span class="rounded-full bg-amber-200/20 px-2 py-0.5 text-[10px] text-amber-100">
-              {headerCopy.value.merchSoon}
-            </span>
-          </div>
+          )}
         </nav>
 
         {/* Mobile Menu Button */}
@@ -162,23 +189,41 @@ export const Header = component$(() => {
       {isMenuOpen.value && (
         <div class="border-t border-cyan-300/20 bg-slate-950/85 backdrop-blur-2xl lg:hidden">
           <div class="space-y-2 px-6 py-6">
-            {headerCopy.value.navItems.map((item) => (
+            {headerCopy.value.navItems.map((item) =>
+              item.active ? (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  class="block rounded-xl border border-white/10 bg-white/5 px-6 py-4 text-lg font-medium text-slate-200 transition-all hover:border-cyan-300/40 hover:bg-white/10 hover:text-white"
+                >
+                  {item.label}
+                </Link>
+              ) : (
+                <span
+                  key={item.href}
+                  class="block cursor-not-allowed rounded-xl border border-white/5 bg-white/5 px-6 py-4 text-lg font-medium text-slate-500 opacity-50"
+                >
+                  {item.label}
+                </span>
+              ),
+            )}
+            {headerCopy.value.merch.comingSoon ? (
+              <div class="flex items-center gap-3 px-6 py-4">
+                <span class="text-base font-medium text-slate-400">
+                  {headerCopy.value.merch.label}
+                </span>
+                <span class="rounded-full bg-amber-300/20 px-3 py-1 text-xs text-amber-200">
+                  {headerCopy.value.merch.labelComingSoon}
+                </span>
+              </div>
+            ) : (
               <Link
-                key={item.href}
-                href={item.href}
+                href="/merch"
                 class="block rounded-xl border border-white/10 bg-white/5 px-6 py-4 text-lg font-medium text-slate-200 transition-all hover:border-cyan-300/40 hover:bg-white/10 hover:text-white"
               >
-                {item.label}
+                {headerCopy.value.merch.label}
               </Link>
-            ))}
-            <div class="flex items-center gap-3 px-6 py-4">
-              <span class="text-base font-medium text-slate-400">
-                {headerCopy.value.merchLabel}
-              </span>
-              <span class="rounded-full bg-amber-300/20 px-3 py-1 text-xs text-amber-200">
-                {headerCopy.value.merchComingSoon}
-              </span>
-            </div>
+            )}
           </div>
         </div>
       )}
