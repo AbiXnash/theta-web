@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" fill="none">
+  <defs>
+    <pattern id="halftone" width="14" height="14" patternUnits="userSpaceOnUse">
+      <circle cx="3" cy="3" r="1.4" fill="#000" fill-opacity="0.15"/>
+    </pattern>
+  </defs>
+
+  <rect width="1600" height="900" fill="#fff"/>
+  <rect width="1600" height="900" fill="url(#halftone)"/>
+
+  <path d="M40 70 H1560 L1460 860 H140 Z" fill="#fff" stroke="#000" stroke-width="14"/>
+
+  <g transform="translate(180,180)">
+    <path d="M0 420 C160 220, 380 180, 640 120" stroke="#000" stroke-width="14" fill="none"/>
+    <path d="M30 470 C170 290, 390 250, 660 190" stroke="#000" stroke-width="8" fill="none" opacity="0.75"/>
+    <path d="M70 520 C190 360, 410 320, 680 260" stroke="#000" stroke-width="5" fill="none" opacity="0.55"/>
+
+    <ellipse cx="980" cy="380" rx="190" ry="155" fill="#000"/>
+    <circle cx="980" cy="180" r="120" fill="#000"/>
+    <path d="M900 190 Q980 115 1060 190" stroke="#fff" stroke-width="10"/>
+    <circle cx="945" cy="175" r="11" fill="#fff"/>
+    <circle cx="1015" cy="175" r="11" fill="#fff"/>
+    <path d="M930 245 Q980 285 1030 245" stroke="#fff" stroke-width="7"/>
+
+    <rect x="90" y="40" width="260" height="105" rx="52" fill="#fff" stroke="#000" stroke-width="9"/>
+    <text x="220" y="108" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="58" font-weight="800" fill="#000">FINAL</text>
+  </g>
+
+  <text x="800" y="835" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="92" font-weight="800" fill="#000">DAY 3 SHOWDOWN</text>
+</svg>

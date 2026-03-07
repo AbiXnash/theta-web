@@ -69,6 +69,7 @@ export const Header = component$(() => {
     open.value = !open.value;
   });
 
+  // Close mobile menu after route tap to avoid stale open state on navigation.
   const closeMenu = $(() => {
     open.value = false;
   });
@@ -83,7 +84,7 @@ export const Header = component$(() => {
             alt={headerCopy.value.logoAlt}
             width={120}
             height={60}
-            class="h-10 w-auto sm:h-12"
+            class="h-10 w-auto invert sm:h-12"
             loading="eager"
             fetchPriority="high"
           />
@@ -111,9 +112,8 @@ export const Header = component$(() => {
               <Link
                 key={item.href}
                 href={item.href}
-                data-active={isActive ? "true" : "false"}
                 class={[
-                  "theta-focus theta-underline relative rounded-xl px-4 py-2 text-sm font-bold tracking-wide text-neutral-700 transition hover:bg-neutral-100",
+                  "theta-focus relative rounded-xl px-4 py-2 text-sm font-bold tracking-wide text-neutral-700 transition hover:bg-neutral-100",
                   isActive && "bg-neutral-900 text-white",
                 ]}
               >

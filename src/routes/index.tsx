@@ -217,6 +217,22 @@ const parseStatNumber = (value: string): number => {
   return Number.isFinite(parsed) ? parsed : 0;
 };
 
+/**
+ * Parses a date range like "March 15-17, 2026" and returns the first day.
+ * Falls back to Theta 2026 default start if parsing fails.
+ */
+const parseFestStart = (datesText: string): Date => {
+  const match = datesText.match(
+    /\b([A-Za-z]+)\s+(\d{1,2})(?:\s*[-–]\s*\d{1,2})?,\s*(\d{4})\b/,
+  );
+  if (match) {
+    const [, month, day, year] = match;
+    const parsed = new Date(`${month} ${day}, ${year} 09:00:00`);
+    if (!Number.isNaN(parsed.getTime())) return parsed;
+  }
+  return new Date("2026-03-15T09:00:00");
+};
+
 const dayAliases: Record<string, string[]> = {
   "Day One": ["Day 1", "Day One"],
   "Day Two": ["Day 2", "Day Two"],
@@ -321,8 +337,10 @@ export default component$(() => {
     }
   });
 
-  useVisibleTask$(() => {
-    const fest = new Date("2026-03-15T09:00:00").getTime();
+  useVisibleTask$(({ track }) => {
+    track(() => configData.value.meta.dates);
+    // Keep countdown aligned to the configured festival date string in config.json.
+    const fest = parseFestStart(configData.value.meta.dates).getTime();
     const sync = () => {
       const diff = Math.max(0, fest - Date.now());
       countdown.value = {
@@ -456,8 +474,8 @@ export default component$(() => {
             <div class="absolute -top-12 -right-6 h-28 w-28 rounded-full bg-[var(--theta-primary)]/35 blur-2xl"></div>
             <div class="theta-panel animate-theta-pulse relative p-5">
               <p class="text-xs tracking-[0.22em] text-neutral-600 uppercase">{configData.value.meta.eventName}</p>
-              <p class="mt-2 text-3xl font-black">March 15-17, 2026</p>
-              <p class="mt-1 text-sm text-neutral-700">SASTRA University, Tamil Nadu</p>
+              <p class="mt-2 text-3xl font-black">{configData.value.meta.dates}</p>
+              <p class="mt-1 text-sm text-neutral-700">{configData.value.meta.venue}</p>
             </div>
 
             <div class="mt-5 grid grid-cols-4 gap-3">
@@ -492,13 +510,13 @@ export default component$(() => {
               <div class="absolute inset-0 bg-cover bg-center opacity-35 transition duration-300 group-hover:scale-105"
                 style={{ backgroundImage: `url(${day.bgImage})` }}
               ></div>
-              <div class="absolute inset-0 bg-gradient-to-b from-white/10 to-black/45"></div>
+              <div class="absolute inset-0 bg-gradient-to-b from-black/15 to-black/70"></div>
               <div class="relative p-6">
-                <span class="theta-badge border-black/20 text-neutral-900">Day {index + 1}</span>
-                <h3 class="mt-3 text-3xl font-extrabold">{day.day}</h3>
-                <p class="mt-1 text-sm text-neutral-600">{day.date}</p>
-                <p class="mt-6 text-sm text-neutral-700">{day.events.length} events</p>
-                <p class="mt-1 text-sm text-[var(--theta-primary)]">{day.highlight}</p>
+                <span class="theta-badge border-white/45 bg-black/45 text-white">Day {index + 1}</span>
+                <h3 class="mt-3 text-3xl font-extrabold text-white">{day.day}</h3>
+                <p class="mt-1 text-sm text-white/80">{day.date}</p>
+                <p class="mt-6 text-sm text-white/85">{day.events.length} events</p>
+                <p class="mt-1 text-sm font-semibold text-violet-200">{day.highlight}</p>
               </div>
             </button>
           ))}

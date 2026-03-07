@@ -108,6 +108,10 @@ const difficultyMap: Record<Event["category"], "Beginner" | "Intermediate" | "Ad
 const hasRegistrationLink = (event: Event) =>
   Boolean(event.registrationUrl && event.registrationUrl.trim().length > 0);
 
+/**
+ * Resolves the registration cutoff date for an event.
+ * Priority: explicit registrationCloseAt -> mapped day cutoff -> no cutoff.
+ */
 const getRegistrationCutoff = (event: Event): Date | null => {
   if (event.registrationCloseAt) {
     const explicit = new Date(event.registrationCloseAt);
@@ -132,6 +136,9 @@ const getRegistrationCutoff = (event: Event): Date | null => {
   return null;
 };
 
+/**
+ * True when event registration should be considered unavailable in UI.
+ */
 const isRegistrationClosed = (event: Event): boolean => {
   if (!hasRegistrationLink(event)) return true;
   if (event.status === "over") return true;
@@ -142,6 +149,9 @@ const isRegistrationClosed = (event: Event): boolean => {
   return Date.now() >= cutoff.getTime();
 };
 
+/**
+ * Converts raw status + cutoff logic into the status shown to users.
+ */
 const getEffectiveStatus = (event: Event): Event["status"] => {
   if (event.status === "coming-soon") return "coming-soon";
   if (isRegistrationClosed(event)) return "over";

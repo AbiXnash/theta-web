@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" fill="none">
+  <defs>
+    <pattern id="dots" width="16" height="16" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.6" fill="#000" fill-opacity="0.12"/>
+    </pattern>
+    <clipPath id="panel1"><rect x="50" y="50" width="700" height="800" rx="26"/></clipPath>
+    <clipPath id="panel2"><rect x="790" y="50" width="760" height="380" rx="26"/></clipPath>
+    <clipPath id="panel3"><rect x="790" y="470" width="760" height="380" rx="26"/></clipPath>
+  </defs>
+
+  <rect width="1600" height="900" fill="#fff"/>
+  <rect width="1600" height="900" fill="url(#dots)"/>
+
+  <rect x="50" y="50" width="700" height="800" rx="26" fill="#fff" stroke="#000" stroke-width="12"/>
+  <rect x="790" y="50" width="760" height="380" rx="26" fill="#fff" stroke="#000" stroke-width="12"/>
+  <rect x="790" y="470" width="760" height="380" rx="26" fill="#fff" stroke="#000" stroke-width="12"/>
+
+  <g clip-path="url(#panel1)">
+    <rect x="50" y="50" width="700" height="800" fill="#fff"/>
+    <g stroke="#000" stroke-opacity="0.3" stroke-width="2">
+      <line x1="30" y1="780" x2="760" y2="100"/>
+      <line x1="-10" y1="820" x2="790" y2="70"/>
+      <line x1="80" y1="840" x2="800" y2="170"/>
+    </g>
+    <ellipse cx="405" cy="710" rx="270" ry="190" fill="#000"/>
+    <ellipse cx="405" cy="445" rx="190" ry="210" fill="#000"/>
+    <path d="M275 470 Q405 560 535 470" stroke="#fff" stroke-width="12" stroke-linecap="round"/>
+    <circle cx="338" cy="405" r="18" fill="#fff"/>
+    <circle cx="472" cy="405" r="18" fill="#fff"/>
+    <path d="M320 330 Q405 250 490 330" stroke="#fff" stroke-width="14" stroke-linecap="round"/>
+  </g>
+
+  <g clip-path="url(#panel2)">
+    <rect x="790" y="50" width="760" height="380" fill="#fff"/>
+    <g stroke="#000" stroke-opacity="0.18" stroke-width="3">
+      <line x1="760" y1="430" x2="1560" y2="120"/>
+      <line x1="760" y1="470" x2="1580" y2="150"/>
+      <line x1="760" y1="510" x2="1600" y2="180"/>
+    </g>
+    <path d="M940 390 L1150 180 L1360 390" fill="#000"/>
+    <circle cx="1150" cy="145" r="76" fill="#000"/>
+    <rect x="1305" y="82" width="220" height="112" rx="56" fill="#fff" stroke="#000" stroke-width="9"/>
+    <text x="1415" y="152" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="52" font-weight="800" fill="#000">WOW</text>
+  </g>
+
+  <g clip-path="url(#panel3)">
+    <rect x="790" y="470" width="760" height="380" fill="#000"/>
+    <path d="M840 780 C980 620, 1200 620, 1480 500" stroke="#fff" stroke-width="10" fill="none"/>
+    <path d="M860 820 C990 680, 1210 680, 1520 560" stroke="#fff" stroke-width="6" fill="none" opacity="0.8"/>
+    <polygon points="980,760 1080,560 1180,760" fill="#fff"/>
+    <text x="1165" y="820" font-family="Space Grotesk, sans-serif" font-size="96" font-weight="800" fill="#fff">THETA</text>
+  </g>
+</svg>

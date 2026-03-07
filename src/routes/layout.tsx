@@ -117,7 +117,7 @@ export default component$(() => {
         <div class="theta-shell p-6 sm:p-8">
           <div class="grid gap-8 md:grid-cols-3">
             <div>
-              <img src="/theta-logo.png" alt="Theta" width={140} height={70} class="h-12 w-auto" />
+              <img src="/theta-logo.png" alt="Theta" width={140} height={70} class="h-12 w-auto invert" />
               <p class="mt-3 text-sm text-neutral-600">{copy.value.footer.description}</p>
             </div>
             <div>

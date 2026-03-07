@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" fill="none">
+  <defs>
+    <pattern id="grid" width="22" height="22" patternUnits="userSpaceOnUse">
+      <path d="M22 0H0V22" stroke="#000" stroke-opacity="0.08" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <rect width="1600" height="900" fill="#fff"/>
+  <rect width="1600" height="900" fill="url(#grid)"/>
+
+  <rect x="70" y="70" width="1460" height="760" rx="32" fill="#fff" stroke="#000" stroke-width="14"/>
+
+  <g transform="translate(130,120)">
+    <rect width="520" height="640" rx="20" fill="#000"/>
+    <ellipse cx="260" cy="520" rx="170" ry="120" fill="#fff"/>
+    <circle cx="260" cy="280" r="130" fill="#fff"/>
+    <path d="M165 292 Q260 210 355 292" stroke="#000" stroke-width="10" stroke-linecap="round"/>
+    <circle cx="220" cy="265" r="12" fill="#000"/>
+    <circle cx="300" cy="265" r="12" fill="#000"/>
+    <path d="M225 335 Q260 365 295 335" stroke="#000" stroke-width="8" stroke-linecap="round"/>
+    <text x="260" y="620" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="64" font-weight="800" fill="#000">DAY 2</text>
+  </g>
+
+  <g transform="translate(700,120)">
+    <rect width="760" height="300" rx="20" fill="#fff" stroke="#000" stroke-width="10"/>
+    <g stroke="#000" stroke-opacity="0.25" stroke-width="3">
+      <line x1="0" y1="300" x2="760" y2="0"/>
+      <line x1="-40" y1="300" x2="720" y2="0"/>
+      <line x1="40" y1="300" x2="800" y2="0"/>
+    </g>
+    <text x="380" y="190" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="120" font-weight="800" fill="#000">BATTLE</text>
+  </g>
+
+  <g transform="translate(700,460)">
+    <rect width="760" height="300" rx="20" fill="#000"/>
+    <circle cx="170" cy="150" r="90" fill="#fff"/>
+    <polygon points="360,60 600,150 360,240" fill="#fff"/>
+    <text x="570" y="176" font-family="Space Grotesk, sans-serif" font-size="72" font-weight="800" fill="#fff">GO!</text>
+  </g>
+</svg>
