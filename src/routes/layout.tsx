@@ -1,4 +1,10 @@
-import { $, component$, Slot, useSignal, useVisibleTask$ } from "@builder.io/qwik";
+import {
+  $,
+  component$,
+  Slot,
+  useSignal,
+  useVisibleTask$,
+} from "@builder.io/qwik";
 import { Link } from "@builder.io/qwik-city";
 import { Header } from "~/components/header/header";
 
@@ -137,7 +143,9 @@ export default component$(() => {
             {toastOpen.value && (
               <div class="theta-shell absolute right-0 bottom-12 w-48 p-3 text-xs">
                 <p>{copy.value.underDevelopment.title}</p>
-                <p class="mt-1 text-neutral-600">{copy.value.underDevelopment.subtitle}</p>
+                <p class="mt-1 text-neutral-600">
+                  {copy.value.underDevelopment.subtitle}
+                </p>
               </div>
             )}
           </div>
@@ -150,28 +158,58 @@ export default component$(() => {
 
             <div class="relative grid gap-8 md:grid-cols-2 lg:grid-cols-4">
               <div>
-                <img src="/theta-logo.png" alt="Theta" width={140} height={70} class="h-12 w-auto invert" />
-                <p class="mt-3 max-w-xs text-sm text-neutral-600">{copy.value.footer.description}</p>
+                <img
+                  src="/theta-logo.png"
+                  alt="Theta"
+                  width={140}
+                  height={70}
+                  class="h-12 w-auto invert"
+                />
+                <p class="mt-3 max-w-xs text-sm text-neutral-600">
+                  {copy.value.footer.description}
+                </p>
                 <div class="mt-4 inline-flex rounded-full border border-black/15 bg-white px-3 py-1 text-[11px] font-bold tracking-[0.12em] text-neutral-600 uppercase">
                   Theta 2026
                 </div>
               </div>
 
               <div>
-                <h3 class="text-sm font-bold tracking-[0.14em] text-neutral-700 uppercase">{copy.value.footer.quickLinksTitle}</h3>
+                <h3 class="text-sm font-bold tracking-[0.14em] text-neutral-700 uppercase">
+                  {copy.value.footer.quickLinksTitle}
+                </h3>
                 <div class="mt-3 space-y-2 text-sm text-neutral-700">
-                  <Link href="/" class="theta-focus block rounded-lg border border-transparent px-2 py-1.5 hover:border-black/10 hover:bg-white hover:text-[var(--theta-primary)]">{copy.value.footer.homeLabel}</Link>
-                  <Link href="/events" class="theta-focus block rounded-lg border border-transparent px-2 py-1.5 hover:border-black/10 hover:bg-white hover:text-[var(--theta-primary)]">{copy.value.footer.eventsLabel}</Link>
-                  <Link href="/contact" class="theta-focus block rounded-lg border border-transparent px-2 py-1.5 hover:border-black/10 hover:bg-white hover:text-[var(--theta-primary)]">{copy.value.footer.contactLabel}</Link>
+                  <Link
+                    href="/"
+                    class="theta-focus block rounded-lg border border-transparent px-2 py-1.5 hover:border-black/10 hover:bg-white hover:text-[var(--theta-primary)]"
+                  >
+                    {copy.value.footer.homeLabel}
+                  </Link>
+                  <Link
+                    href="/events"
+                    class="theta-focus block rounded-lg border border-transparent px-2 py-1.5 hover:border-black/10 hover:bg-white hover:text-[var(--theta-primary)]"
+                  >
+                    {copy.value.footer.eventsLabel}
+                  </Link>
+                  <Link
+                    href="/contact"
+                    class="theta-focus block rounded-lg border border-transparent px-2 py-1.5 hover:border-black/10 hover:bg-white hover:text-[var(--theta-primary)]"
+                  >
+                    {copy.value.footer.contactLabel}
+                  </Link>
                 </div>
               </div>
 
               <div>
-                <h3 class="text-sm font-bold tracking-[0.14em] text-neutral-700 uppercase">{copy.value.footer.contactTitle}</h3>
+                <h3 class="text-sm font-bold tracking-[0.14em] text-neutral-700 uppercase">
+                  {copy.value.footer.contactTitle}
+                </h3>
                 <div class="mt-3 space-y-2 text-sm text-neutral-600">
                   <p>{copy.value.footer.locationLabel}</p>
                   <p>{copy.value.footer.dateLabel}</p>
-                  <a href={`mailto:${copy.value.footer.emailLabel}`} class="theta-focus inline-block rounded hover:text-[var(--theta-primary)]">
+                  <a
+                    href={`mailto:${copy.value.footer.emailLabel}`}
+                    class="theta-focus inline-block rounded hover:text-[var(--theta-primary)]"
+                  >
                     {copy.value.footer.emailLabel}
                   </a>
                 </div>
@@ -182,27 +220,60 @@ export default component$(() => {
                   {copy.value.footer.repoSectionLabel || "Connect"}
                 </h3>
                 <div class="mt-3 flex flex-wrap gap-2">
-                  <a href="https://github.com/theta-web" target="_blank" rel="noreferrer" class="theta-focus rounded-full border border-black/15 bg-white px-3 py-1.5 text-xs font-bold text-neutral-700 hover:-translate-y-0.5 hover:border-black/30 hover:text-black">
+                  <a
+                    href="https://github.com/theta-web"
+                    target="_blank"
+                    rel="noreferrer"
+                    class="theta-focus rounded-full border border-black/15 bg-white px-3 py-1.5 text-xs font-bold text-neutral-700 hover:-translate-y-0.5 hover:border-black/30 hover:text-black"
+                  >
                     {copy.value.footer.repoLabel || "Repository"}
                   </a>
-                  <a href="https://github.com/theta-web/issues" target="_blank" rel="noreferrer" class="theta-focus rounded-full border border-black/15 bg-white px-3 py-1.5 text-xs font-bold text-neutral-700 hover:-translate-y-0.5 hover:border-black/30 hover:text-black">
+                  <a
+                    href="https://github.com/theta-web/issues"
+                    target="_blank"
+                    rel="noreferrer"
+                    class="theta-focus rounded-full border border-black/15 bg-white px-3 py-1.5 text-xs font-bold text-neutral-700 hover:-translate-y-0.5 hover:border-black/30 hover:text-black"
+                  >
                     {copy.value.footer.issuesLabel || "Issues"}
                   </a>
-                  <a href="https://github.com/theta-web" target="_blank" rel="noreferrer" class="theta-focus rounded-full border border-black/15 bg-white px-3 py-1.5 text-xs font-bold text-neutral-700 hover:-translate-y-0.5 hover:border-black/30 hover:text-black">
+                  <a
+                    href="https://github.com/theta-web"
+                    target="_blank"
+                    rel="noreferrer"
+                    class="theta-focus rounded-full border border-black/15 bg-white px-3 py-1.5 text-xs font-bold text-neutral-700 hover:-translate-y-0.5 hover:border-black/30 hover:text-black"
+                  >
                     {copy.value.footer.contributeLabel || "Contribute"}
                   </a>
                 </div>
                 <div class="mt-4 flex flex-wrap gap-2">
-                  <a href="#" class="theta-focus rounded-full border border-black/15 bg-white px-3 py-1 text-[11px] font-bold text-neutral-600 hover:border-black/30">{copy.value.footer.social?.instagram || "Instagram"}</a>
-                  <a href="#" class="theta-focus rounded-full border border-black/15 bg-white px-3 py-1 text-[11px] font-bold text-neutral-600 hover:border-black/30">{copy.value.footer.social?.twitter || "Twitter"}</a>
-                  <a href="#" class="theta-focus rounded-full border border-black/15 bg-white px-3 py-1 text-[11px] font-bold text-neutral-600 hover:border-black/30">{copy.value.footer.social?.youtube || "YouTube"}</a>
+                  <a
+                    href="#"
+                    class="theta-focus rounded-full border border-black/15 bg-white px-3 py-1 text-[11px] font-bold text-neutral-600 hover:border-black/30"
+                  >
+                    {copy.value.footer.social?.instagram || "Instagram"}
+                  </a>
+                  <a
+                    href="#"
+                    class="theta-focus rounded-full border border-black/15 bg-white px-3 py-1 text-[11px] font-bold text-neutral-600 hover:border-black/30"
+                  >
+                    {copy.value.footer.social?.twitter || "Twitter"}
+                  </a>
+                  <a
+                    href="#"
+                    class="theta-focus rounded-full border border-black/15 bg-white px-3 py-1 text-[11px] font-bold text-neutral-600 hover:border-black/30"
+                  >
+                    {copy.value.footer.social?.youtube || "YouTube"}
+                  </a>
                 </div>
               </div>
             </div>
 
             <div class="relative mt-8 border-t border-black/15 pt-4 text-xs text-neutral-700 sm:flex sm:items-center sm:justify-between">
               <p>{copy.value.footer.copyright}</p>
-              <p class="mt-2 sm:mt-0">{copy.value.footer.madeWithPrefix} Qwik {copy.value.footer.madeBy}</p>
+              <p class="mt-2 sm:mt-0">
+                {copy.value.footer.madeWithPrefix} Qwik{" "}
+                {copy.value.footer.madeBy}
+              </p>
             </div>
           </div>
         </footer>

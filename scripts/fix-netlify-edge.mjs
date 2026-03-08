@@ -34,7 +34,10 @@ async function rewriteImports() {
 
   let content = await readFile(entryFile, "utf8");
   content = content
-    .replaceAll("./@qwik-city-not-found-paths.js", "./qwik-city-not-found-paths.js")
+    .replaceAll(
+      "./@qwik-city-not-found-paths.js",
+      "./qwik-city-not-found-paths.js",
+    )
     .replaceAll("./@qwik-city-static-paths.js", "./qwik-city-static-paths.js")
     .replaceAll("./@qwik-city-plan.js", "./qwik-city-plan.js");
   await writeFile(entryFile, content, "utf8");

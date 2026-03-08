@@ -133,7 +133,10 @@ const defaultClusterColors: Record<string, string> = {
   code: "#22c55e",
 };
 
-const difficultyMap: Record<Event["category"], "Beginner" | "Intermediate" | "Advanced"> = {
+const difficultyMap: Record<
+  Event["category"],
+  "Beginner" | "Intermediate" | "Advanced"
+> = {
   workshop: "Beginner",
   quiz: "Intermediate",
   fun: "Intermediate",
@@ -321,7 +324,9 @@ export default component$(() => {
   }
 
   if (activeCluster.value !== "all") {
-    filtered = filtered.filter((event) => event.cluster === activeCluster.value);
+    filtered = filtered.filter(
+      (event) => event.cluster === activeCluster.value,
+    );
   }
 
   if (searchQuery.value.trim()) {
@@ -350,9 +355,15 @@ export default component$(() => {
           <div class="pointer-events-none absolute -top-16 -right-20 h-56 w-56 rounded-full bg-[var(--theta-primary)]/12 blur-3xl"></div>
           <div class="pointer-events-none absolute -bottom-16 -left-20 h-56 w-56 rounded-full bg-black/10 blur-3xl"></div>
           <div class="relative mx-auto max-w-2xl">
-            <span class="theta-badge border-black/20 text-neutral-700">{copy.value.comingSoon.badge}</span>
-            <h1 class="mt-4 text-4xl font-extrabold sm:text-5xl">{copy.value.comingSoon.title}</h1>
-            <p class="mt-3 text-neutral-600">{copy.value.comingSoon.description}</p>
+            <span class="theta-badge border-black/20 text-neutral-700">
+              {copy.value.comingSoon.badge}
+            </span>
+            <h1 class="mt-4 text-4xl font-extrabold sm:text-5xl">
+              {copy.value.comingSoon.title}
+            </h1>
+            <p class="mt-3 text-neutral-600">
+              {copy.value.comingSoon.description}
+            </p>
             <a
               href={copy.value.comingSoon.ctaHref}
               class="theta-focus mt-6 inline-flex rounded-xl border-2 border-[var(--theta-primary)] bg-[var(--theta-primary)] px-6 py-3 text-sm font-bold text-white"
@@ -363,305 +374,398 @@ export default component$(() => {
         </section>
       ) : (
         <>
+          <section class="theta-shell relative overflow-hidden p-6 sm:p-8">
+            <div class="pointer-events-none absolute -top-14 -right-16 h-44 w-44 rounded-full bg-[var(--theta-primary)]/12 blur-3xl"></div>
+            <div class="pointer-events-none absolute -bottom-16 -left-16 h-40 w-40 rounded-full bg-black/10 blur-3xl"></div>
 
-      <section class="theta-shell relative overflow-hidden p-6 sm:p-8">
-        <div class="pointer-events-none absolute -top-14 -right-16 h-44 w-44 rounded-full bg-[var(--theta-primary)]/12 blur-3xl"></div>
-        <div class="pointer-events-none absolute -bottom-16 -left-16 h-40 w-40 rounded-full bg-black/10 blur-3xl"></div>
-
-        <div class="relative">
-          <p class="text-xs font-bold tracking-[0.25em] text-neutral-700 uppercase">Theta 2026</p>
-          <div class="mt-3 flex flex-wrap items-end justify-between gap-3">
-            <div>
-              <h1 class="text-4xl font-extrabold sm:text-5xl">{copy.value.title}</h1>
-              <p class="mt-2 max-w-2xl text-neutral-600">{copy.value.subtitle}</p>
-            </div>
-            <div class="rounded-xl border border-black/10 bg-white px-3 py-2 text-xs font-bold text-neutral-600">
-              {copy.value.resultsPrefix} {filtered.length}{" "}
-              {filtered.length === 1 ? copy.value.singleEvent : copy.value.multipleEvents}
-            </div>
-          </div>
-
-          <div class="mt-6 grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
-            <div class="rounded-2xl border-2 border-black/10 bg-white p-3 shadow-[0_8px_18px_rgba(0,0,0,0.08)]">
-              <label for="events-search" class="sr-only">
-                Search events
-              </label>
-              <div class="flex items-center gap-3 rounded-xl border border-black/10 bg-neutral-50 px-3 py-2.5">
-                <span class="text-base text-neutral-500">⌕</span>
-                <input
-                  id="events-search"
-                  type="text"
-                  value={searchQuery.value}
-                  onInput$={(event) =>
-                    (searchQuery.value = (event.target as HTMLInputElement).value)
-                  }
-                  placeholder={copy.value.searchPlaceholder}
-                  class="theta-focus w-full bg-transparent text-sm text-neutral-900 placeholder:text-neutral-500 focus:outline-none"
-                />
-              </div>
-            </div>
-
-            <div class="grid grid-cols-3 gap-2 text-xs">
-              <div class="rounded-xl border border-black/10 bg-white px-3 py-2 text-center">
-                <p class="text-lg font-black text-[var(--theta-primary)]">{events.value.length}</p>
-                <p class="font-bold text-neutral-600">{copy.value.metrics.total}</p>
-              </div>
-              <div class="rounded-xl border border-black/10 bg-white px-3 py-2 text-center">
-                <p class="text-lg font-black text-emerald-600">
-                  {events.value.filter((item) => getEffectiveStatus(item) === "active").length}
-                </p>
-                <p class="font-bold text-neutral-600">{copy.value.metrics.active}</p>
-              </div>
-              <div class="rounded-xl border border-black/10 bg-white px-3 py-2 text-center">
-                <p class="text-lg font-black text-amber-600">
-                  {events.value.filter((item) => getEffectiveStatus(item) === "coming-soon").length}
-                </p>
-                <p class="font-bold text-neutral-600">{copy.value.metrics.soon}</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="mt-5 grid min-w-0 gap-4 rounded-2xl border-2 border-black/10 bg-white/90 p-4">
-            <div class="min-w-0">
-              <p class="mb-2 text-[11px] font-extrabold tracking-[0.16em] text-neutral-500 uppercase">
-                {copy.value.filterLabels.category}
+            <div class="relative">
+              <p class="text-xs font-bold tracking-[0.25em] text-neutral-700 uppercase">
+                Theta 2026
               </p>
-              <div class="flex flex-wrap gap-2">
-            {([
-              { key: "all", label: copy.value.categoryLabels.all },
-              { key: "events", label: copy.value.categoryLabels.events },
-              { key: "workshop", label: copy.value.categoryLabels.workshop },
-            ] as const).map((item) => (
-              <button
-                key={item.key}
-                onClick$={() => (activeCategory.value = item.key)}
-                class={[
-                      "theta-focus rounded-full border-2 px-4 py-2 text-sm font-bold",
-                  activeCategory.value === item.key
-                    ? "border-[var(--theta-primary)] bg-[var(--theta-primary)] text-white"
-                    : "border-black/15 bg-neutral-100 text-neutral-900",
-                ]}
-              >
-                {item.label}
-              </button>
-            ))}
-              </div>
-            </div>
-
-            <div class="min-w-0">
-              <p class="mb-2 text-[11px] font-extrabold tracking-[0.16em] text-neutral-500 uppercase">
-                {copy.value.filterLabels.status}
-              </p>
-              <div class="flex flex-wrap gap-2 overflow-x-auto pb-1">
-                {([
-                  { key: "all", label: copy.value.statusLabels.all },
-                  { key: "active", label: copy.value.statusLabels.active },
-                  { key: "coming-soon", label: copy.value.statusLabels["coming-soon"] },
-                  { key: "over", label: copy.value.statusLabels.over },
-                ] as const).map((item) => (
-                  <button
-                    key={item.key}
-                    onClick$={() => (activeStatus.value = item.key)}
-                    class={[
-                      "theta-focus whitespace-nowrap rounded-full border-2 px-4 py-2 text-xs font-bold",
-                      activeStatus.value === item.key
-                        ? "border-[var(--theta-primary)] bg-[var(--theta-primary)] text-white"
-                        : "border-black/15 bg-neutral-100 text-neutral-700",
-                    ]}
-                  >
-                    {item.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div class="min-w-0">
-              <p class="mb-2 text-[11px] font-extrabold tracking-[0.16em] text-neutral-500 uppercase">
-                {copy.value.filterLabels.cluster}
-              </p>
-              <div class="-mx-1 overflow-x-auto px-1 pb-1">
-                <div class="inline-flex min-w-max gap-2">
-                  <button
-                    onClick$={() => (activeCluster.value = "all")}
-                    class={[
-                      "theta-focus whitespace-nowrap rounded-full border-2 px-4 py-2 text-xs font-bold",
-                      activeCluster.value === "all"
-                        ? "border-[var(--theta-primary)] bg-[var(--theta-primary)] text-white"
-                        : "border-black/15 bg-neutral-100 text-neutral-700",
-                    ]}
-                  >
-                    {copy.value.allClustersLabel}
-                  </button>
-                  {clusters.value.map((cluster) => {
-                    const color = getClusterColor(cluster.id);
-                    return (
-                      <button
-                        key={cluster.id}
-                        onClick$={() => (activeCluster.value = cluster.id)}
-                        class="theta-focus whitespace-nowrap rounded-full border-2 px-4 py-2 text-xs font-bold"
-                        style={{
-                          borderColor:
-                            activeCluster.value === cluster.id ? color : "rgba(0,0,0,0.16)",
-                          backgroundColor:
-                            activeCluster.value === cluster.id ? `${color}33` : "#fff",
-                          color: activeCluster.value === cluster.id ? color : "#111827",
-                        }}
-                      >
-                        {cluster.name}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="mt-5 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-        {filtered.map((event) => {
-          const clusterColor = getClusterColor(event.cluster);
-          const status = getEffectiveStatus(event);
-          const closed = isRegistrationClosed(event);
-
-          return (
-            <article key={event.id} class="theta-panel group overflow-hidden border-black/15 bg-white">
-              <button
-                onClick$={() => openEvent(event)}
-                class="theta-focus block w-full text-left"
-              >
-                <img
-                  src={event.image}
-                  alt={event.name}
-                  width={640}
-                  height={360}
-                  loading="lazy"
-                  class="h-48 w-full object-cover grayscale-[25%] transition duration-300 group-hover:grayscale-0 group-hover:scale-[1.02]"
-                />
-                <div class="p-5">
-                  <div class="mb-3 flex flex-wrap gap-2">
-                    <span class="theta-badge border-black/15 text-neutral-900">{event.day || "Day TBD"}</span>
-                    <span
-                      class="theta-badge"
-                      style={{ borderColor: `${clusterColor}88`, color: clusterColor }}
-                    >
-                      {getClusterName(event.cluster)}
-                    </span>
-                    <span class="theta-badge border-black/15 text-neutral-900">{difficultyMap[event.category]}</span>
-                    <span
-                      class="theta-badge"
-                      style={{
-                        borderColor:
-                          status === "active"
-                            ? "#22c55e"
-                            : status === "coming-soon"
-                              ? "#f59e0b"
-                              : "#737373",
-                        color:
-                          status === "active"
-                            ? "#4ade80"
-                            : status === "coming-soon"
-                              ? "#fbbf24"
-                              : "#a3a3a3",
-                      }}
-                    >
-                      {status === "active"
-                        ? copy.value.statusLabels.active
-                        : status === "coming-soon"
-                          ? copy.value.statusLabels["coming-soon"]
-                          : copy.value.statusLabels.closed}
-                    </span>
-                  </div>
-                  <h2 class="text-2xl leading-tight font-extrabold text-neutral-900">{event.name}</h2>
-                  <p class="mt-2 line-clamp-2 text-sm text-neutral-600">{event.description}</p>
-
-                  <div class="mt-4 rounded-xl border border-black/10 bg-neutral-50 px-3 py-2">
-                    <div class="flex items-center justify-between text-xs font-semibold text-neutral-600">
-                      <p>{event.timing}</p>
-                      <p>{event.location}</p>
-                    </div>
-                    <div class="mt-1 flex items-center justify-between">
-                      <p class="text-sm font-bold text-neutral-800">{copy.value.entryFee}</p>
-                      <span class="text-sm font-black text-[var(--theta-primary)]">{event.fee}</span>
-                    </div>
-                  </div>
-
-                  <span class="theta-focus mt-4 inline-flex rounded-lg border-2 border-black/15 bg-white px-4 py-2 text-xs font-bold text-black transition group-hover:border-[var(--theta-primary)] group-hover:text-[var(--theta-primary)]">
-                    {closed ? copy.value.registrationClosed : copy.value.registerNow}
-                  </span>
-                </div>
-              </button>
-            </article>
-          );
-        })}
-      </section>
-
-      {selectedEvent.value && (
-        <div class="fixed inset-0 z-[90] flex items-center justify-center p-4">
-          <button class="absolute inset-0 bg-black/45 backdrop-blur-sm" onClick$={closeEvent} aria-label="Close event modal"></button>
-          <div
-            class="theta-shell relative z-10 max-h-[92vh] w-full max-w-4xl overflow-auto p-5 sm:p-8"
-            role="dialog"
-            aria-modal="true"
-            aria-label={selectedEvent.value.name}
-          >
-            <button
-              onClick$={closeEvent}
-              class="theta-focus absolute top-3 right-3 rounded-lg border border-black/15 px-3 py-1 text-sm"
-            >
-              Close
-            </button>
-
-            <div class="grid gap-5 md:grid-cols-[1.05fr_1fr]">
-              <img
-                src={selectedEvent.value.image}
-                alt={selectedEvent.value.name}
-                width={640}
-                height={420}
-                class="h-full min-h-64 w-full rounded-xl border-2 border-black/15 object-cover"
-              />
-              <div>
-                <h3 class="text-3xl font-extrabold">{selectedEvent.value.name}</h3>
-                <p class="mt-2 text-sm text-neutral-600">{selectedEvent.value.description}</p>
-                <div class="mt-4 space-y-2 rounded-xl border border-black/10 bg-neutral-50 p-4 text-sm text-neutral-700">
-                  <p><span class="text-neutral-700">Day:</span> {selectedEvent.value.day || "TBD"}</p>
-                  <p><span class="text-neutral-700">Time:</span> {selectedEvent.value.timing}</p>
-                  <p><span class="text-neutral-700">Venue:</span> {selectedEvent.value.location}</p>
-                  <p><span class="text-neutral-700">{copy.value.entryFee}:</span> {selectedEvent.value.fee} {copy.value.perParticipant}</p>
-                </div>
-                <div class="mt-4 flex flex-wrap gap-2">
-                  <span class="theta-badge border-black/15 text-neutral-900">{difficultyMap[selectedEvent.value.category]}</span>
-                  {selectedEvent.value.cluster && (
-                    <span
-                      class="theta-badge"
-                      style={{
-                        borderColor: `${getClusterColor(selectedEvent.value.cluster)}88`,
-                        color: getClusterColor(selectedEvent.value.cluster),
-                      }}
-                    >
-                      {copy.value.organizedByPrefix} {getClusterName(selectedEvent.value.cluster)}
-                    </span>
-                  )}
-                </div>
-                {isRegistrationClosed(selectedEvent.value) ? (
-                  <p class="mt-6 rounded-xl border border-black/15 bg-neutral-100 px-4 py-3 text-sm text-neutral-700">
-                    {copy.value.registrationClosed}
+              <div class="mt-3 flex flex-wrap items-end justify-between gap-3">
+                <div>
+                  <h1 class="text-4xl font-extrabold sm:text-5xl">
+                    {copy.value.title}
+                  </h1>
+                  <p class="mt-2 max-w-2xl text-neutral-600">
+                    {copy.value.subtitle}
                   </p>
-                ) : (
-                  <a
-                    href={selectedEvent.value.registrationUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="theta-focus mt-6 inline-flex rounded-xl border-2 border-[var(--theta-primary)] bg-[var(--theta-primary)] px-5 py-3 text-sm font-bold text-white"
-                  >
-                    {copy.value.registerNow}
-                  </a>
-                )}
+                </div>
+                <div class="rounded-xl border border-black/10 bg-white px-3 py-2 text-xs font-bold text-neutral-600">
+                  {copy.value.resultsPrefix} {filtered.length}{" "}
+                  {filtered.length === 1
+                    ? copy.value.singleEvent
+                    : copy.value.multipleEvents}
+                </div>
+              </div>
+
+              <div class="mt-6 grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
+                <div class="rounded-2xl border-2 border-black/10 bg-white p-3 shadow-[0_8px_18px_rgba(0,0,0,0.08)]">
+                  <label for="events-search" class="sr-only">
+                    Search events
+                  </label>
+                  <div class="flex items-center gap-3 rounded-xl border border-black/10 bg-neutral-50 px-3 py-2.5">
+                    <span class="text-base text-neutral-500">⌕</span>
+                    <input
+                      id="events-search"
+                      type="text"
+                      value={searchQuery.value}
+                      onInput$={(event) =>
+                        (searchQuery.value = (
+                          event.target as HTMLInputElement
+                        ).value)
+                      }
+                      placeholder={copy.value.searchPlaceholder}
+                      class="theta-focus w-full bg-transparent text-sm text-neutral-900 placeholder:text-neutral-500 focus:outline-none"
+                    />
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-3 gap-2 text-xs">
+                  <div class="rounded-xl border border-black/10 bg-white px-3 py-2 text-center">
+                    <p class="text-lg font-black text-[var(--theta-primary)]">
+                      {events.value.length}
+                    </p>
+                    <p class="font-bold text-neutral-600">
+                      {copy.value.metrics.total}
+                    </p>
+                  </div>
+                  <div class="rounded-xl border border-black/10 bg-white px-3 py-2 text-center">
+                    <p class="text-lg font-black text-emerald-600">
+                      {
+                        events.value.filter(
+                          (item) => getEffectiveStatus(item) === "active",
+                        ).length
+                      }
+                    </p>
+                    <p class="font-bold text-neutral-600">
+                      {copy.value.metrics.active}
+                    </p>
+                  </div>
+                  <div class="rounded-xl border border-black/10 bg-white px-3 py-2 text-center">
+                    <p class="text-lg font-black text-amber-600">
+                      {
+                        events.value.filter(
+                          (item) => getEffectiveStatus(item) === "coming-soon",
+                        ).length
+                      }
+                    </p>
+                    <p class="font-bold text-neutral-600">
+                      {copy.value.metrics.soon}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-5 grid min-w-0 gap-4 rounded-2xl border-2 border-black/10 bg-white/90 p-4">
+                <div class="min-w-0">
+                  <p class="mb-2 text-[11px] font-extrabold tracking-[0.16em] text-neutral-500 uppercase">
+                    {copy.value.filterLabels.category}
+                  </p>
+                  <div class="flex flex-wrap gap-2">
+                    {(
+                      [
+                        { key: "all", label: copy.value.categoryLabels.all },
+                        {
+                          key: "events",
+                          label: copy.value.categoryLabels.events,
+                        },
+                        {
+                          key: "workshop",
+                          label: copy.value.categoryLabels.workshop,
+                        },
+                      ] as const
+                    ).map((item) => (
+                      <button
+                        key={item.key}
+                        onClick$={() => (activeCategory.value = item.key)}
+                        class={[
+                          "theta-focus rounded-full border-2 px-4 py-2 text-sm font-bold",
+                          activeCategory.value === item.key
+                            ? "border-[var(--theta-primary)] bg-[var(--theta-primary)] text-white"
+                            : "border-black/15 bg-neutral-100 text-neutral-900",
+                        ]}
+                      >
+                        {item.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div class="min-w-0">
+                  <p class="mb-2 text-[11px] font-extrabold tracking-[0.16em] text-neutral-500 uppercase">
+                    {copy.value.filterLabels.status}
+                  </p>
+                  <div class="flex flex-wrap gap-2 overflow-x-auto pb-1">
+                    {(
+                      [
+                        { key: "all", label: copy.value.statusLabels.all },
+                        {
+                          key: "active",
+                          label: copy.value.statusLabels.active,
+                        },
+                        {
+                          key: "coming-soon",
+                          label: copy.value.statusLabels["coming-soon"],
+                        },
+                        { key: "over", label: copy.value.statusLabels.over },
+                      ] as const
+                    ).map((item) => (
+                      <button
+                        key={item.key}
+                        onClick$={() => (activeStatus.value = item.key)}
+                        class={[
+                          "theta-focus rounded-full border-2 px-4 py-2 text-xs font-bold whitespace-nowrap",
+                          activeStatus.value === item.key
+                            ? "border-[var(--theta-primary)] bg-[var(--theta-primary)] text-white"
+                            : "border-black/15 bg-neutral-100 text-neutral-700",
+                        ]}
+                      >
+                        {item.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div class="min-w-0">
+                  <p class="mb-2 text-[11px] font-extrabold tracking-[0.16em] text-neutral-500 uppercase">
+                    {copy.value.filterLabels.cluster}
+                  </p>
+                  <div class="-mx-1 overflow-x-auto px-1 pb-1">
+                    <div class="inline-flex min-w-max gap-2">
+                      <button
+                        onClick$={() => (activeCluster.value = "all")}
+                        class={[
+                          "theta-focus rounded-full border-2 px-4 py-2 text-xs font-bold whitespace-nowrap",
+                          activeCluster.value === "all"
+                            ? "border-[var(--theta-primary)] bg-[var(--theta-primary)] text-white"
+                            : "border-black/15 bg-neutral-100 text-neutral-700",
+                        ]}
+                      >
+                        {copy.value.allClustersLabel}
+                      </button>
+                      {clusters.value.map((cluster) => {
+                        const color = getClusterColor(cluster.id);
+                        return (
+                          <button
+                            key={cluster.id}
+                            onClick$={() => (activeCluster.value = cluster.id)}
+                            class="theta-focus rounded-full border-2 px-4 py-2 text-xs font-bold whitespace-nowrap"
+                            style={{
+                              borderColor:
+                                activeCluster.value === cluster.id
+                                  ? color
+                                  : "rgba(0,0,0,0.16)",
+                              backgroundColor:
+                                activeCluster.value === cluster.id
+                                  ? `${color}33`
+                                  : "#fff",
+                              color:
+                                activeCluster.value === cluster.id
+                                  ? color
+                                  : "#111827",
+                            }}
+                          >
+                            {cluster.name}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-      )}
+          </section>
+
+          <section class="mt-5 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+            {filtered.map((event) => {
+              const clusterColor = getClusterColor(event.cluster);
+              const status = getEffectiveStatus(event);
+              const closed = isRegistrationClosed(event);
+
+              return (
+                <article
+                  key={event.id}
+                  class="theta-panel group overflow-hidden border-black/15 bg-white"
+                >
+                  <button
+                    onClick$={() => openEvent(event)}
+                    class="theta-focus block w-full text-left"
+                  >
+                    <img
+                      src={event.image}
+                      alt={event.name}
+                      width={640}
+                      height={360}
+                      loading="lazy"
+                      class="h-48 w-full object-cover grayscale-[25%] transition duration-300 group-hover:scale-[1.02] group-hover:grayscale-0"
+                    />
+                    <div class="p-5">
+                      <div class="mb-3 flex flex-wrap gap-2">
+                        <span class="theta-badge border-black/15 text-neutral-900">
+                          {event.day || "Day TBD"}
+                        </span>
+                        <span
+                          class="theta-badge"
+                          style={{
+                            borderColor: `${clusterColor}88`,
+                            color: clusterColor,
+                          }}
+                        >
+                          {getClusterName(event.cluster)}
+                        </span>
+                        <span class="theta-badge border-black/15 text-neutral-900">
+                          {difficultyMap[event.category]}
+                        </span>
+                        <span
+                          class="theta-badge"
+                          style={{
+                            borderColor:
+                              status === "active"
+                                ? "#22c55e"
+                                : status === "coming-soon"
+                                  ? "#f59e0b"
+                                  : "#737373",
+                            color:
+                              status === "active"
+                                ? "#4ade80"
+                                : status === "coming-soon"
+                                  ? "#fbbf24"
+                                  : "#a3a3a3",
+                          }}
+                        >
+                          {status === "active"
+                            ? copy.value.statusLabels.active
+                            : status === "coming-soon"
+                              ? copy.value.statusLabels["coming-soon"]
+                              : copy.value.statusLabels.closed}
+                        </span>
+                      </div>
+                      <h2 class="text-2xl leading-tight font-extrabold text-neutral-900">
+                        {event.name}
+                      </h2>
+                      <p class="mt-2 line-clamp-2 text-sm text-neutral-600">
+                        {event.description}
+                      </p>
+
+                      <div class="mt-4 rounded-xl border border-black/10 bg-neutral-50 px-3 py-2">
+                        <div class="flex items-center justify-between text-xs font-semibold text-neutral-600">
+                          <p>{event.timing}</p>
+                          <p>{event.location}</p>
+                        </div>
+                        <div class="mt-1 flex items-center justify-between">
+                          <p class="text-sm font-bold text-neutral-800">
+                            {copy.value.entryFee}
+                          </p>
+                          <span class="text-sm font-black text-[var(--theta-primary)]">
+                            {event.fee}
+                          </span>
+                        </div>
+                      </div>
+
+                      <span class="theta-focus mt-4 inline-flex rounded-lg border-2 border-black/15 bg-white px-4 py-2 text-xs font-bold text-black transition group-hover:border-[var(--theta-primary)] group-hover:text-[var(--theta-primary)]">
+                        {closed
+                          ? copy.value.registrationClosed
+                          : copy.value.registerNow}
+                      </span>
+                    </div>
+                  </button>
+                </article>
+              );
+            })}
+          </section>
+
+          {selectedEvent.value && (
+            <div class="fixed inset-0 z-[90] flex items-center justify-center p-4">
+              <button
+                class="absolute inset-0 bg-black/45 backdrop-blur-sm"
+                onClick$={closeEvent}
+                aria-label="Close event modal"
+              ></button>
+              <div
+                class="theta-shell relative z-10 max-h-[92vh] w-full max-w-4xl overflow-auto p-5 sm:p-8"
+                role="dialog"
+                aria-modal="true"
+                aria-label={selectedEvent.value.name}
+              >
+                <button
+                  onClick$={closeEvent}
+                  class="theta-focus absolute top-3 right-3 rounded-lg border border-black/15 px-3 py-1 text-sm"
+                >
+                  Close
+                </button>
+
+                <div class="grid gap-5 md:grid-cols-[1.05fr_1fr]">
+                  <img
+                    src={selectedEvent.value.image}
+                    alt={selectedEvent.value.name}
+                    width={640}
+                    height={420}
+                    class="h-full min-h-64 w-full rounded-xl border-2 border-black/15 object-cover"
+                  />
+                  <div>
+                    <h3 class="text-3xl font-extrabold">
+                      {selectedEvent.value.name}
+                    </h3>
+                    <p class="mt-2 text-sm text-neutral-600">
+                      {selectedEvent.value.description}
+                    </p>
+                    <div class="mt-4 space-y-2 rounded-xl border border-black/10 bg-neutral-50 p-4 text-sm text-neutral-700">
+                      <p>
+                        <span class="text-neutral-700">Day:</span>{" "}
+                        {selectedEvent.value.day || "TBD"}
+                      </p>
+                      <p>
+                        <span class="text-neutral-700">Time:</span>{" "}
+                        {selectedEvent.value.timing}
+                      </p>
+                      <p>
+                        <span class="text-neutral-700">Venue:</span>{" "}
+                        {selectedEvent.value.location}
+                      </p>
+                      <p>
+                        <span class="text-neutral-700">
+                          {copy.value.entryFee}:
+                        </span>{" "}
+                        {selectedEvent.value.fee} {copy.value.perParticipant}
+                      </p>
+                    </div>
+                    <div class="mt-4 flex flex-wrap gap-2">
+                      <span class="theta-badge border-black/15 text-neutral-900">
+                        {difficultyMap[selectedEvent.value.category]}
+                      </span>
+                      {selectedEvent.value.cluster && (
+                        <span
+                          class="theta-badge"
+                          style={{
+                            borderColor: `${getClusterColor(selectedEvent.value.cluster)}88`,
+                            color: getClusterColor(selectedEvent.value.cluster),
+                          }}
+                        >
+                          {copy.value.organizedByPrefix}{" "}
+                          {getClusterName(selectedEvent.value.cluster)}
+                        </span>
+                      )}
+                    </div>
+                    {isRegistrationClosed(selectedEvent.value) ? (
+                      <p class="mt-6 rounded-xl border border-black/15 bg-neutral-100 px-4 py-3 text-sm text-neutral-700">
+                        {copy.value.registrationClosed}
+                      </p>
+                    ) : (
+                      <a
+                        href={selectedEvent.value.registrationUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="theta-focus mt-6 inline-flex rounded-xl border-2 border-[var(--theta-primary)] bg-[var(--theta-primary)] px-5 py-3 text-sm font-bold text-white"
+                      >
+                        {copy.value.registerNow}
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </>
       )}
     </div>
