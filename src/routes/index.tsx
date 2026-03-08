@@ -246,6 +246,16 @@ const sponsorTiers = [
   { key: "media", label: "Media", large: false },
 ] as const;
 
+const sponsorTierStyles: Record<
+  (typeof sponsorTiers)[number]["key"],
+  { chip: string; border: string }
+> = {
+  platinum: { chip: "bg-black text-white", border: "border-black" },
+  gold: { chip: "bg-[#fef3c7] text-[#92400e]", border: "border-[#f59e0b]" },
+  silver: { chip: "bg-[#e5e7eb] text-[#1f2937]", border: "border-[#9ca3af]" },
+  media: { chip: "bg-[#ede9fe] text-[#5b21b6]", border: "border-[#7c3aed]" },
+};
+
 export default component$(() => {
   const configData = useSignal<ConfigData>(defaultConfig);
   const homeCopy = useSignal<HomeCopy>(defaultHomeCopy);
@@ -255,6 +265,9 @@ export default component$(() => {
   const countdown = useSignal({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const counterDisplay = useSignal({ events: 0, participants: 0, colleges: 0 });
   const selectedDay = useSignal<DayEvent | null>(null);
+  const selectedSponsorTier = useSignal<(typeof sponsorTiers)[number]["key"] | null>(
+    null,
+  );
 
   useVisibleTask$(async () => {
     try {
@@ -413,12 +426,78 @@ export default component$(() => {
     return () => document.removeEventListener("keydown", onKey);
   });
 
+  useVisibleTask$(({ track }) => {
+    track(() => selectedSponsorTier.value);
+    if (!selectedSponsorTier.value) return;
+
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        selectedSponsorTier.value = null;
+      }
+    };
+
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  });
+
+  useVisibleTask$(() => {
+    const lanes = Array.from(
+      document.querySelectorAll<HTMLElement>("[data-marquee-lane='true']"),
+    );
+    if (lanes.length === 0) return;
+
+    const cleanups: Array<() => void> = [];
+
+    for (const lane of lanes) {
+      const track = lane.querySelector<HTMLElement>("[data-marquee-track='true']");
+      if (!track) continue;
+
+      let resumeTimer: ReturnType<typeof setTimeout> | undefined;
+
+      const pause = () => {
+        track.style.animationPlayState = "paused";
+        if (resumeTimer) clearTimeout(resumeTimer);
+        resumeTimer = setTimeout(() => {
+          track.style.animationPlayState = "running";
+        }, 1400);
+      };
+
+      const onPointerDown = () => pause();
+      const onTouchStart = () => pause();
+      const onWheel = () => pause();
+      const onScroll = () => pause();
+
+      lane.addEventListener("pointerdown", onPointerDown);
+      lane.addEventListener("touchstart", onTouchStart, { passive: true });
+      lane.addEventListener("wheel", onWheel, { passive: true });
+      lane.addEventListener("scroll", onScroll, { passive: true });
+
+      cleanups.push(() => {
+        lane.removeEventListener("pointerdown", onPointerDown);
+        lane.removeEventListener("touchstart", onTouchStart);
+        lane.removeEventListener("wheel", onWheel);
+        lane.removeEventListener("scroll", onScroll);
+        if (resumeTimer) clearTimeout(resumeTimer);
+      });
+    }
+
+    return () => cleanups.forEach((cleanup) => cleanup());
+  });
+
   const openDay = $((day: DayEvent) => {
     selectedDay.value = day;
   });
 
   const closeDay = $(() => {
     selectedDay.value = null;
+  });
+
+  const openSponsorTierModal = $((tier: (typeof sponsorTiers)[number]["key"]) => {
+    selectedSponsorTier.value = tier;
+  });
+
+  const closeSponsorTierModal = $(() => {
+    selectedSponsorTier.value = null;
   });
 
   const getDayEvents = (dayName: string) => {
@@ -558,61 +637,200 @@ export default component$(() => {
       </section>
 
       <section class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-        <span class="theta-badge border-black/20 text-neutral-600">Sponsors</span>
-        <h2 class="mt-4 text-4xl font-extrabold">
-          {homeCopy.value.sponsors.titlePrefix} <span class="text-[var(--theta-primary)]">{homeCopy.value.sponsors.titleAccent}</span>
-        </h2>
+        <div class="theta-shell relative overflow-hidden p-6 sm:p-8 lg:p-10">
+          <div class="pointer-events-none absolute -top-20 -left-20 h-56 w-56 rounded-full bg-[var(--theta-primary)]/15 blur-3xl"></div>
+          <div class="pointer-events-none absolute -right-20 -bottom-20 h-56 w-56 rounded-full bg-black/10 blur-3xl"></div>
 
-        <div class="mt-8 space-y-8">
-          {sponsorTiers.map((tier) => {
-            const list = sponsors.value[tier.key] || [];
-            if (!Array.isArray(list) || list.length === 0) return null;
+          <div class="relative flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <span class="theta-badge border-black/20 text-neutral-700">Sponsor Hall</span>
+              <h2 class="mt-4 text-4xl font-extrabold sm:text-5xl">
+                {homeCopy.value.sponsors.titlePrefix}{" "}
+                <span class="text-[var(--theta-primary)]">{homeCopy.value.sponsors.titleAccent}</span>
+              </h2>
+              <p class="mt-2 max-w-2xl text-sm text-neutral-600 sm:text-base">
+                Extraordinary partners who make Theta 2026 bigger, louder, and more memorable.
+              </p>
+            </div>
+            <span class="theta-sticker rotate-[-4deg]">Powered by Legends</span>
+          </div>
 
-            return (
-              <div key={tier.key}>
-                <h3 class="mb-4 text-xl font-extrabold text-neutral-900">{tier.label}</h3>
-                <div class={[
-                  "grid gap-4",
-                  tier.large ? "sm:grid-cols-2 lg:grid-cols-4" : "sm:grid-cols-2 lg:grid-cols-5",
-                ]}>
-                  {list
-                    .slice()
-                    .sort((a, b) => (a.order || 999) - (b.order || 999))
-                    .map((item) => (
-                      <div
-                        key={item.name}
-                        class={[
-                          "theta-shell group flex items-center justify-center p-4 transition",
-                          tier.large
-                            ? "min-h-32"
-                            : tier.key === "media"
-                              ? "min-h-32"
-                              : "min-h-24",
-                        ]}
+          <div class="relative mt-8 space-y-8">
+            {(() => {
+              const availableTiers = sponsorTiers.filter((tier) => {
+                const list = sponsors.value[tier.key] || [];
+                return Array.isArray(list) && list.length > 0;
+              });
+              if (availableTiers.length === 0) return null;
+
+              return (
+                <div class="space-y-4">
+                  {availableTiers.map((tier, tierIndex) => {
+                    const tierStyle = sponsorTierStyles[tier.key];
+                    const list = (sponsors.value[tier.key] || [])
+                      .slice()
+                      .sort((a, b) => (a.order || 999) - (b.order || 999));
+                    const shouldAnimate = tier.key === "platinum" || list.length > 4;
+                    const visibleItems = shouldAnimate ? [...list, ...list] : list;
+
+                    return (
+                      <section
+                        key={`sponsor-lane-${tier.key}`}
+                        class={["rounded-2xl border-2 bg-white/70 p-3 sm:p-4", tierStyle.border]}
                       >
-                        <img
-                          src={item.logo}
-                          alt={item.name}
-                          width={180}
-                          height={90}
-                          loading="lazy"
+                        <div class="flex w-full items-center justify-between gap-3 rounded-xl px-2 py-2 text-left">
+                          <div class="flex items-center gap-3">
+                            <h3 class="text-lg font-extrabold text-neutral-900 sm:text-xl">
+                              {tier.label}
+                            </h3>
+                            <span
+                              class={[
+                                "rounded-full border-2 px-3 py-1 text-[11px] font-bold tracking-wide sm:text-xs",
+                                tierStyle.chip,
+                              ]}
+                            >
+                                {list.length} Partners
+                              </span>
+                          </div>
+                          <span class="text-xs font-bold tracking-wider text-neutral-500 uppercase">
+                            Swipe
+                          </span>
+                        </div>
+
+                        <div
+                          data-marquee-lane={shouldAnimate ? "true" : "false"}
                           class={[
-                            "w-auto object-contain transition duration-300",
-                            tier.large
-                              ? "max-h-20"
-                              : tier.key === "media"
-                                ? "max-h-24"
-                                : "max-h-16",
+                            "mt-3 -mx-1 px-1 pb-2",
+                            shouldAnimate
+                              ? "theta-marquee-lane overflow-x-auto"
+                              : "overflow-visible",
                           ]}
-                        />
-                      </div>
-                    ))}
+                        >
+                          <div
+                            data-marquee-track={shouldAnimate ? "true" : "false"}
+                            class={[
+                              "flex gap-3 py-2",
+                              shouldAnimate ? "min-w-max" : "w-full flex-wrap justify-center",
+                              shouldAnimate &&
+                                (tierIndex % 2 === 0
+                                  ? "animate-[thetaMarqueeLeft_24s_linear_infinite]"
+                                  : "animate-[thetaMarqueeLeft_28s_linear_infinite]"),
+                            ]}
+                          >
+                            {visibleItems.map((item, index) => (
+                            <article
+                              key={`${tier.key}-${item.name}-${index}`}
+                              onClick$={() => openSponsorTierModal(tier.key)}
+                              class={[
+                                "theta-sponsor-card theta-focus group min-w-[10.5rem] cursor-pointer p-3 text-center sm:min-w-[12rem]",
+                                index % 2 === 0 ? "rotate-[-0.6deg]" : "rotate-[0.6deg]",
+                                !shouldAnimate &&
+                                  "animate-[thetaIdleDrift_3.2s_ease-in-out_infinite]",
+                              ]}
+                              style={
+                                !shouldAnimate
+                                  ? { animationDelay: `${index * 180}ms` }
+                                  : undefined
+                              }
+                            >
+                              <div class="flex min-h-20 items-center justify-center sm:min-h-24">
+                                <img
+                                  src={item.logo}
+                                  alt={item.name}
+                                  width={220}
+                                  height={110}
+                                  loading="lazy"
+                                  class="relative z-10 max-h-14 w-auto object-contain transition duration-300 group-hover:scale-105 sm:max-h-16"
+                                />
+                              </div>
+                              <p class="relative z-10 mt-2 text-[10px] font-bold tracking-[0.06em] text-neutral-700 uppercase sm:text-xs">
+                                {item.name}
+                              </p>
+                              <p class="mt-1 text-[9px] font-semibold tracking-wider text-[var(--theta-primary)] uppercase">
+                                View Tier
+                              </p>
+                            </article>
+                          ))}
+                        </div>
+                        </div>
+                      </section>
+                    );
+                  })}
                 </div>
-              </div>
-            );
-          })}
+              );
+            })()}
+          </div>
         </div>
       </section>
+
+      {selectedSponsorTier.value &&
+        (() => {
+          const tier = sponsorTiers.find((item) => item.key === selectedSponsorTier.value);
+          if (!tier) return null;
+          const tierStyle = sponsorTierStyles[tier.key];
+          const tierSponsors = (sponsors.value[tier.key] || [])
+            .slice()
+            .sort((a, b) => (a.order || 999) - (b.order || 999));
+
+          return (
+            <div class="fixed inset-0 z-[85] flex items-center justify-center p-3 sm:p-5">
+              <button
+                type="button"
+                onClick$={closeSponsorTierModal}
+                class="absolute inset-0 bg-black/50 backdrop-blur-sm"
+                aria-label="Close sponsors modal"
+              ></button>
+
+              <div class="theta-shell animate-[thetaPulse_1.6s_ease-in-out_1] relative z-10 max-h-[92vh] w-full max-w-5xl overflow-auto p-5 sm:p-7">
+                <button
+                  type="button"
+                  onClick$={closeSponsorTierModal}
+                  class="theta-focus absolute top-3 right-3 rounded-lg border border-black/20 bg-white px-3 py-1 text-sm font-bold text-neutral-800"
+                >
+                  Close
+                </button>
+
+                <div class="mb-5 flex flex-wrap items-center justify-between gap-3 pr-16">
+                  <h3 class="text-2xl font-extrabold text-neutral-900 sm:text-3xl">
+                    {tier.label} Sponsors
+                  </h3>
+                  <span
+                    class={[
+                      "rounded-full border-2 px-3 py-1 text-xs font-bold tracking-wide",
+                      tierStyle.chip,
+                    ]}
+                  >
+                    {tierSponsors.length} Partners
+                  </span>
+                </div>
+
+                <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {tierSponsors.map((item, index) => (
+                    <article
+                      key={`modal-${tier.key}-${item.name}`}
+                      class={[
+                        "theta-sponsor-card group flex min-h-36 flex-col items-center justify-center bg-white p-4 text-center",
+                        index % 2 === 0 ? "rotate-[-0.4deg]" : "rotate-[0.4deg]",
+                      ]}
+                    >
+                      <img
+                        src={item.logo}
+                        alt={item.name}
+                        width={220}
+                        height={110}
+                        loading="lazy"
+                        class="relative z-10 max-h-16 w-auto object-contain transition duration-300 group-hover:scale-105"
+                      />
+                      <p class="relative z-10 mt-3 text-xs font-bold tracking-[0.08em] text-neutral-700 uppercase">
+                        {item.name}
+                      </p>
+                    </article>
+                  ))}
+                </div>
+              </div>
+            </div>
+          );
+        })()}
 
       <section class="mx-auto max-w-7xl px-4 pt-6 pb-6 sm:px-6 lg:px-8">
         <div class="theta-shell flex flex-col items-start justify-between gap-4 p-7 sm:flex-row sm:items-center">
