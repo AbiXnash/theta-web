@@ -24,91 +24,91 @@
     {
       "id": "csi",
       "name": "CSI",
-      "color": "#6366f1",
+      "color": "#1f2937",
       "description": "Computer Society of India"
     },
     {
       "id": "iedc",
       "name": "IEDC",
-      "color": "#ec4899",
+      "color": "#525252",
       "description": "Innovation Entrepreneurship Development Cell"
     },
     {
       "id": "ieee",
       "name": "IEEE",
-      "color": "#14b8a6",
+      "color": "#404040",
       "description": "Institute of Electrical and Electronics Engineers"
     },
     {
       "id": "asme",
       "name": "ASME",
-      "color": "#f59e0b",
+      "color": "#4b5563",
       "description": "American Society of Mechanical Engineers"
     },
     {
       "id": "sae",
       "name": "SAE",
-      "color": "#ef4444",
+      "color": "#4b5563",
       "description": "Society of Automotive Engineers"
     },
     {
       "id": "nss",
       "name": "NSS",
-      "color": "#10b981",
+      "color": "#374151",
       "description": "National Service Scheme"
     },
     {
       "id": "theta",
       "name": "Theta",
-      "color": "#0891b2",
+      "color": "#111111",
       "description": "Theta Technical Club"
     },
     {
       "id": "iste",
       "name": "ISTE",
-      "color": "#06b6d4",
+      "color": "#404040",
       "description": "Indian Society for Technical Education"
     },
     {
       "id": "rotaract",
       "name": "Rotaract",
-      "color": "#f97316",
+      "color": "#374151",
       "description": "Rotaract Club"
     },
     {
       "id": "tedx",
       "name": "TEDx",
-      "color": "#e11d48",
+      "color": "#525252",
       "description": "TEDx SASTRA"
     },
     {
       "id": "aero",
       "name": "Aerospace",
-      "color": "#0ea5e9",
+      "color": "#1f2937",
       "description": "Aerospace Club"
     },
     {
       "id": "robotics",
       "name": "Robotics",
-      "color": "#84cc16",
+      "color": "#404040",
       "description": "Robotics Club"
     },
     {
       "id": "code",
       "name": "Code",
-      "color": "#0e7490",
+      "color": "#525252",
       "description": "Coding Club"
     },
     {
       "id": "design",
       "name": "Design",
-      "color": "#d946ef",
+      "color": "#525252",
       "description": "Design Club"
     },
     {
       "id": "eco",
       "name": "E-Cell",
-      "color": "#14b8a6",
+      "color": "#404040",
       "description": "Entrepreneurship Cell"
     }
   ],

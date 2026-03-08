@@ -128,13 +128,13 @@ const dayCutoffMap: Record<string, string> = {
 };
 
 const defaultClusterColors: Record<string, string> = {
-  csi: "#3b82f6",
-  ieee: "#14b8a6",
-  sae: "#f97316",
-  tedx: "#ef4444",
-  robotics: "#0891b2",
-  design: "#ec4899",
-  code: "#22c55e",
+  csi: "#111111",
+  ieee: "#1f2937",
+  sae: "#374151",
+  tedx: "#4b5563",
+  robotics: "#111111",
+  design: "#525252",
+  code: "#404040",
 };
 
 const difficultyMap: Record<Event["category"], "Beginner" | "Intermediate" | "Advanced"> = {
@@ -199,13 +199,13 @@ const getEffectiveStatus = (event: Event): Event["status"] => {
 };
 
 const defaultClusters: Cluster[] = [
-  { id: "csi", name: "CSI", color: "#3b82f6" },
-  { id: "ieee", name: "IEEE", color: "#14b8a6" },
-  { id: "sae", name: "SAE", color: "#f97316" },
-  { id: "tedx", name: "TEDx", color: "#ef4444" },
-  { id: "robotics", name: "Robotics", color: "#0891b2" },
-  { id: "design", name: "Design", color: "#ec4899" },
-  { id: "code", name: "Code", color: "#22c55e" },
+  { id: "csi", name: "CSI", color: "#111111" },
+  { id: "ieee", name: "IEEE", color: "#1f2937" },
+  { id: "sae", name: "SAE", color: "#374151" },
+  { id: "tedx", name: "TEDx", color: "#4b5563" },
+  { id: "robotics", name: "Robotics", color: "#111111" },
+  { id: "design", name: "Design", color: "#525252" },
+  { id: "code", name: "Code", color: "#404040" },
 ];
 
 export default component$(() => {
@@ -320,13 +320,13 @@ export default component$(() => {
   };
 
   const getClusterColor = (id?: string) => {
-    if (!id) return "#06b6d4";
+    if (!id) return "#111111";
 
     const mapped = defaultClusterColors[id.toLowerCase()];
     if (mapped) return mapped;
 
     const fromData = clusters.value.find((c) => c.id === id)?.color;
-    return fromData || "#06b6d4";
+    return fromData || "#111111";
   };
 
   let filtered = events.value;
@@ -408,7 +408,7 @@ export default component$(() => {
 
             <a
               href={copy.value.comingSoon.ctaHref}
-              class="theta-focus mt-6 inline-flex rounded-xl border-2 border-[var(--theta-primary)] bg-[var(--theta-primary)] px-6 py-3 text-sm font-bold text-white shadow-[0_10px_22px_rgba(6, 182, 212,0.35)]"
+              class="theta-focus mt-6 inline-flex rounded-xl border-2 border-[var(--theta-primary)] bg-[var(--theta-primary)] px-6 py-3 text-sm font-bold text-white shadow-[0_10px_22px_rgba(17,17,17,0.26)]"
             >
               {copy.value.comingSoon.ctaLabel}
             </a>
@@ -620,16 +620,16 @@ export default component$(() => {
                       style={{
                         borderColor:
                           status === "active"
-                            ? "#22c55e"
+                            ? "#111111"
                             : status === "coming-soon"
-                              ? "#f59e0b"
+                              ? "#525252"
                               : "#737373",
                         color:
                           status === "active"
-                            ? "#4ade80"
+                            ? "#111111"
                             : status === "coming-soon"
-                              ? "#fbbf24"
-                              : "#a3a3a3",
+                              ? "#525252"
+                              : "#737373",
                       }}
                     >
                       {status === "active"
