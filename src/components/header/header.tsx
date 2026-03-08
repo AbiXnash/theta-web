@@ -179,86 +179,47 @@ export const Header = component$(() => {
         </button>
       </div>
 
-      <div class={["fixed inset-0 z-40 lg:hidden transition", open.value ? "pointer-events-auto" : "pointer-events-none"]}>
-        <button
-          type="button"
-          aria-label="Close menu overlay"
-          onClick$={closeMenu}
-          class={[
-            "absolute inset-0 bg-black/35 backdrop-blur-[1px] transition-opacity duration-200",
-            open.value ? "opacity-100" : "opacity-0",
-          ]}
-        ></button>
-
-        <aside
-          class={[
-            "absolute top-0 right-0 h-full w-[84vw] max-w-[360px] border-l-2 border-black/20 bg-white p-5 shadow-[-10px_0_30px_rgba(0,0,0,0.2)] transition-transform duration-250",
-            open.value ? "translate-x-0" : "translate-x-full",
-          ]}
-        >
-          <div class="mb-5 flex items-center justify-between">
-            <p class="text-xs font-extrabold tracking-[0.16em] text-neutral-500 uppercase">Navigation</p>
-            <button
-              type="button"
-              onClick$={closeMenu}
-              class="theta-focus rounded-lg border border-black/20 bg-white px-2.5 py-1 text-sm font-bold text-neutral-700"
-            >
-              Close
-            </button>
-          </div>
-
-          <div class="space-y-2.5">
-            {headerCopy.value.navItems.map((item) =>
-              item.active ? (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick$={closeMenu}
-                  class={[
-                    "theta-focus block rounded-xl border-2 px-4 py-3 text-base font-extrabold",
-                    isPathActive(item.href, location.url.pathname)
-                      ? "border-neutral-900 bg-neutral-900 text-white"
-                      : "border-black/15 bg-white text-neutral-900",
-                  ]}
-                >
-                  {item.label}
-                </Link>
-              ) : (
-                <span
-                  key={item.href}
-                  class="block rounded-xl border border-black/10 px-4 py-3 font-semibold text-neutral-500"
-                >
-                  {item.label}
-                </span>
-              ),
-            )}
-          </div>
-
-          <div class="mt-5 space-y-2">
-            {headerCopy.value.merch.comingSoon ? (
-              <div class="rounded-xl border border-black/20 bg-black px-4 py-3 text-center text-sm font-bold text-white">
-                {headerCopy.value.merch.label} • {headerCopy.value.merch.labelComingSoon}
-              </div>
-            ) : (
+      <div
+        class={[
+          "relative z-10 overflow-hidden border-t border-black/10 bg-white px-4 pb-4 lg:hidden transition-all duration-300",
+          open.value ? "max-h-[28rem] opacity-100" : "max-h-0 opacity-0 pb-0",
+        ]}
+        aria-hidden={!open.value}
+      >
+        <div class={["mt-4 space-y-2", open.value && "animate-[thetaMenuIn_240ms_ease-out]"]}>
+          {headerCopy.value.navItems.map((item) =>
+            item.active ? (
               <Link
-                href="/merch"
+                key={item.href}
+                href={item.href}
                 onClick$={closeMenu}
-                class="theta-focus block rounded-xl border-2 border-black/20 bg-white px-4 py-3 text-center font-bold text-black"
+                class={[
+                  "theta-focus block rounded-xl border px-4 py-3 font-semibold transition-transform duration-200 hover:-translate-y-0.5",
+                  isPathActive(item.href, location.url.pathname)
+                    ? "border-neutral-900 bg-neutral-900 text-white"
+                    : "border-black/15 bg-white text-neutral-900",
+                ]}
               >
-                {headerCopy.value.merch.label}
+                {item.label}
               </Link>
-            )}
-            <Link
-              href="/events"
-              onClick$={closeMenu}
-              class="theta-focus block rounded-xl border-2 border-[var(--theta-primary)] bg-[var(--theta-primary)] px-4 py-3 text-center font-bold text-white"
-            >
-              Register Now
-            </Link>
-          </div>
-        </aside>
+            ) : (
+              <span
+                key={item.href}
+                class="block rounded-xl border border-black/10 px-4 py-3 font-semibold text-neutral-500"
+              >
+                {item.label}
+              </span>
+            ),
+          )}
+          <Link
+            href="/events"
+            onClick$={closeMenu}
+            class="theta-focus mt-2 block rounded-xl border-2 border-[var(--theta-primary)] bg-[var(--theta-primary)] px-4 py-3 text-center font-bold text-white"
+          >
+            Register Now
+          </Link>
+        </div>
       </div>
-      <div class="border-t border-black/5 lg:hidden"></div>
     </header>
   );
 });
