@@ -45,7 +45,8 @@ const defaultContactCopy: ContactCopy = {
   subtitle: "Have questions? Reach out to the Theta 2026 team.",
   webtekLabel: "WebTek Team",
   webtekTitle: "Engineering & Platform",
-  webtekDescription: "Build, deployment, and experience optimization powered by WebTek.",
+  webtekDescription:
+    "Build, deployment, and experience optimization powered by WebTek.",
   githubLabel: "GitHub",
   linkedinLabel: "LinkedIn",
   emailLabel: "Email",
@@ -148,12 +149,20 @@ export default component$(() => {
         </span>
       </div>
       <h3 class="mt-4 text-center text-lg font-extrabold">{member.name}</h3>
-      <p class="mt-1 text-center text-sm font-semibold text-[var(--theta-primary)]">{member.role}</p>
+      <p class="mt-1 text-center text-sm font-semibold text-[var(--theta-primary)]">
+        {member.role}
+      </p>
       <div class="mt-4 space-y-2 text-sm text-neutral-700">
-        <a href={`tel:${member.phone}`} class="theta-focus flex items-center justify-center rounded-lg border border-black/15 bg-neutral-50 px-3 py-2 hover:border-[var(--theta-primary)]">
+        <a
+          href={`tel:${member.phone}`}
+          class="theta-focus flex items-center justify-center rounded-lg border border-black/15 bg-neutral-50 px-3 py-2 hover:border-[var(--theta-primary)]"
+        >
           {member.phone}
         </a>
-        <a href={`mailto:${member.email}`} class="theta-focus flex items-center justify-center rounded-lg border border-black/15 bg-neutral-50 px-3 py-2 hover:border-[var(--theta-primary)]">
+        <a
+          href={`mailto:${member.email}`}
+          class="theta-focus flex items-center justify-center rounded-lg border border-black/15 bg-neutral-50 px-3 py-2 hover:border-[var(--theta-primary)]"
+        >
           {member.email}
         </a>
       </div>
@@ -167,7 +176,10 @@ export default component$(() => {
         <div class="relative flex flex-wrap items-center justify-between gap-5">
           <div>
             <h1 class="text-4xl font-extrabold sm:text-5xl">
-              {copy.value.titlePrefix} <span class="text-[var(--theta-primary)]">{copy.value.titleAccent}</span>
+              {copy.value.titlePrefix}{" "}
+              <span class="text-[var(--theta-primary)]">
+                {copy.value.titleAccent}
+              </span>
             </h1>
             <p class="mt-3 max-w-2xl text-neutral-600">{copy.value.subtitle}</p>
           </div>
@@ -213,8 +225,12 @@ export default component$(() => {
         <div class="theta-shell relative overflow-hidden p-6">
           <div class="pointer-events-none absolute -top-16 -right-16 h-40 w-40 rounded-full bg-[var(--theta-primary)]/12 blur-3xl"></div>
           <div class="relative">
-            <span class="theta-badge border-black/20 text-neutral-900">{copy.value.webtekLabel}</span>
-            <h3 class="mt-4 text-2xl font-extrabold text-neutral-900">{copy.value.webtekTitle}</h3>
+            <span class="theta-badge border-black/20 text-neutral-900">
+              {copy.value.webtekLabel}
+            </span>
+            <h3 class="mt-4 text-2xl font-extrabold text-neutral-900">
+              {copy.value.webtekTitle}
+            </h3>
             <p class="mt-2 text-sm text-neutral-600">
               {copy.value.webtekDescription}
             </p>
@@ -248,8 +264,12 @@ export default component$(() => {
         <div class="theta-shell relative overflow-hidden p-6">
           <div class="pointer-events-none absolute -bottom-18 -left-12 h-40 w-40 rounded-full bg-[var(--theta-primary)]/12 blur-3xl"></div>
           <div class="relative">
-            <h3 class="text-2xl font-extrabold">{copy.value.stillQuestionsTitle}</h3>
-            <p class="mt-2 text-sm text-neutral-600">{copy.value.stillQuestionsSubtitle}</p>
+            <h3 class="text-2xl font-extrabold">
+              {copy.value.stillQuestionsTitle}
+            </h3>
+            <p class="mt-2 text-sm text-neutral-600">
+              {copy.value.stillQuestionsSubtitle}
+            </p>
             <a
               href={`mailto:${teamData.value.webtek.email}`}
               class="theta-focus mt-4 inline-flex rounded-xl border-2 border-[var(--theta-primary)] bg-[var(--theta-primary)] px-5 py-3 text-sm font-bold text-white shadow-[0_8px_20px_rgba(124,58,237,0.32)]"

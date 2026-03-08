@@ -39,7 +39,8 @@ export const Header = component$(() => {
   const headerCopy = useSignal<HeaderCopy>(defaultHeaderCopy);
   const normalizePath = (path: string) => {
     if (!path) return "/";
-    const cleaned = path.endsWith("/") && path !== "/" ? path.slice(0, -1) : path;
+    const cleaned =
+      path.endsWith("/") && path !== "/" ? path.slice(0, -1) : path;
     return cleaned || "/";
   };
   const isPathActive = (href: string, currentPath: string) => {
@@ -89,7 +90,10 @@ export const Header = component$(() => {
     <header class="fixed top-0 right-0 left-0 z-50 border-b border-black/10 bg-white/90 backdrop-blur-xl">
       <div class="theta-noise pointer-events-none absolute inset-0 opacity-20"></div>
       <div class="relative mx-auto flex h-20 max-w-7xl items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
-        <Link href="/" class="theta-focus flex shrink-0 items-center gap-2 rounded-xl p-1">
+        <Link
+          href="/"
+          class="theta-focus flex shrink-0 items-center gap-2 rounded-xl p-1"
+        >
           <img
             src="/theta-logo.png"
             alt={headerCopy.value.logoAlt}
@@ -110,7 +114,7 @@ export const Header = component$(() => {
             alt="SASTRA University"
             width={88}
             height={44}
-            class="h-9 w-auto rounded-md border border-black/10 bg-white px-1 py-0.5 object-contain"
+            class="h-9 w-auto rounded-md border border-black/10 bg-white object-contain px-1 py-0.5"
             loading="eager"
           />
         </div>
@@ -150,7 +154,8 @@ export const Header = component$(() => {
         <div class="hidden items-center gap-2 lg:flex">
           {headerCopy.value.merch.comingSoon ? (
             <span class="theta-badge border-black bg-black text-white">
-              {headerCopy.value.merch.label} • {headerCopy.value.merch.labelSoon}
+              {headerCopy.value.merch.label} •{" "}
+              {headerCopy.value.merch.labelSoon}
             </span>
           ) : (
             <Link
@@ -175,14 +180,18 @@ export const Header = component$(() => {
           aria-label="Toggle navigation"
           class="theta-focus flex h-11 w-11 items-center justify-center rounded-xl border-2 border-black/20 bg-white lg:hidden"
         >
-          <span class="text-xl text-neutral-900">{open.value ? "✕" : "☰"}</span>
+          <span class="text-xl text-neutral-900">
+            {open.value ? "✕" : "☰"}
+          </span>
         </button>
       </div>
 
       <div
         class={[
           "relative z-10 overflow-hidden border-t border-black/10 bg-gradient-to-b from-white to-neutral-100 px-4 transition-all duration-300 lg:hidden",
-          open.value ? "max-h-[34rem] pb-5 opacity-100" : "max-h-0 pb-0 opacity-0",
+          open.value
+            ? "max-h-[34rem] pb-5 opacity-100"
+            : "max-h-0 pb-0 opacity-0",
         ]}
         aria-hidden={!open.value}
       >
@@ -193,7 +202,9 @@ export const Header = component$(() => {
           ]}
         >
           <div class="mb-3 flex items-center justify-between rounded-xl border border-black/10 bg-neutral-50 px-3 py-2">
-            <p class="text-[10px] font-extrabold tracking-[0.18em] text-neutral-500 uppercase">Navigation</p>
+            <p class="text-[10px] font-extrabold tracking-[0.18em] text-neutral-500 uppercase">
+              Navigation
+            </p>
             <span class="rounded-full border border-black/15 bg-white px-2.5 py-1 text-[10px] font-bold text-neutral-500">
               Menu
             </span>
@@ -230,7 +241,8 @@ export const Header = component$(() => {
           <div class="mt-3 space-y-2.5 border-t border-black/10 pt-3">
             {headerCopy.value.merch.comingSoon ? (
               <div class="rounded-xl border border-black/15 bg-black px-4 py-3 text-center text-sm font-bold text-white">
-                {headerCopy.value.merch.label} • {headerCopy.value.merch.labelComingSoon}
+                {headerCopy.value.merch.label} •{" "}
+                {headerCopy.value.merch.labelComingSoon}
               </div>
             ) : (
               <Link

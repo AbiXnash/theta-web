@@ -276,9 +276,9 @@ export default component$(() => {
   const countdown = useSignal({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const counterDisplay = useSignal({ events: 0, participants: 0, colleges: 0 });
   const selectedDay = useSignal<DayEvent | null>(null);
-  const selectedSponsorTier = useSignal<(typeof sponsorTiers)[number]["key"] | null>(
-    null,
-  );
+  const selectedSponsorTier = useSignal<
+    (typeof sponsorTiers)[number]["key"] | null
+  >(null);
 
   useVisibleTask$(async () => {
     try {
@@ -460,7 +460,9 @@ export default component$(() => {
     const cleanups: Array<() => void> = [];
 
     for (const lane of lanes) {
-      const track = lane.querySelector<HTMLElement>("[data-marquee-track='true']");
+      const track = lane.querySelector<HTMLElement>(
+        "[data-marquee-track='true']",
+      );
       if (!track) continue;
 
       let resumeTimer: ReturnType<typeof setTimeout> | undefined;
@@ -503,9 +505,11 @@ export default component$(() => {
     selectedDay.value = null;
   });
 
-  const openSponsorTierModal = $((tier: (typeof sponsorTiers)[number]["key"]) => {
-    selectedSponsorTier.value = tier;
-  });
+  const openSponsorTierModal = $(
+    (tier: (typeof sponsorTiers)[number]["key"]) => {
+      selectedSponsorTier.value = tier;
+    },
+  );
 
   const closeSponsorTierModal = $(() => {
     selectedSponsorTier.value = null;
@@ -513,7 +517,9 @@ export default component$(() => {
 
   const getDayEvents = (dayName: string) => {
     const variants = dayAliases[dayName] || [dayName];
-    return events.value.filter((item) => (item.day ? variants.includes(item.day) : false));
+    return events.value.filter((item) =>
+      item.day ? variants.includes(item.day) : false,
+    );
   };
 
   return (
@@ -544,8 +550,12 @@ export default component$(() => {
               </div>
 
               <h1 class="mt-5 text-5xl leading-[0.84] font-black tracking-tight sm:text-7xl lg:text-8xl">
-                <span class="block text-neutral-900">{homeCopy.value.hero.titleMain}</span>
-                <span class="theta-gradient-text block">{homeCopy.value.hero.titleAccent}</span>
+                <span class="block text-neutral-900">
+                  {homeCopy.value.hero.titleMain}
+                </span>
+                <span class="theta-gradient-text block">
+                  {homeCopy.value.hero.titleAccent}
+                </span>
               </h1>
 
               <p class="mt-4 max-w-2xl text-base text-neutral-600 sm:text-lg">
@@ -556,10 +566,18 @@ export default component$(() => {
               </p>
 
               <div class="mt-6 flex flex-wrap gap-3">
-                <span class="theta-sticker animate-theta-float">⚡ Hackathons</span>
-                <span class="theta-sticker animate-theta-float [animation-delay:100ms]">🤖 Robotics</span>
-                <span class="theta-sticker animate-theta-float [animation-delay:200ms]">🎨 Design</span>
-                <span class="theta-sticker animate-theta-float [animation-delay:300ms]">🚀 Aerospace</span>
+                <span class="theta-sticker animate-theta-float">
+                  ⚡ Hackathons
+                </span>
+                <span class="theta-sticker animate-theta-float [animation-delay:100ms]">
+                  🤖 Robotics
+                </span>
+                <span class="theta-sticker animate-theta-float [animation-delay:200ms]">
+                  🎨 Design
+                </span>
+                <span class="theta-sticker animate-theta-float [animation-delay:300ms]">
+                  🚀 Aerospace
+                </span>
               </div>
 
               <div class="mt-8 flex flex-wrap gap-3">
@@ -601,17 +619,32 @@ export default component$(() => {
                 </p>
                 <div class="grid grid-cols-4 gap-2 sm:gap-3">
                   {[
-                    { label: homeCopy.value.countdownLabels.days, value: countdown.value.days },
-                    { label: homeCopy.value.countdownLabels.hours, value: countdown.value.hours },
-                    { label: homeCopy.value.countdownLabels.minutes, value: countdown.value.minutes },
-                    { label: homeCopy.value.countdownLabels.seconds, value: countdown.value.seconds },
+                    {
+                      label: homeCopy.value.countdownLabels.days,
+                      value: countdown.value.days,
+                    },
+                    {
+                      label: homeCopy.value.countdownLabels.hours,
+                      value: countdown.value.hours,
+                    },
+                    {
+                      label: homeCopy.value.countdownLabels.minutes,
+                      value: countdown.value.minutes,
+                    },
+                    {
+                      label: homeCopy.value.countdownLabels.seconds,
+                      value: countdown.value.seconds,
+                    },
                   ].map((unit, index) => (
                     <div key={unit.label} class="text-center">
                       <div
                         class="theta-count-chip animate-[thetaIdleDrift_3.2s_ease-in-out_infinite]"
                         style={{ animationDelay: `${index * 110}ms` }}
                       >
-                        <span key={`${unit.label}-${unit.value}`} class="theta-count-value">
+                        <span
+                          key={`${unit.label}-${unit.value}`}
+                          class="theta-count-value"
+                        >
                           {String(unit.value).padStart(2, "0")}
                         </span>
                       </div>
@@ -623,7 +656,9 @@ export default component$(() => {
                 </div>
 
                 <div class="mt-5 rounded-xl border border-black/10 bg-white p-3">
-                  <p class="text-xs font-bold tracking-[0.12em] text-neutral-500 uppercase">Theme Pulse</p>
+                  <p class="text-xs font-bold tracking-[0.12em] text-neutral-500 uppercase">
+                    Theme Pulse
+                  </p>
                   <p class="mt-1 text-sm font-semibold text-neutral-700">
                     Build bold ideas. Ship fast. Own the stage at Theta.
                   </p>
@@ -641,7 +676,8 @@ export default component$(() => {
               Festival Days
             </span>
             <h2 class="mt-3 text-4xl leading-tight font-extrabold sm:text-5xl">
-              Build. Battle. <span class="text-[var(--theta-primary)]">Celebrate.</span>
+              Build. Battle.{" "}
+              <span class="text-[var(--theta-primary)]">Celebrate.</span>
             </h2>
           </div>
           <span class="theta-sticker">Click Card to View Schedule</span>
@@ -710,23 +746,33 @@ export default component$(() => {
       <section class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div class="theta-shell relative overflow-hidden p-6 sm:p-8 lg:p-10">
           <div class="pointer-events-none absolute -top-20 -right-20 h-56 w-56 rounded-full bg-[var(--theta-primary)]/12 blur-3xl"></div>
-          <div class="pointer-events-none absolute -left-16 bottom-0 h-40 w-40 rounded-full bg-black/8 blur-2xl"></div>
+          <div class="pointer-events-none absolute bottom-0 -left-16 h-40 w-40 rounded-full bg-black/8 blur-2xl"></div>
 
           <div class="relative grid gap-8 lg:grid-cols-[1.2fr_1fr] lg:items-start">
             <div>
-              <span class="theta-badge border-black/20 text-neutral-700">{homeCopy.value.about.badge}</span>
+              <span class="theta-badge border-black/20 text-neutral-700">
+                {homeCopy.value.about.badge}
+              </span>
               <h2 class="mt-4 text-4xl leading-tight font-extrabold sm:text-5xl">
                 {homeCopy.value.about.titlePrefix}{" "}
-                <span class="text-[var(--theta-primary)]">{homeCopy.value.about.titleAccent}</span>{" "}
+                <span class="text-[var(--theta-primary)]">
+                  {homeCopy.value.about.titleAccent}
+                </span>{" "}
                 {homeCopy.value.about.titleSuffix}
               </h2>
               <p class="mt-4 max-w-2xl text-base text-neutral-600 sm:text-lg">
                 {configData.value.about.description}
               </p>
               <div class="mt-6 flex flex-wrap gap-2">
-                <span class="rounded-full border border-black/15 bg-white px-3 py-1 text-xs font-bold text-neutral-700">National Level</span>
-                <span class="rounded-full border border-black/15 bg-white px-3 py-1 text-xs font-bold text-neutral-700">Tech + Management</span>
-                <span class="rounded-full border border-black/15 bg-white px-3 py-1 text-xs font-bold text-neutral-700">Student Driven</span>
+                <span class="rounded-full border border-black/15 bg-white px-3 py-1 text-xs font-bold text-neutral-700">
+                  National Level
+                </span>
+                <span class="rounded-full border border-black/15 bg-white px-3 py-1 text-xs font-bold text-neutral-700">
+                  Tech + Management
+                </span>
+                <span class="rounded-full border border-black/15 bg-white px-3 py-1 text-xs font-bold text-neutral-700">
+                  Student Driven
+                </span>
               </div>
             </div>
 
@@ -741,7 +787,7 @@ export default component$(() => {
                   width={120}
                   height={40}
                   loading="lazy"
-                  class="h-8 w-auto rounded-md border border-black/10 bg-white px-1 py-0.5 object-contain"
+                  class="h-8 w-auto rounded-md border border-black/10 bg-white object-contain px-1 py-0.5"
                 />
               </div>
               <p class="mt-3 text-3xl leading-tight font-black text-neutral-900">
@@ -750,8 +796,8 @@ export default component$(() => {
                 Infinite ideas.
               </p>
               <p class="mt-3 text-sm text-neutral-600">
-                Compete, collaborate, and showcase your best work in front of peers,
-                mentors, and industry communities.
+                Compete, collaborate, and showcase your best work in front of
+                peers, mentors, and industry communities.
               </p>
             </div>
           </div>
@@ -765,8 +811,12 @@ export default component$(() => {
                 <span class="inline-flex h-9 w-9 items-center justify-center rounded-full border-2 border-black bg-black text-sm font-black text-white">
                   {idx + 1}
                 </span>
-                <h3 class="mt-4 text-2xl font-extrabold text-neutral-900">{feature.title}</h3>
-                <p class="mt-2 text-sm text-neutral-600">{feature.description}</p>
+                <h3 class="mt-4 text-2xl font-extrabold text-neutral-900">
+                  {feature.title}
+                </h3>
+                <p class="mt-2 text-sm text-neutral-600">
+                  {feature.description}
+                </p>
                 <div class="mt-4 h-1 w-14 rounded-full bg-[var(--theta-primary)]/65 transition-all group-hover:w-20"></div>
               </article>
             ))}
@@ -774,16 +824,22 @@ export default component$(() => {
         </div>
       </section>
 
-      <section id="theta-stats" class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+      <section
+        id="theta-stats"
+        class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8"
+      >
         <div class="theta-shell relative overflow-hidden p-6 sm:p-8 lg:p-10">
           <div class="pointer-events-none absolute -top-16 -left-12 h-40 w-40 rounded-full bg-[var(--theta-primary)]/14 blur-2xl"></div>
           <div class="pointer-events-none absolute -right-14 -bottom-14 h-44 w-44 rounded-full bg-black/10 blur-3xl"></div>
 
           <div class="relative mb-7 flex flex-wrap items-end justify-between gap-3">
             <div>
-              <span class="theta-badge border-black/20 text-neutral-700">Theta Snapshot</span>
+              <span class="theta-badge border-black/20 text-neutral-700">
+                Theta Snapshot
+              </span>
               <h2 class="mt-3 text-4xl font-extrabold sm:text-5xl">
-                Numbers that <span class="text-[var(--theta-primary)]">define the fest</span>
+                Numbers that{" "}
+                <span class="text-[var(--theta-primary)]">define the fest</span>
               </h2>
             </div>
             <span class="theta-sticker">Live Counters</span>
@@ -793,42 +849,90 @@ export default component$(() => {
             <article class="group rounded-2xl border-2 border-black/20 bg-white p-5 shadow-[6px_6px_0_#111] transition duration-200 hover:-translate-y-1 hover:shadow-[10px_10px_0_#111]">
               <div class="mb-3 flex items-center justify-between">
                 <span class="inline-flex h-10 w-10 items-center justify-center rounded-full border-2 border-black bg-black text-white">
-                  <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10m-9 4h6M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  <svg
+                    class="h-5 w-5"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M8 7V3m8 4V3m-9 8h10m-9 4h6M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                    />
                   </svg>
                 </span>
-                <span class="text-[11px] font-bold tracking-[0.14em] text-neutral-500 uppercase">2026</span>
+                <span class="text-[11px] font-bold tracking-[0.14em] text-neutral-500 uppercase">
+                  2026
+                </span>
               </div>
-              <p class="text-5xl font-black tabular-nums text-[var(--theta-primary)]">{counterDisplay.value.events}+</p>
-              <p class="mt-2 text-sm font-semibold text-neutral-700">{homeCopy.value.statsLabels.events}</p>
+              <p class="text-5xl font-black text-[var(--theta-primary)] tabular-nums">
+                {counterDisplay.value.events}+
+              </p>
+              <p class="mt-2 text-sm font-semibold text-neutral-700">
+                {homeCopy.value.statsLabels.events}
+              </p>
               <div class="mt-4 h-1 w-16 rounded-full bg-[var(--theta-primary)]/60 transition-all group-hover:w-24"></div>
             </article>
 
             <article class="group rounded-2xl border-2 border-black/20 bg-white p-5 shadow-[6px_6px_0_#111] transition duration-200 hover:-translate-y-1 hover:shadow-[10px_10px_0_#111] md:scale-[1.03]">
               <div class="mb-3 flex items-center justify-between">
                 <span class="inline-flex h-10 w-10 items-center justify-center rounded-full border-2 border-black bg-black text-white">
-                  <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5V4H2v16h5m10 0v-2a4 4 0 00-4-4H9a4 4 0 00-4 4v2m12 0H7m9-12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <svg
+                    class="h-5 w-5"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M17 20h5V4H2v16h5m10 0v-2a4 4 0 00-4-4H9a4 4 0 00-4 4v2m12 0H7m9-12a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
                   </svg>
                 </span>
-                <span class="text-[11px] font-bold tracking-[0.14em] text-neutral-500 uppercase">2026</span>
+                <span class="text-[11px] font-bold tracking-[0.14em] text-neutral-500 uppercase">
+                  2026
+                </span>
               </div>
-              <p class="text-5xl font-black tabular-nums text-[var(--theta-primary)]">{counterDisplay.value.participants}+</p>
-              <p class="mt-2 text-sm font-semibold text-neutral-700">{homeCopy.value.statsLabels.participants}</p>
+              <p class="text-5xl font-black text-[var(--theta-primary)] tabular-nums">
+                {counterDisplay.value.participants}+
+              </p>
+              <p class="mt-2 text-sm font-semibold text-neutral-700">
+                {homeCopy.value.statsLabels.participants}
+              </p>
               <div class="mt-4 h-1 w-16 rounded-full bg-[var(--theta-primary)]/60 transition-all group-hover:w-24"></div>
             </article>
 
             <article class="group rounded-2xl border-2 border-black/20 bg-white p-5 shadow-[6px_6px_0_#111] transition duration-200 hover:-translate-y-1 hover:shadow-[10px_10px_0_#111]">
               <div class="mb-3 flex items-center justify-between">
                 <span class="inline-flex h-10 w-10 items-center justify-center rounded-full border-2 border-black bg-black text-white">
-                  <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21h18M4 21V8l8-5 8 5v13M9 21v-6h6v6M9 11h.01M15 11h.01" />
+                  <svg
+                    class="h-5 w-5"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M3 21h18M4 21V8l8-5 8 5v13M9 21v-6h6v6M9 11h.01M15 11h.01"
+                    />
                   </svg>
                 </span>
-                <span class="text-[11px] font-bold tracking-[0.14em] text-neutral-500 uppercase">2026</span>
+                <span class="text-[11px] font-bold tracking-[0.14em] text-neutral-500 uppercase">
+                  2026
+                </span>
               </div>
-              <p class="text-5xl font-black tabular-nums text-[var(--theta-primary)]">{counterDisplay.value.colleges}+</p>
-              <p class="mt-2 text-sm font-semibold text-neutral-700">{homeCopy.value.statsLabels.colleges}</p>
+              <p class="text-5xl font-black text-[var(--theta-primary)] tabular-nums">
+                {counterDisplay.value.colleges}+
+              </p>
+              <p class="mt-2 text-sm font-semibold text-neutral-700">
+                {homeCopy.value.statsLabels.colleges}
+              </p>
               <div class="mt-4 h-1 w-16 rounded-full bg-[var(--theta-primary)]/60 transition-all group-hover:w-24"></div>
             </article>
           </div>
@@ -855,7 +959,9 @@ export default component$(() => {
                 {homeCopy.value.sponsors.hallDescription}
               </p>
             </div>
-            <span class="theta-sticker rotate-[-4deg]">{homeCopy.value.sponsors.hallSticker}</span>
+            <span class="theta-sticker rotate-[-4deg]">
+              {homeCopy.value.sponsors.hallSticker}
+            </span>
           </div>
 
           <div class="relative mt-8 space-y-8">
@@ -873,13 +979,19 @@ export default component$(() => {
                     const list = (sponsors.value[tier.key] || [])
                       .slice()
                       .sort((a, b) => (a.order || 999) - (b.order || 999));
-                    const shouldAnimate = tier.key === "platinum" || list.length > 4;
-                    const visibleItems = shouldAnimate ? [...list, ...list] : list;
+                    const shouldAnimate =
+                      tier.key === "platinum" || list.length > 4;
+                    const visibleItems = shouldAnimate
+                      ? [...list, ...list]
+                      : list;
 
                     return (
                       <section
                         key={`sponsor-lane-${tier.key}`}
-                        class={["rounded-2xl border-2 bg-white/70 p-3 sm:p-4", tierStyle.border]}
+                        class={[
+                          "rounded-2xl border-2 bg-white/70 p-3 sm:p-4",
+                          tierStyle.border,
+                        ]}
                       >
                         <div class="flex w-full items-center justify-between gap-3 rounded-xl px-2 py-2 text-left">
                           <div class="flex items-center gap-3">
@@ -892,8 +1004,8 @@ export default component$(() => {
                                 tierStyle.chip,
                               ]}
                             >
-                                {list.length} Partners
-                              </span>
+                              {list.length} Partners
+                            </span>
                           </div>
                           <span class="text-[10px] font-bold tracking-[0.14em] text-neutral-500 uppercase">
                             {shouldAnimate ? "Auto + Swipe" : "Static Lane"}
@@ -903,17 +1015,21 @@ export default component$(() => {
                         <div
                           data-marquee-lane={shouldAnimate ? "true" : "false"}
                           class={[
-                            "mt-3 -mx-1 px-1 pb-2",
+                            "-mx-1 mt-3 px-1 pb-2",
                             shouldAnimate
                               ? "theta-marquee-lane overflow-x-auto"
                               : "overflow-visible",
                           ]}
                         >
                           <div
-                            data-marquee-track={shouldAnimate ? "true" : "false"}
+                            data-marquee-track={
+                              shouldAnimate ? "true" : "false"
+                            }
                             class={[
                               "flex gap-3 py-2",
-                              shouldAnimate ? "min-w-max" : "w-full flex-wrap justify-center",
+                              shouldAnimate
+                                ? "min-w-max"
+                                : "w-full flex-wrap justify-center",
                               shouldAnimate &&
                                 (tierIndex % 2 === 0
                                   ? "animate-[thetaMarqueeLeft_24s_linear_infinite]"
@@ -921,37 +1037,39 @@ export default component$(() => {
                             ]}
                           >
                             {visibleItems.map((item, index) => (
-                            <article
-                              key={`${tier.key}-${item.name}-${index}`}
-                              onClick$={() => openSponsorTierModal(tier.key)}
-                              class={[
-                                "theta-sponsor-card theta-focus group min-w-[10.5rem] cursor-pointer p-3 text-center sm:min-w-[12rem]",
-                                index % 2 === 0 ? "rotate-[-0.6deg]" : "rotate-[0.6deg]",
-                                !shouldAnimate &&
-                                  "animate-[thetaIdleDrift_3.2s_ease-in-out_infinite]",
-                              ]}
-                              style={
-                                !shouldAnimate
-                                  ? { animationDelay: `${index * 180}ms` }
-                                  : undefined
-                              }
-                            >
-                              <div class="flex min-h-20 items-center justify-center sm:min-h-24">
-                                <img
-                                  src={item.logo}
-                                  alt={item.name}
-                                  width={220}
-                                  height={110}
-                                  loading="lazy"
-                                  class="relative z-10 max-h-14 w-auto object-contain transition duration-300 group-hover:scale-105 sm:max-h-16"
-                                />
-                              </div>
-                              <p class="relative z-10 mt-2 text-[10px] font-bold tracking-[0.06em] text-neutral-700 uppercase sm:text-xs">
-                                {item.name}
-                              </p>
-                            </article>
-                          ))}
-                        </div>
+                              <article
+                                key={`${tier.key}-${item.name}-${index}`}
+                                onClick$={() => openSponsorTierModal(tier.key)}
+                                class={[
+                                  "theta-sponsor-card theta-focus group min-w-[10.5rem] cursor-pointer p-3 text-center sm:min-w-[12rem]",
+                                  index % 2 === 0
+                                    ? "rotate-[-0.6deg]"
+                                    : "rotate-[0.6deg]",
+                                  !shouldAnimate &&
+                                    "animate-[thetaIdleDrift_3.2s_ease-in-out_infinite]",
+                                ]}
+                                style={
+                                  !shouldAnimate
+                                    ? { animationDelay: `${index * 180}ms` }
+                                    : undefined
+                                }
+                              >
+                                <div class="flex min-h-20 items-center justify-center sm:min-h-24">
+                                  <img
+                                    src={item.logo}
+                                    alt={item.name}
+                                    width={220}
+                                    height={110}
+                                    loading="lazy"
+                                    class="relative z-10 max-h-14 w-auto object-contain transition duration-300 group-hover:scale-105 sm:max-h-16"
+                                  />
+                                </div>
+                                <p class="relative z-10 mt-2 text-[10px] font-bold tracking-[0.06em] text-neutral-700 uppercase sm:text-xs">
+                                  {item.name}
+                                </p>
+                              </article>
+                            ))}
+                          </div>
                         </div>
                       </section>
                     );
@@ -965,7 +1083,9 @@ export default component$(() => {
 
       {selectedSponsorTier.value &&
         (() => {
-          const tier = sponsorTiers.find((item) => item.key === selectedSponsorTier.value);
+          const tier = sponsorTiers.find(
+            (item) => item.key === selectedSponsorTier.value,
+          );
           if (!tier) return null;
           const tierStyle = sponsorTierStyles[tier.key];
           const tierSponsors = (sponsors.value[tier.key] || [])
@@ -981,7 +1101,7 @@ export default component$(() => {
                 aria-label="Close sponsors modal"
               ></button>
 
-              <div class="theta-shell animate-[thetaPulse_1.6s_ease-in-out_1] relative z-10 max-h-[92vh] w-full max-w-5xl overflow-auto p-5 sm:p-7">
+              <div class="theta-shell relative z-10 max-h-[92vh] w-full max-w-5xl animate-[thetaPulse_1.6s_ease-in-out_1] overflow-auto p-5 sm:p-7">
                 <button
                   type="button"
                   onClick$={closeSponsorTierModal}
@@ -1010,7 +1130,9 @@ export default component$(() => {
                       key={`modal-${tier.key}-${item.name}`}
                       class={[
                         "theta-sponsor-card group flex min-h-36 flex-col items-center justify-center bg-white p-4 text-center",
-                        index % 2 === 0 ? "rotate-[-0.4deg]" : "rotate-[0.4deg]",
+                        index % 2 === 0
+                          ? "rotate-[-0.4deg]"
+                          : "rotate-[0.4deg]",
                       ]}
                     >
                       <img
@@ -1039,10 +1161,14 @@ export default component$(() => {
 
           <div class="relative grid gap-6 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
             <div>
-              <span class="theta-badge border-black/20 text-neutral-700">Ready to Shine</span>
+              <span class="theta-badge border-black/20 text-neutral-700">
+                Ready to Shine
+              </span>
               <h3 class="mt-4 text-4xl leading-tight font-black sm:text-5xl lg:text-6xl">
                 {homeCopy.value.cta.titlePrefix}{" "}
-                <span class="text-[var(--theta-primary)]">{homeCopy.value.cta.titleAccent}</span>
+                <span class="text-[var(--theta-primary)]">
+                  {homeCopy.value.cta.titleAccent}
+                </span>
               </h3>
               <p class="mt-3 max-w-2xl text-sm text-neutral-600 sm:text-base">
                 {homeCopy.value.cta.description}
@@ -1077,15 +1203,25 @@ export default component$(() => {
             </div>
 
             <aside class="theta-panel relative border-2 border-black/15 bg-gradient-to-b from-white to-neutral-100 p-4 sm:p-5">
-              <p class="text-xs font-bold tracking-[0.16em] text-neutral-500 uppercase">Festival Snapshot</p>
+              <p class="text-xs font-bold tracking-[0.16em] text-neutral-500 uppercase">
+                Festival Snapshot
+              </p>
               <div class="mt-3 space-y-3">
                 <div class="rounded-xl border border-black/10 bg-white p-3">
-                  <p class="text-[11px] font-bold tracking-[0.12em] text-neutral-500 uppercase">Dates</p>
-                  <p class="mt-1 text-sm font-extrabold text-neutral-900">{configData.value.meta.dates}</p>
+                  <p class="text-[11px] font-bold tracking-[0.12em] text-neutral-500 uppercase">
+                    Dates
+                  </p>
+                  <p class="mt-1 text-sm font-extrabold text-neutral-900">
+                    {configData.value.meta.dates}
+                  </p>
                 </div>
                 <div class="rounded-xl border border-black/10 bg-white p-3">
-                  <p class="text-[11px] font-bold tracking-[0.12em] text-neutral-500 uppercase">Venue</p>
-                  <p class="mt-1 text-sm font-extrabold text-neutral-900">{configData.value.meta.venue}</p>
+                  <p class="text-[11px] font-bold tracking-[0.12em] text-neutral-500 uppercase">
+                    Venue
+                  </p>
+                  <p class="mt-1 text-sm font-extrabold text-neutral-900">
+                    {configData.value.meta.venue}
+                  </p>
                 </div>
                 <div class="grid grid-cols-3 gap-2">
                   <div class="rounded-xl border border-black/10 bg-white px-2 py-3 text-center">
@@ -1121,8 +1257,17 @@ export default component$(() => {
 
       {selectedDay.value && (
         <div class="fixed inset-0 z-[80] flex items-center justify-center p-4">
-          <button class="absolute inset-0 bg-black/45 backdrop-blur-sm" onClick$={closeDay} aria-label="Close day modal"></button>
-          <div class="theta-shell relative z-10 w-full max-w-2xl p-5 sm:p-7" role="dialog" aria-modal="true" aria-label="Day events">
+          <button
+            class="absolute inset-0 bg-black/45 backdrop-blur-sm"
+            onClick$={closeDay}
+            aria-label="Close day modal"
+          ></button>
+          <div
+            class="theta-shell relative z-10 w-full max-w-2xl p-5 sm:p-7"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Day events"
+          >
             <button
               type="button"
               onClick$={closeDay}
@@ -1131,18 +1276,26 @@ export default component$(() => {
               Close
             </button>
             <h3 class="text-3xl font-extrabold">{selectedDay.value.day}</h3>
-            <p class="mt-1 text-sm text-neutral-600">{selectedDay.value.date}</p>
-            <p class="mt-4 text-sm text-[var(--theta-primary)]">{homeCopy.value.dayModal.scheduleTitle}</p>
+            <p class="mt-1 text-sm text-neutral-600">
+              {selectedDay.value.date}
+            </p>
+            <p class="mt-4 text-sm text-[var(--theta-primary)]">
+              {homeCopy.value.dayModal.scheduleTitle}
+            </p>
             <div class="mt-4 space-y-3">
               {getDayEvents(selectedDay.value.day).length > 0 ? (
                 getDayEvents(selectedDay.value.day).map((event) => (
                   <div key={event.id} class="theta-panel p-4">
                     <p class="font-bold">{event.name}</p>
-                    <p class="mt-1 text-sm text-neutral-600">{event.timing} • {event.location}</p>
+                    <p class="mt-1 text-sm text-neutral-600">
+                      {event.timing} • {event.location}
+                    </p>
                   </div>
                 ))
               ) : (
-                <p class="text-sm text-neutral-600">{homeCopy.value.dayModal.emptyState}</p>
+                <p class="text-sm text-neutral-600">
+                  {homeCopy.value.dayModal.emptyState}
+                </p>
               )}
             </div>
             <Link

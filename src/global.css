@@ -27,8 +27,16 @@ body {
   font-family: "Space Grotesk", sans-serif;
   color: var(--theta-text);
   background:
-    radial-gradient(circle at 12% 15%, rgba(124, 58, 237, 0.13), transparent 28%),
-    radial-gradient(circle at 88% 6%, rgba(124, 58, 237, 0.08), transparent 24%),
+    radial-gradient(
+      circle at 12% 15%,
+      rgba(124, 58, 237, 0.13),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 88% 6%,
+      rgba(124, 58, 237, 0.08),
+      transparent 24%
+    ),
     linear-gradient(180deg, #ffffff 0%, #f5f5f5 55%, #ececec 100%);
   min-height: 100vh;
 }
@@ -52,7 +60,10 @@ body {
   border-radius: 1.25rem;
   background: var(--theta-card);
   box-shadow: 8px 8px 0 #111;
-  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease;
 }
 
 .theta-panel:hover {
@@ -101,7 +112,9 @@ body {
   border: 2px solid #cfcfcf;
   border-radius: 12px;
   background: linear-gradient(180deg, #fff 0%, #f5f5f5 100%);
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.05), 0 8px 16px rgba(0, 0, 0, 0.1);
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 0, 0, 0.05),
+    0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
 .theta-hero-grid {
@@ -211,7 +224,9 @@ body {
 }
 
 .theta-glow {
-  box-shadow: 0 0 0 1px rgba(124, 58, 237, 0.3), 0 0 28px rgba(124, 58, 237, 0.28);
+  box-shadow:
+    0 0 0 1px rgba(124, 58, 237, 0.3),
+    0 0 28px rgba(124, 58, 237, 0.28);
 }
 
 .theta-underline::after {
@@ -258,10 +273,14 @@ body {
 @keyframes thetaPulse {
   0%,
   100% {
-    box-shadow: 0 0 0 1px rgba(124, 58, 237, 0.34), 0 0 18px rgba(124, 58, 237, 0.2);
+    box-shadow:
+      0 0 0 1px rgba(124, 58, 237, 0.34),
+      0 0 18px rgba(124, 58, 237, 0.2);
   }
   50% {
-    box-shadow: 0 0 0 1px rgba(124, 58, 237, 0.55), 0 0 28px rgba(124, 58, 237, 0.36);
+    box-shadow:
+      0 0 0 1px rgba(124, 58, 237, 0.55),
+      0 0 28px rgba(124, 58, 237, 0.36);
   }
 }
 
@@ -291,7 +310,9 @@ body {
   border-radius: 1rem;
   background: #fff;
   box-shadow: 6px 6px 0 #111;
-  transition: transform 180ms ease, box-shadow 180ms ease;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
 }
 
 .theta-sponsor-card::before {
@@ -402,7 +423,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  transform: rotate(var(--angle)) translateX(var(--radius)) rotate(calc(var(--angle) * -1));
+  transform: rotate(var(--angle)) translateX(var(--radius))
+    rotate(calc(var(--angle) * -1));
 }
 
 /* Mobile sponsor radial stage */
