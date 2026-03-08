@@ -47,6 +47,16 @@ interface EventsPageCopy {
   entryFee: string;
   perParticipant: string;
   registerNow: string;
+  metrics: {
+    total: string;
+    active: string;
+    soon: string;
+  };
+  filterLabels: {
+    category: string;
+    status: string;
+    cluster: string;
+  };
 }
 
 const defaultEventsPageCopy: EventsPageCopy = {
@@ -74,6 +84,16 @@ const defaultEventsPageCopy: EventsPageCopy = {
   entryFee: "Entry Fee",
   perParticipant: "per participant",
   registerNow: "Register Now",
+  metrics: {
+    total: "Total",
+    active: "Active",
+    soon: "Soon",
+  },
+  filterLabels: {
+    category: "Category",
+    status: "Status",
+    cluster: "Cluster",
+  },
 };
 
 const FEST_YEAR = 2026;
@@ -213,6 +233,14 @@ export default component$(() => {
             ...defaultEventsPageCopy.statusLabels,
             ...(content.eventsPage.statusLabels || {}),
           },
+          metrics: {
+            ...defaultEventsPageCopy.metrics,
+            ...(content.eventsPage.metrics || {}),
+          },
+          filterLabels: {
+            ...defaultEventsPageCopy.filterLabels,
+            ...(content.eventsPage.filterLabels || {}),
+          },
         };
       }
 
@@ -338,26 +366,28 @@ export default component$(() => {
             <div class="grid grid-cols-3 gap-2 text-xs">
               <div class="rounded-xl border border-black/10 bg-white px-3 py-2 text-center">
                 <p class="text-lg font-black text-[var(--theta-primary)]">{events.value.length}</p>
-                <p class="font-bold text-neutral-600">Total</p>
+                <p class="font-bold text-neutral-600">{copy.value.metrics.total}</p>
               </div>
               <div class="rounded-xl border border-black/10 bg-white px-3 py-2 text-center">
                 <p class="text-lg font-black text-emerald-600">
                   {events.value.filter((item) => getEffectiveStatus(item) === "active").length}
                 </p>
-                <p class="font-bold text-neutral-600">Active</p>
+                <p class="font-bold text-neutral-600">{copy.value.metrics.active}</p>
               </div>
               <div class="rounded-xl border border-black/10 bg-white px-3 py-2 text-center">
                 <p class="text-lg font-black text-amber-600">
                   {events.value.filter((item) => getEffectiveStatus(item) === "coming-soon").length}
                 </p>
-                <p class="font-bold text-neutral-600">Soon</p>
+                <p class="font-bold text-neutral-600">{copy.value.metrics.soon}</p>
               </div>
             </div>
           </div>
 
           <div class="mt-5 grid min-w-0 gap-4 rounded-2xl border-2 border-black/10 bg-white/90 p-4">
             <div class="min-w-0">
-              <p class="mb-2 text-[11px] font-extrabold tracking-[0.16em] text-neutral-500 uppercase">Category</p>
+              <p class="mb-2 text-[11px] font-extrabold tracking-[0.16em] text-neutral-500 uppercase">
+                {copy.value.filterLabels.category}
+              </p>
               <div class="flex flex-wrap gap-2">
             {([
               { key: "all", label: copy.value.categoryLabels.all },
@@ -381,7 +411,9 @@ export default component$(() => {
             </div>
 
             <div class="min-w-0">
-              <p class="mb-2 text-[11px] font-extrabold tracking-[0.16em] text-neutral-500 uppercase">Status</p>
+              <p class="mb-2 text-[11px] font-extrabold tracking-[0.16em] text-neutral-500 uppercase">
+                {copy.value.filterLabels.status}
+              </p>
               <div class="flex flex-wrap gap-2 overflow-x-auto pb-1">
                 {([
                   { key: "all", label: copy.value.statusLabels.all },
@@ -406,7 +438,9 @@ export default component$(() => {
             </div>
 
             <div class="min-w-0">
-              <p class="mb-2 text-[11px] font-extrabold tracking-[0.16em] text-neutral-500 uppercase">Cluster</p>
+              <p class="mb-2 text-[11px] font-extrabold tracking-[0.16em] text-neutral-500 uppercase">
+                {copy.value.filterLabels.cluster}
+              </p>
               <div class="-mx-1 overflow-x-auto px-1 pb-1">
                 <div class="inline-flex min-w-max gap-2">
                   <button

@@ -27,6 +27,12 @@ interface ContactCopy {
   titleAccent: string;
   subtitle: string;
   webtekLabel: string;
+  webtekTitle: string;
+  webtekDescription: string;
+  githubLabel: string;
+  linkedinLabel: string;
+  emailLabel: string;
+  membersSuffix: string;
   contactPrefix: string;
   stillQuestionsTitle: string;
   stillQuestionsSubtitle: string;
@@ -38,6 +44,12 @@ const defaultContactCopy: ContactCopy = {
   titleAccent: "Touch",
   subtitle: "Have questions? Reach out to the Theta 2026 team.",
   webtekLabel: "WebTek Team",
+  webtekTitle: "Engineering & Platform",
+  webtekDescription: "Build, deployment, and experience optimization powered by WebTek.",
+  githubLabel: "GitHub",
+  linkedinLabel: "LinkedIn",
+  emailLabel: "Email",
+  membersSuffix: "members",
   contactPrefix: "Contact:",
   stillQuestionsTitle: "Still have questions?",
   stillQuestionsSubtitle: "Feel free to connect with our coordinators.",
@@ -183,7 +195,9 @@ export default component$(() => {
             <div key={section.key}>
               <div class="mb-4 flex items-center justify-between gap-3">
                 <h2 class="text-2xl font-extrabold">{section.label}</h2>
-                <span class="theta-badge border-black/15 text-neutral-700">{members.length} members</span>
+                <span class="theta-badge border-black/15 text-neutral-700">
+                  {members.length} {copy.value.membersSuffix}
+                </span>
               </div>
               <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
                 {members.map((member) => (
@@ -200,9 +214,9 @@ export default component$(() => {
           <div class="pointer-events-none absolute -top-16 -right-16 h-40 w-40 rounded-full bg-[var(--theta-primary)]/12 blur-3xl"></div>
           <div class="relative">
             <span class="theta-badge border-black/20 text-neutral-900">{copy.value.webtekLabel}</span>
-            <h3 class="mt-4 text-2xl font-extrabold text-neutral-900">Engineering & Platform</h3>
+            <h3 class="mt-4 text-2xl font-extrabold text-neutral-900">{copy.value.webtekTitle}</h3>
             <p class="mt-2 text-sm text-neutral-600">
-              Build, deployment, and experience optimization powered by WebTek.
+              {copy.value.webtekDescription}
             </p>
             <div class="mt-4 grid gap-2 sm:grid-cols-3">
               <a
@@ -211,7 +225,7 @@ export default component$(() => {
                 rel="noopener noreferrer"
                 class="theta-focus rounded-xl border border-black/15 bg-white px-4 py-2 text-center text-sm font-bold hover:border-[var(--theta-primary)] hover:text-[var(--theta-primary)]"
               >
-                GitHub
+                {copy.value.githubLabel}
               </a>
               <a
                 href={teamData.value.webtek.linkedin}
@@ -219,13 +233,13 @@ export default component$(() => {
                 rel="noopener noreferrer"
                 class="theta-focus rounded-xl border border-black/15 bg-white px-4 py-2 text-center text-sm font-bold hover:border-[var(--theta-primary)] hover:text-[var(--theta-primary)]"
               >
-                LinkedIn
+                {copy.value.linkedinLabel}
               </a>
               <a
                 href={`mailto:${teamData.value.webtek.email}`}
                 class="theta-focus rounded-xl border border-black/15 bg-white px-4 py-2 text-center text-sm font-bold hover:border-[var(--theta-primary)] hover:text-[var(--theta-primary)]"
               >
-                Email
+                {copy.value.emailLabel}
               </a>
             </div>
           </div>

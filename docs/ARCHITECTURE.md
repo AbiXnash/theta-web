@@ -20,8 +20,9 @@
 Pages fetch static JSON from `/public/data` using `fetch()` inside Qwik `useVisibleTask$` blocks.
 
 - No hardcoded event/sponsor/team content in route markup.
-- Page copy and labels come from `content.json` where available.
+- Page copy and labels come from `content.json` (home/events/contact/header/layout).
 - Day cards are configured under `config.json -> days[]`.
+- Team images use a local fallback avatar at `/public/team/default-avatar.svg` when profile images are missing.
 
 ## Styling Model
 

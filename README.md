@@ -52,6 +52,12 @@ All editable content is JSON-driven from:
 
 Day-card artwork is loaded from `/public/day/*.svg` and referenced in `config.json`.
 
+### JSON Copy Coverage
+
+- Home sponsors section labels (including previous-sponsor messaging) come from `content.json -> home.sponsors`.
+- Events page metric/filter labels come from `content.json -> eventsPage.metrics` and `eventsPage.filterLabels`.
+- Contact support labels and CTA copy come from `content.json -> contactPage`.
+
 ## Route Map
 
 - `/` - home/landing page

@@ -51,6 +51,11 @@ interface HomeCopy {
     badge: string;
     titlePrefix: string;
     titleAccent: string;
+    hallBadge: string;
+    hallTitlePrefix: string;
+    hallTitleAccent: string;
+    hallDescription: string;
+    hallSticker: string;
     platinum: string;
     gold: string;
     silver: string;
@@ -138,6 +143,12 @@ const defaultHomeCopy: HomeCopy = {
     badge: "Our Sponsors",
     titlePrefix: "Powered by",
     titleAccent: "Partners",
+    hallBadge: "Previous Sponsors",
+    hallTitlePrefix: "Past Edition",
+    hallTitleAccent: "Partners",
+    hallDescription:
+      "These brands supported previous editions of Theta and helped build the fest legacy.",
+    hallSticker: "Legacy Wall",
     platinum: "Platinum",
     gold: "Gold",
     silver: "Silver",
@@ -831,16 +842,20 @@ export default component$(() => {
 
           <div class="relative flex flex-wrap items-end justify-between gap-4">
             <div>
-              <span class="theta-badge border-black/20 text-neutral-700">Previous Sponsors</span>
+              <span class="theta-badge border-black/20 text-neutral-700">
+                {homeCopy.value.sponsors.hallBadge}
+              </span>
               <h2 class="mt-4 text-4xl font-extrabold sm:text-5xl">
-                Past Edition{" "}
-                <span class="text-[var(--theta-primary)]">Partners</span>
+                {homeCopy.value.sponsors.hallTitlePrefix}{" "}
+                <span class="text-[var(--theta-primary)]">
+                  {homeCopy.value.sponsors.hallTitleAccent}
+                </span>
               </h2>
               <p class="mt-2 max-w-2xl text-sm text-neutral-600 sm:text-base">
-                These brands supported previous editions of Theta and helped build the fest legacy.
+                {homeCopy.value.sponsors.hallDescription}
               </p>
             </div>
-            <span class="theta-sticker rotate-[-4deg]">Legacy Wall</span>
+            <span class="theta-sticker rotate-[-4deg]">{homeCopy.value.sponsors.hallSticker}</span>
           </div>
 
           <div class="relative mt-8 space-y-8">

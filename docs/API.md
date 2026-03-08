@@ -40,6 +40,22 @@ Key sections:
 - `contactPage`
 - `seo`
 
+Notable route-copy keys:
+
+- `home.sponsors.hallBadge`
+- `home.sponsors.hallTitlePrefix`
+- `home.sponsors.hallTitleAccent`
+- `home.sponsors.hallDescription`
+- `home.sponsors.hallSticker`
+- `eventsPage.metrics.{total,active,soon}`
+- `eventsPage.filterLabels.{category,status,cluster}`
+- `contactPage.webtekTitle`
+- `contactPage.webtekDescription`
+- `contactPage.githubLabel`
+- `contactPage.linkedinLabel`
+- `contactPage.emailLabel`
+- `contactPage.membersSuffix`
+
 ## `/data/events.json`
 
 Event explorer source.

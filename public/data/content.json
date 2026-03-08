@@ -87,6 +87,11 @@
       "badge": "Our Sponsors",
       "titlePrefix": "Powered by",
       "titleAccent": "Excellence",
+      "hallBadge": "Previous Sponsors",
+      "hallTitlePrefix": "Past Edition",
+      "hallTitleAccent": "Partners",
+      "hallDescription": "These brands supported previous editions of Theta and helped build the fest legacy.",
+      "hallSticker": "Legacy Wall",
       "platinum": "Platinum Sponsors",
       "gold": "Gold Sponsors",
       "silver": "Silver Sponsors",
@@ -130,13 +135,29 @@
     "registrationClosed": "Regret registration closed",
     "entryFee": "Entry Fee",
     "perParticipant": "per participant",
-    "registerNow": "Register Now"
+    "registerNow": "Register Now",
+    "metrics": {
+      "total": "Total",
+      "active": "Active",
+      "soon": "Soon"
+    },
+    "filterLabels": {
+      "category": "Category",
+      "status": "Status",
+      "cluster": "Cluster"
+    }
   },
   "contactPage": {
     "titlePrefix": "Get in",
     "titleAccent": "Touch",
     "subtitle": "Have questions? We'd love to hear from you. Reach out to our team!",
     "webtekLabel": "WebTek Team",
+    "webtekTitle": "Engineering & Platform",
+    "webtekDescription": "Build, deployment, and experience optimization powered by WebTek.",
+    "githubLabel": "GitHub",
+    "linkedinLabel": "LinkedIn",
+    "emailLabel": "Email",
+    "membersSuffix": "members",
     "contactPrefix": "Contact:",
     "stillQuestionsTitle": "Still have questions?",
     "stillQuestionsSubtitle": "Feel free to reach out to any of our team members",
