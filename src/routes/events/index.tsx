@@ -295,32 +295,70 @@ export default component$(() => {
   });
 
   return (
-    <div class="relative mx-auto min-h-screen max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+    <div class="relative mx-auto min-h-screen max-w-7xl px-4 py-10 pb-16 sm:px-6 lg:px-8">
       <div class="theta-noise pointer-events-none absolute inset-0 -z-10 opacity-20"></div>
 
-      <section class="theta-shell p-6 sm:p-8">
-        <p class="text-xs tracking-[0.25em] text-neutral-700 uppercase">Theta 2026</p>
-        <h1 class="mt-3 text-4xl font-extrabold sm:text-5xl">{copy.value.title}</h1>
-        <p class="mt-2 max-w-2xl text-neutral-600">{copy.value.subtitle}</p>
+      <section class="theta-shell relative overflow-hidden p-6 sm:p-8">
+        <div class="pointer-events-none absolute -top-14 -right-16 h-44 w-44 rounded-full bg-[var(--theta-primary)]/12 blur-3xl"></div>
+        <div class="pointer-events-none absolute -bottom-16 -left-16 h-40 w-40 rounded-full bg-black/10 blur-3xl"></div>
 
-        <div class="mt-6">
-          <label for="events-search" class="sr-only">
-            Search events
-          </label>
-          <input
-            id="events-search"
-            type="text"
-            value={searchQuery.value}
-            onInput$={(event) =>
-              (searchQuery.value = (event.target as HTMLInputElement).value)
-            }
-            placeholder={copy.value.searchPlaceholder}
-            class="theta-focus w-full rounded-xl border-2 border-black/15 bg-white/90 px-4 py-3 text-sm text-neutral-900 placeholder:text-neutral-500"
-          />
-        </div>
+        <div class="relative">
+          <p class="text-xs font-bold tracking-[0.25em] text-neutral-700 uppercase">Theta 2026</p>
+          <div class="mt-3 flex flex-wrap items-end justify-between gap-3">
+            <div>
+              <h1 class="text-4xl font-extrabold sm:text-5xl">{copy.value.title}</h1>
+              <p class="mt-2 max-w-2xl text-neutral-600">{copy.value.subtitle}</p>
+            </div>
+            <div class="rounded-xl border border-black/10 bg-white px-3 py-2 text-xs font-bold text-neutral-600">
+              {copy.value.resultsPrefix} {filtered.length}{" "}
+              {filtered.length === 1 ? copy.value.singleEvent : copy.value.multipleEvents}
+            </div>
+          </div>
 
-        <div class="mt-5 flex flex-col gap-4">
-          <div class="flex flex-wrap gap-2">
+          <div class="mt-6 grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
+            <div class="rounded-2xl border-2 border-black/10 bg-white p-3 shadow-[0_8px_18px_rgba(0,0,0,0.08)]">
+              <label for="events-search" class="sr-only">
+                Search events
+              </label>
+              <div class="flex items-center gap-3 rounded-xl border border-black/10 bg-neutral-50 px-3 py-2.5">
+                <span class="text-base text-neutral-500">⌕</span>
+                <input
+                  id="events-search"
+                  type="text"
+                  value={searchQuery.value}
+                  onInput$={(event) =>
+                    (searchQuery.value = (event.target as HTMLInputElement).value)
+                  }
+                  placeholder={copy.value.searchPlaceholder}
+                  class="theta-focus w-full bg-transparent text-sm text-neutral-900 placeholder:text-neutral-500 focus:outline-none"
+                />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-3 gap-2 text-xs">
+              <div class="rounded-xl border border-black/10 bg-white px-3 py-2 text-center">
+                <p class="text-lg font-black text-[var(--theta-primary)]">{events.value.length}</p>
+                <p class="font-bold text-neutral-600">Total</p>
+              </div>
+              <div class="rounded-xl border border-black/10 bg-white px-3 py-2 text-center">
+                <p class="text-lg font-black text-emerald-600">
+                  {events.value.filter((item) => getEffectiveStatus(item) === "active").length}
+                </p>
+                <p class="font-bold text-neutral-600">Active</p>
+              </div>
+              <div class="rounded-xl border border-black/10 bg-white px-3 py-2 text-center">
+                <p class="text-lg font-black text-amber-600">
+                  {events.value.filter((item) => getEffectiveStatus(item) === "coming-soon").length}
+                </p>
+                <p class="font-bold text-neutral-600">Soon</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-5 grid min-w-0 gap-4 rounded-2xl border-2 border-black/10 bg-white/90 p-4">
+            <div class="min-w-0">
+              <p class="mb-2 text-[11px] font-extrabold tracking-[0.16em] text-neutral-500 uppercase">Category</p>
+              <div class="flex flex-wrap gap-2">
             {([
               { key: "all", label: copy.value.categoryLabels.all },
               { key: "events", label: copy.value.categoryLabels.events },
@@ -330,7 +368,7 @@ export default component$(() => {
                 key={item.key}
                 onClick$={() => (activeCategory.value = item.key)}
                 class={[
-                  "theta-focus rounded-full border-2 px-4 py-2 text-sm font-bold",
+                      "theta-focus rounded-full border-2 px-4 py-2 text-sm font-bold",
                   activeCategory.value === item.key
                     ? "border-[var(--theta-primary)] bg-[var(--theta-primary)] text-white"
                     : "border-black/15 bg-neutral-100 text-neutral-900",
@@ -339,68 +377,74 @@ export default component$(() => {
                 {item.label}
               </button>
             ))}
-          </div>
+              </div>
+            </div>
 
-          <div class="flex flex-wrap gap-2 overflow-x-auto pb-1">
-            {([
-              { key: "all", label: copy.value.statusLabels.all },
-              { key: "active", label: copy.value.statusLabels.active },
-              { key: "coming-soon", label: copy.value.statusLabels["coming-soon"] },
-              { key: "over", label: copy.value.statusLabels.over },
-            ] as const).map((item) => (
-              <button
-                key={item.key}
-                onClick$={() => (activeStatus.value = item.key)}
-                class={[
-                  "theta-focus whitespace-nowrap rounded-full border-2 px-4 py-2 text-xs font-bold",
-                  activeStatus.value === item.key
-                    ? "border-[var(--theta-primary)] bg-[var(--theta-primary)] text-white"
-                    : "border-black/15 bg-neutral-100 text-neutral-700",
-                ]}
-              >
-                {item.label}
-              </button>
-            ))}
-          </div>
+            <div class="min-w-0">
+              <p class="mb-2 text-[11px] font-extrabold tracking-[0.16em] text-neutral-500 uppercase">Status</p>
+              <div class="flex flex-wrap gap-2 overflow-x-auto pb-1">
+                {([
+                  { key: "all", label: copy.value.statusLabels.all },
+                  { key: "active", label: copy.value.statusLabels.active },
+                  { key: "coming-soon", label: copy.value.statusLabels["coming-soon"] },
+                  { key: "over", label: copy.value.statusLabels.over },
+                ] as const).map((item) => (
+                  <button
+                    key={item.key}
+                    onClick$={() => (activeStatus.value = item.key)}
+                    class={[
+                      "theta-focus whitespace-nowrap rounded-full border-2 px-4 py-2 text-xs font-bold",
+                      activeStatus.value === item.key
+                        ? "border-[var(--theta-primary)] bg-[var(--theta-primary)] text-white"
+                        : "border-black/15 bg-neutral-100 text-neutral-700",
+                    ]}
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </div>
+            </div>
 
-          <div class="flex gap-2 overflow-x-auto pb-1">
-            <button
-              onClick$={() => (activeCluster.value = "all")}
-              class={[
-                "theta-focus whitespace-nowrap rounded-full border-2 px-4 py-2 text-xs font-bold",
-                activeCluster.value === "all"
-                  ? "border-[var(--theta-primary)] bg-[var(--theta-primary)] text-white"
-                  : "border-black/15 bg-neutral-100 text-neutral-700",
-              ]}
-            >
-              {copy.value.allClustersLabel}
-            </button>
-            {clusters.value.map((cluster) => {
-              const color = getClusterColor(cluster.id);
-              return (
-                <button
-                  key={cluster.id}
-                  onClick$={() => (activeCluster.value = cluster.id)}
-                  class="theta-focus whitespace-nowrap rounded-full border-2 px-4 py-2 text-xs font-bold"
-                  style={{
-                    borderColor:
-                      activeCluster.value === cluster.id ? color : "rgba(0,0,0,0.16)",
-                    backgroundColor:
-                      activeCluster.value === cluster.id ? `${color}33` : "#fff",
-                    color: activeCluster.value === cluster.id ? color : "#111827",
-                  }}
-                >
-                  {cluster.name}
-                </button>
-              );
-            })}
+            <div class="min-w-0">
+              <p class="mb-2 text-[11px] font-extrabold tracking-[0.16em] text-neutral-500 uppercase">Cluster</p>
+              <div class="-mx-1 overflow-x-auto px-1 pb-1">
+                <div class="inline-flex min-w-max gap-2">
+                  <button
+                    onClick$={() => (activeCluster.value = "all")}
+                    class={[
+                      "theta-focus whitespace-nowrap rounded-full border-2 px-4 py-2 text-xs font-bold",
+                      activeCluster.value === "all"
+                        ? "border-[var(--theta-primary)] bg-[var(--theta-primary)] text-white"
+                        : "border-black/15 bg-neutral-100 text-neutral-700",
+                    ]}
+                  >
+                    {copy.value.allClustersLabel}
+                  </button>
+                  {clusters.value.map((cluster) => {
+                    const color = getClusterColor(cluster.id);
+                    return (
+                      <button
+                        key={cluster.id}
+                        onClick$={() => (activeCluster.value = cluster.id)}
+                        class="theta-focus whitespace-nowrap rounded-full border-2 px-4 py-2 text-xs font-bold"
+                        style={{
+                          borderColor:
+                            activeCluster.value === cluster.id ? color : "rgba(0,0,0,0.16)",
+                          backgroundColor:
+                            activeCluster.value === cluster.id ? `${color}33` : "#fff",
+                          color: activeCluster.value === cluster.id ? color : "#111827",
+                        }}
+                      >
+                        {cluster.name}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
-
-      <p class="mt-5 text-sm text-neutral-600">
-        {copy.value.resultsPrefix} {filtered.length} {filtered.length === 1 ? copy.value.singleEvent : copy.value.multipleEvents}
-      </p>
 
       <section class="mt-5 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
         {filtered.map((event) => {
@@ -409,10 +453,7 @@ export default component$(() => {
           const closed = isRegistrationClosed(event);
 
           return (
-            <article
-              key={event.id}
-              class="theta-panel group overflow-hidden"
-            >
+            <article key={event.id} class="theta-panel group overflow-hidden border-black/15 bg-white">
               <button
                 onClick$={() => openEvent(event)}
                 class="theta-focus block w-full text-left"
@@ -423,7 +464,7 @@ export default component$(() => {
                   width={640}
                   height={360}
                   loading="lazy"
-                  class="h-48 w-full object-cover grayscale transition duration-300 group-hover:grayscale-0"
+                  class="h-48 w-full object-cover grayscale-[25%] transition duration-300 group-hover:grayscale-0 group-hover:scale-[1.02]"
                 />
                 <div class="p-5">
                   <div class="mb-3 flex flex-wrap gap-2">
@@ -459,13 +500,21 @@ export default component$(() => {
                           : copy.value.statusLabels.closed}
                     </span>
                   </div>
-                  <h2 class="text-2xl leading-tight font-extrabold">{event.name}</h2>
+                  <h2 class="text-2xl leading-tight font-extrabold text-neutral-900">{event.name}</h2>
                   <p class="mt-2 line-clamp-2 text-sm text-neutral-600">{event.description}</p>
-                  <div class="mt-4 flex items-center justify-between">
-                    <p class="text-sm text-neutral-700">{event.timing}</p>
-                    <span class="text-sm font-bold text-[var(--theta-primary)]">{event.fee}</span>
+
+                  <div class="mt-4 rounded-xl border border-black/10 bg-neutral-50 px-3 py-2">
+                    <div class="flex items-center justify-between text-xs font-semibold text-neutral-600">
+                      <p>{event.timing}</p>
+                      <p>{event.location}</p>
+                    </div>
+                    <div class="mt-1 flex items-center justify-between">
+                      <p class="text-sm font-bold text-neutral-800">{copy.value.entryFee}</p>
+                      <span class="text-sm font-black text-[var(--theta-primary)]">{event.fee}</span>
+                    </div>
                   </div>
-                  <span class="theta-focus mt-4 inline-flex rounded-lg border-2 border-white bg-white px-4 py-2 text-xs font-bold text-black">
+
+                  <span class="theta-focus mt-4 inline-flex rounded-lg border-2 border-black/15 bg-white px-4 py-2 text-xs font-bold text-black transition group-hover:border-[var(--theta-primary)] group-hover:text-[var(--theta-primary)]">
                     {closed ? copy.value.registrationClosed : copy.value.registerNow}
                   </span>
                 </div>
@@ -502,7 +551,7 @@ export default component$(() => {
               <div>
                 <h3 class="text-3xl font-extrabold">{selectedEvent.value.name}</h3>
                 <p class="mt-2 text-sm text-neutral-600">{selectedEvent.value.description}</p>
-                <div class="mt-4 space-y-2 text-sm text-neutral-700">
+                <div class="mt-4 space-y-2 rounded-xl border border-black/10 bg-neutral-50 p-4 text-sm text-neutral-700">
                   <p><span class="text-neutral-700">Day:</span> {selectedEvent.value.day || "TBD"}</p>
                   <p><span class="text-neutral-700">Time:</span> {selectedEvent.value.timing}</p>
                   <p><span class="text-neutral-700">Venue:</span> {selectedEvent.value.location}</p>
