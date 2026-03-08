@@ -265,6 +265,17 @@ body {
   }
 }
 
+@keyframes thetaMenuIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .animate-theta-float {
   animation: thetaFloat 4s ease-in-out infinite;
 }
