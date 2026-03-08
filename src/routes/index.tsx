@@ -264,7 +264,7 @@ const sponsorTierStyles: Record<
   platinum: { chip: "bg-black text-white", border: "border-black" },
   gold: { chip: "bg-[#fef3c7] text-[#92400e]", border: "border-[#f59e0b]" },
   silver: { chip: "bg-[#e5e7eb] text-[#1f2937]", border: "border-[#9ca3af]" },
-  media: { chip: "bg-[#ede9fe] text-[#5b21b6]", border: "border-[#7c3aed]" },
+  media: { chip: "bg-[#cffafe] text-[#155e75]", border: "border-[#06b6d4]" },
 };
 
 const heroHighlights = [
@@ -590,7 +590,7 @@ export default component$(() => {
               <div class="mt-8 flex flex-wrap gap-3">
                 <Link
                   href="/events"
-                  class="theta-focus inline-flex items-center gap-2 rounded-xl border-2 border-[var(--theta-primary)] bg-[var(--theta-primary)] px-6 py-3 text-sm font-bold text-white shadow-[0_10px_22px_rgba(124,58,237,0.35)]"
+                  class="theta-focus inline-flex items-center gap-2 rounded-xl border-2 border-[var(--theta-primary)] bg-[var(--theta-primary)] px-6 py-3 text-sm font-bold text-white shadow-[0_10px_22px_rgba(6, 182, 212,0.35)]"
                 >
                   <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6 6 6-6 6" />
@@ -1094,7 +1094,7 @@ export default component$(() => {
               <div class="mt-6 flex flex-wrap gap-3">
                 <Link
                   href="/events"
-                  class="theta-focus inline-flex items-center justify-center rounded-xl border-2 border-[var(--theta-primary)] bg-[var(--theta-primary)] px-7 py-3 text-sm font-black text-white shadow-[0_10px_22px_rgba(124,58,237,0.35)]"
+                  class="theta-focus inline-flex items-center justify-center rounded-xl border-2 border-[var(--theta-primary)] bg-[var(--theta-primary)] px-7 py-3 text-sm font-black text-white shadow-[0_10px_22px_rgba(6, 182, 212,0.35)]"
                 >
                   {homeCopy.value.cta.browseEvents}
                 </Link>

@@ -162,7 +162,7 @@ export const Header = component$(() => {
           )}
           <Link
             href="/events"
-            class="theta-focus rounded-xl border-2 border-[var(--theta-primary)] bg-[var(--theta-primary)] px-4 py-2 text-sm font-bold text-white shadow-[0_8px_20px_rgba(124,58,237,0.35)]"
+            class="theta-focus rounded-xl border-2 border-[var(--theta-primary)] bg-[var(--theta-primary)] px-4 py-2 text-sm font-bold text-white shadow-[0_8px_20px_rgba(6, 182, 212,0.35)]"
           >
             Register Now
           </Link>
@@ -245,7 +245,7 @@ export const Header = component$(() => {
             <Link
               href="/events"
               onClick$={closeMenu}
-              class="theta-focus block rounded-xl border-2 border-[var(--theta-primary)] bg-[var(--theta-primary)] px-4 py-3 text-center font-bold text-white shadow-[0_8px_18px_rgba(124,58,237,0.28)]"
+              class="theta-focus block rounded-xl border-2 border-[var(--theta-primary)] bg-[var(--theta-primary)] px-4 py-3 text-center font-bold text-white shadow-[0_8px_18px_rgba(6, 182, 212,0.28)]"
             >
               Register Now
             </Link>
