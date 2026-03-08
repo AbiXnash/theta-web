@@ -34,7 +34,9 @@ export const RouterHead = component$(() => {
       {!hasDescription && (
         <meta name="description" content={defaultDescription.value} />
       )}
-      <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+      <link rel="icon" type="image/png" href="/theta-logo.png" />
+      <link rel="shortcut icon" href="/theta-logo.png" />
+      <link rel="apple-touch-icon" href="/theta-logo.png" />
       <link rel="manifest" href="/manifest.json" />
       <link rel="preconnect" href="https://images.unsplash.com" />
       <link rel="dns-prefetch" href="https://images.unsplash.com" />

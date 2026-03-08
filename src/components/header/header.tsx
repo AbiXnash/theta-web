@@ -37,6 +37,17 @@ export const Header = component$(() => {
   const location = useLocation();
   const open = useSignal(false);
   const headerCopy = useSignal<HeaderCopy>(defaultHeaderCopy);
+  const normalizePath = (path: string) => {
+    if (!path) return "/";
+    const cleaned = path.endsWith("/") && path !== "/" ? path.slice(0, -1) : path;
+    return cleaned || "/";
+  };
+  const isPathActive = (href: string, currentPath: string) => {
+    const base = normalizePath(href);
+    const current = normalizePath(currentPath);
+    if (base === "/") return current === "/";
+    return current === base || current.startsWith(`${base}/`);
+  };
 
   useVisibleTask$(async () => {
     try {
@@ -77,18 +88,18 @@ export const Header = component$(() => {
   return (
     <header class="fixed top-0 right-0 left-0 z-50 border-b border-black/10 bg-white/90 backdrop-blur-xl">
       <div class="theta-noise pointer-events-none absolute inset-0 opacity-20"></div>
-      <div class="relative mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link href="/" class="theta-focus flex items-center gap-3 rounded-xl p-1">
+      <div class="relative mx-auto flex h-20 max-w-7xl items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
+        <Link href="/" class="theta-focus flex shrink-0 items-center gap-2 rounded-xl p-1">
           <img
             src="/theta-logo.png"
             alt={headerCopy.value.logoAlt}
-            width={120}
-            height={60}
-            class="h-10 w-auto invert sm:h-12"
+            width={160}
+            height={80}
+            class="h-11 w-auto invert sm:h-14"
             loading="eager"
             fetchPriority="high"
           />
-          <span class="hidden text-lg font-extrabold tracking-[0.18em] text-neutral-900 sm:inline">
+          <span class="hidden text-base font-extrabold tracking-[0.16em] text-neutral-900 xl:inline">
             THETA<span class="text-[var(--theta-primary)]">2026</span>
           </span>
         </Link>
@@ -117,15 +128,17 @@ export const Header = component$(() => {
               );
             }
 
-            const isActive = location.url.pathname === item.href;
+            const isActive = isPathActive(item.href, location.url.pathname);
 
             return (
               <Link
                 key={item.href}
                 href={item.href}
                 class={[
-                  "theta-focus relative rounded-xl px-4 py-2 text-sm font-bold tracking-wide text-neutral-700 transition hover:bg-neutral-100",
-                  isActive && "bg-neutral-900 text-white",
+                  "theta-focus rounded-xl px-4 py-2 text-sm font-bold tracking-wide text-neutral-700 transition",
+                  isActive
+                    ? "bg-neutral-900 text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05)]"
+                    : "hover:bg-neutral-100",
                 ]}
               >
                 {item.label}
@@ -134,9 +147,9 @@ export const Header = component$(() => {
           })}
         </nav>
 
-        <div class="hidden items-center gap-3 lg:flex">
+        <div class="hidden items-center gap-2 lg:flex">
           {headerCopy.value.merch.comingSoon ? (
-            <span class="theta-badge border-black/25 bg-white text-neutral-900">
+            <span class="theta-badge border-black bg-black text-white">
               {headerCopy.value.merch.label} • {headerCopy.value.merch.labelSoon}
             </span>
           ) : (
@@ -166,41 +179,86 @@ export const Header = component$(() => {
         </button>
       </div>
 
-      <div
-        class={[
-          "relative z-10 lg:hidden border-t border-black/10 bg-white px-4 pb-4",
-          open.value ? "block" : "hidden",
-        ]}
-      >
-        <div class="mt-4 space-y-2">
-          {headerCopy.value.navItems.map((item) =>
-            item.active ? (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick$={closeMenu}
-                class="theta-focus block rounded-xl border border-black/15 bg-white px-4 py-3 font-semibold text-neutral-900"
-              >
-                {item.label}
-              </Link>
+      <div class={["fixed inset-0 z-40 lg:hidden transition", open.value ? "pointer-events-auto" : "pointer-events-none"]}>
+        <button
+          type="button"
+          aria-label="Close menu overlay"
+          onClick$={closeMenu}
+          class={[
+            "absolute inset-0 bg-black/35 backdrop-blur-[1px] transition-opacity duration-200",
+            open.value ? "opacity-100" : "opacity-0",
+          ]}
+        ></button>
+
+        <aside
+          class={[
+            "absolute top-0 right-0 h-full w-[84vw] max-w-[360px] border-l-2 border-black/20 bg-white p-5 shadow-[-10px_0_30px_rgba(0,0,0,0.2)] transition-transform duration-250",
+            open.value ? "translate-x-0" : "translate-x-full",
+          ]}
+        >
+          <div class="mb-5 flex items-center justify-between">
+            <p class="text-xs font-extrabold tracking-[0.16em] text-neutral-500 uppercase">Navigation</p>
+            <button
+              type="button"
+              onClick$={closeMenu}
+              class="theta-focus rounded-lg border border-black/20 bg-white px-2.5 py-1 text-sm font-bold text-neutral-700"
+            >
+              Close
+            </button>
+          </div>
+
+          <div class="space-y-2.5">
+            {headerCopy.value.navItems.map((item) =>
+              item.active ? (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick$={closeMenu}
+                  class={[
+                    "theta-focus block rounded-xl border-2 px-4 py-3 text-base font-extrabold",
+                    isPathActive(item.href, location.url.pathname)
+                      ? "border-neutral-900 bg-neutral-900 text-white"
+                      : "border-black/15 bg-white text-neutral-900",
+                  ]}
+                >
+                  {item.label}
+                </Link>
+              ) : (
+                <span
+                  key={item.href}
+                  class="block rounded-xl border border-black/10 px-4 py-3 font-semibold text-neutral-500"
+                >
+                  {item.label}
+                </span>
+              ),
+            )}
+          </div>
+
+          <div class="mt-5 space-y-2">
+            {headerCopy.value.merch.comingSoon ? (
+              <div class="rounded-xl border border-black/20 bg-black px-4 py-3 text-center text-sm font-bold text-white">
+                {headerCopy.value.merch.label} • {headerCopy.value.merch.labelComingSoon}
+              </div>
             ) : (
-              <span
-                key={item.href}
-                class="block rounded-xl border border-black/10 px-4 py-3 font-semibold text-neutral-500"
+              <Link
+                href="/merch"
+                onClick$={closeMenu}
+                class="theta-focus block rounded-xl border-2 border-black/20 bg-white px-4 py-3 text-center font-bold text-black"
               >
-                {item.label}
-              </span>
-            ),
-          )}
-          <Link
-            href="/events"
-            onClick$={closeMenu}
-            class="theta-focus mt-2 block rounded-xl border-2 border-[var(--theta-primary)] bg-[var(--theta-primary)] px-4 py-3 text-center font-bold text-white"
-          >
-            Register Now
-          </Link>
-        </div>
+                {headerCopy.value.merch.label}
+              </Link>
+            )}
+            <Link
+              href="/events"
+              onClick$={closeMenu}
+              class="theta-focus block rounded-xl border-2 border-[var(--theta-primary)] bg-[var(--theta-primary)] px-4 py-3 text-center font-bold text-white"
+            >
+              Register Now
+            </Link>
+          </div>
+        </aside>
       </div>
+      <div class="border-t border-black/5 lg:hidden"></div>
     </header>
   );
 });
