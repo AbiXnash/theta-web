@@ -93,6 +93,17 @@ export const Header = component$(() => {
           </span>
         </Link>
 
+        <div class="pointer-events-none absolute left-1/2 -translate-x-1/2 lg:hidden">
+          <img
+            src="/sponsors/general/sastra-university-logo.jpg"
+            alt="SASTRA University"
+            width={88}
+            height={44}
+            class="h-9 w-auto rounded-md border border-black/10 bg-white px-1 py-0.5 object-contain"
+            loading="eager"
+          />
+        </div>
+
         <nav class="hidden items-center gap-1 rounded-2xl border-2 border-black/10 bg-white p-1 shadow-[6px_6px_0_#111] lg:flex">
           {headerCopy.value.navItems.map((item) => {
             if (!item.active) {
