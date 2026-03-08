@@ -117,21 +117,31 @@ export default component$(() => {
   });
 
   const TeamCard = ({ member }: { member: TeamMember }) => (
-    <article class="theta-panel group p-6 transition duration-200 hover:[transform:translateY(-6px)_rotate(-0.6deg)]">
-      <div class="mx-auto flex h-24 w-24 items-center justify-center overflow-hidden rounded-full border-2 border-black/20 bg-neutral-900 text-2xl font-black text-white shadow-[0_0_0_2px_rgba(124,58,237,0.35)]">
-        <div
-          class="absolute h-24 w-24 rounded-full bg-cover bg-center opacity-70"
-          style={{ backgroundImage: `url(${member.image})` }}
-        ></div>
-        <span class="relative z-10">{getInitials(member.name)}</span>
+    <article class="theta-panel group relative overflow-hidden border-black/15 bg-white p-5 transition duration-200 hover:[transform:translateY(-6px)_rotate(-0.5deg)]">
+      <div class="pointer-events-none absolute -top-10 -right-10 h-24 w-24 rounded-full bg-[var(--theta-primary)]/10 blur-2xl"></div>
+      <div class="relative mx-auto flex h-24 w-24 items-center justify-center overflow-hidden rounded-full border-2 border-black/20 bg-white text-2xl font-black text-neutral-900 shadow-[0_0_0_2px_rgba(124,58,237,0.24)]">
+        <img
+          src={member.image || "/team/default-avatar.svg"}
+          alt={member.name}
+          loading="lazy"
+          width={96}
+          height={96}
+          class="h-full w-full object-cover"
+          onError$={(event) => {
+            (event.target as HTMLImageElement).src = "/team/default-avatar.svg";
+          }}
+        />
+        <span class="absolute bottom-1 rounded-md bg-black/80 px-1.5 py-0.5 text-[10px] text-white">
+          {getInitials(member.name)}
+        </span>
       </div>
-      <h3 class="mt-4 text-center text-xl font-extrabold">{member.name}</h3>
+      <h3 class="mt-4 text-center text-lg font-extrabold">{member.name}</h3>
       <p class="mt-1 text-center text-sm font-semibold text-[var(--theta-primary)]">{member.role}</p>
       <div class="mt-4 space-y-2 text-sm text-neutral-700">
-        <a href={`tel:${member.phone}`} class="theta-focus flex items-center justify-center rounded-lg border border-black/15 px-3 py-2 hover:border-[var(--theta-primary)]">
+        <a href={`tel:${member.phone}`} class="theta-focus flex items-center justify-center rounded-lg border border-black/15 bg-neutral-50 px-3 py-2 hover:border-[var(--theta-primary)]">
           {member.phone}
         </a>
-        <a href={`mailto:${member.email}`} class="theta-focus flex items-center justify-center rounded-lg border border-black/15 px-3 py-2 hover:border-[var(--theta-primary)]">
+        <a href={`mailto:${member.email}`} class="theta-focus flex items-center justify-center rounded-lg border border-black/15 bg-neutral-50 px-3 py-2 hover:border-[var(--theta-primary)]">
           {member.email}
         </a>
       </div>
@@ -140,11 +150,25 @@ export default component$(() => {
 
   return (
     <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-      <section class="theta-shell p-7 text-center sm:p-10">
-        <h1 class="text-4xl font-extrabold sm:text-5xl">
-          {copy.value.titlePrefix} <span class="text-[var(--theta-primary)]">{copy.value.titleAccent}</span>
-        </h1>
-        <p class="mx-auto mt-3 max-w-2xl text-neutral-600">{copy.value.subtitle}</p>
+      <section class="theta-shell relative overflow-hidden p-7 sm:p-10">
+        <div class="pointer-events-none absolute -top-14 -right-16 h-44 w-44 rounded-full bg-[var(--theta-primary)]/12 blur-3xl"></div>
+        <div class="relative flex flex-wrap items-center justify-between gap-5">
+          <div>
+            <h1 class="text-4xl font-extrabold sm:text-5xl">
+              {copy.value.titlePrefix} <span class="text-[var(--theta-primary)]">{copy.value.titleAccent}</span>
+            </h1>
+            <p class="mt-3 max-w-2xl text-neutral-600">{copy.value.subtitle}</p>
+          </div>
+          <div class="rounded-xl border-2 border-black/15 bg-white p-2 shadow-[6px_6px_0_#111]">
+            <img
+              src="/sponsors/general/sastra-university-logo.jpg"
+              alt="SASTRA University"
+              width={200}
+              height={72}
+              class="h-12 w-auto object-contain"
+            />
+          </div>
+        </div>
       </section>
 
       <section class="mt-8 space-y-10">
@@ -157,7 +181,10 @@ export default component$(() => {
 
           return (
             <div key={section.key}>
-              <h2 class="mb-4 text-2xl font-extrabold">{section.label}</h2>
+              <div class="mb-4 flex items-center justify-between gap-3">
+                <h2 class="text-2xl font-extrabold">{section.label}</h2>
+                <span class="theta-badge border-black/15 text-neutral-700">{members.length} members</span>
+              </div>
               <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
                 {members.map((member) => (
                   <TeamCard key={member.name} member={member} />
@@ -169,22 +196,53 @@ export default component$(() => {
       </section>
 
       <section class="mt-12 grid gap-5 lg:grid-cols-2">
-        <div class="theta-shell p-6">
-          <span class="theta-badge border-black/20 text-neutral-900">{copy.value.webtekLabel}</span>
-          <p class="mt-3 text-sm text-neutral-600">Build and maintenance by WebTek.</p>
-          <div class="mt-4 flex flex-wrap gap-3">
-            <a href={teamData.value.webtek.github} target="_blank" rel="noopener noreferrer" class="theta-focus rounded-lg border border-black/15 px-4 py-2 text-sm font-bold">GitHub</a>
-            <a href={teamData.value.webtek.linkedin} target="_blank" rel="noopener noreferrer" class="theta-focus rounded-lg border border-black/15 px-4 py-2 text-sm font-bold">LinkedIn</a>
-            <a href={`mailto:${teamData.value.webtek.email}`} class="theta-focus rounded-lg border border-black/15 px-4 py-2 text-sm font-bold">Email</a>
+        <div class="theta-shell relative overflow-hidden p-6">
+          <div class="pointer-events-none absolute -top-16 -right-16 h-40 w-40 rounded-full bg-[var(--theta-primary)]/12 blur-3xl"></div>
+          <div class="relative">
+            <span class="theta-badge border-black/20 text-neutral-900">{copy.value.webtekLabel}</span>
+            <h3 class="mt-4 text-2xl font-extrabold text-neutral-900">Engineering & Platform</h3>
+            <p class="mt-2 text-sm text-neutral-600">
+              Build, deployment, and experience optimization powered by WebTek.
+            </p>
+            <div class="mt-4 grid gap-2 sm:grid-cols-3">
+              <a
+                href={teamData.value.webtek.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="theta-focus rounded-xl border border-black/15 bg-white px-4 py-2 text-center text-sm font-bold hover:border-[var(--theta-primary)] hover:text-[var(--theta-primary)]"
+              >
+                GitHub
+              </a>
+              <a
+                href={teamData.value.webtek.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="theta-focus rounded-xl border border-black/15 bg-white px-4 py-2 text-center text-sm font-bold hover:border-[var(--theta-primary)] hover:text-[var(--theta-primary)]"
+              >
+                LinkedIn
+              </a>
+              <a
+                href={`mailto:${teamData.value.webtek.email}`}
+                class="theta-focus rounded-xl border border-black/15 bg-white px-4 py-2 text-center text-sm font-bold hover:border-[var(--theta-primary)] hover:text-[var(--theta-primary)]"
+              >
+                Email
+              </a>
+            </div>
           </div>
         </div>
 
-        <div class="theta-shell p-6">
-          <h3 class="text-2xl font-extrabold">{copy.value.stillQuestionsTitle}</h3>
-          <p class="mt-2 text-sm text-neutral-600">{copy.value.stillQuestionsSubtitle}</p>
-          <a href={`mailto:${teamData.value.webtek.email}`} class="theta-focus mt-4 inline-flex rounded-xl border-2 border-[var(--theta-primary)] bg-[var(--theta-primary)] px-5 py-3 text-sm font-bold text-white">
-            {copy.value.sendEmailLabel}
-          </a>
+        <div class="theta-shell relative overflow-hidden p-6">
+          <div class="pointer-events-none absolute -bottom-18 -left-12 h-40 w-40 rounded-full bg-[var(--theta-primary)]/12 blur-3xl"></div>
+          <div class="relative">
+            <h3 class="text-2xl font-extrabold">{copy.value.stillQuestionsTitle}</h3>
+            <p class="mt-2 text-sm text-neutral-600">{copy.value.stillQuestionsSubtitle}</p>
+            <a
+              href={`mailto:${teamData.value.webtek.email}`}
+              class="theta-focus mt-4 inline-flex rounded-xl border-2 border-[var(--theta-primary)] bg-[var(--theta-primary)] px-5 py-3 text-sm font-bold text-white shadow-[0_8px_20px_rgba(124,58,237,0.32)]"
+            >
+              {copy.value.sendEmailLabel}
+            </a>
+          </div>
         </div>
       </section>
     </div>
