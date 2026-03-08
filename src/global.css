@@ -104,6 +104,112 @@ body {
   box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.05), 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
+.theta-hero-grid {
+  background:
+    linear-gradient(90deg, rgba(124, 58, 237, 0.08) 1px, transparent 1px) 0 0 /
+      24px 24px,
+    linear-gradient(rgba(124, 58, 237, 0.08) 1px, transparent 1px) 0 0 / 24px
+      24px;
+}
+
+.theta-flip-card {
+  border: 2px solid #1f1f1f;
+  border-radius: 0.9rem;
+  overflow: hidden;
+  background: #111;
+  color: #fff;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
+}
+
+.theta-flip-top,
+.theta-flip-bottom {
+  position: relative;
+  height: 2.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.theta-flip-top {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+  background: linear-gradient(180deg, #222 0%, #171717 100%);
+}
+
+.theta-flip-bottom {
+  background: linear-gradient(180deg, #111 0%, #090909 100%);
+}
+
+.theta-flip-top::after,
+.theta-flip-bottom::before {
+  content: "";
+  position: absolute;
+  right: -0.35rem;
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 999px;
+  background: #111;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.theta-flip-top::after {
+  bottom: -0.35rem;
+}
+
+.theta-flip-bottom::before {
+  top: -0.35rem;
+}
+
+.theta-flip-digit {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 3.1rem;
+  line-height: 1;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  animation: thetaFlipIn 380ms ease;
+}
+
+.theta-flip-digit-top {
+  top: -0.25rem;
+}
+
+.theta-flip-digit-bottom {
+  bottom: -0.25rem;
+}
+
+.theta-count-chip {
+  border: 2px solid #111;
+  border-radius: 0.95rem;
+  background: linear-gradient(180deg, #171717 0%, #050505 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 10px 20px rgba(0, 0, 0, 0.25);
+  padding: 0.8rem 0.5rem;
+}
+
+.theta-count-value {
+  font-size: 2rem;
+  line-height: 1;
+  font-weight: 800;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+
+@keyframes thetaFlipIn {
+  0% {
+    opacity: 0.2;
+    transform: rotateX(-80deg);
+    transform-origin: top;
+  }
+  100% {
+    opacity: 1;
+    transform: rotateX(0deg);
+  }
+}
+
 .theta-glow {
   box-shadow: 0 0 0 1px rgba(124, 58, 237, 0.3), 0 0 28px rgba(124, 58, 237, 0.28);
 }
