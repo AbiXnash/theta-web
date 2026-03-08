@@ -521,8 +521,14 @@ export default component$(() => {
                   <span class="h-2 w-2 rounded-full bg-[var(--theta-primary)]"></span>
                   {configData.value.meta.dates}
                 </span>
-                <span class="rounded-full border border-black/15 bg-white px-3 py-1 text-[11px] font-bold tracking-[0.12em] text-neutral-600 uppercase">
-                  {configData.value.meta.venue}
+                <span class="inline-flex items-center rounded-full border border-black/15 bg-white px-2 py-1">
+                  <img
+                    src="/sponsors/general/sastra-university-logo.jpg"
+                    alt="SASTRA University"
+                    width={120}
+                    height={34}
+                    class="h-5 w-auto object-contain"
+                  />
                 </span>
               </div>
 
@@ -714,9 +720,19 @@ export default component$(() => {
             </div>
 
             <div class="rounded-2xl border-2 border-black/15 bg-white/90 p-5 shadow-[8px_8px_0_#111]">
-              <p class="text-xs font-bold tracking-[0.2em] text-neutral-500 uppercase">
-                Why Theta
-              </p>
+              <div class="mb-3 flex items-center justify-between">
+                <p class="text-xs font-bold tracking-[0.2em] text-neutral-500 uppercase">
+                  Why Theta
+                </p>
+                <img
+                  src="/sponsors/general/sastra-university-logo.jpg"
+                  alt="SASTRA University"
+                  width={120}
+                  height={40}
+                  loading="lazy"
+                  class="h-8 w-auto rounded-md border border-black/10 bg-white px-1 py-0.5 object-contain"
+                />
+              </div>
               <p class="mt-3 text-3xl leading-tight font-black text-neutral-900">
                 One stage.
                 <br />
@@ -815,16 +831,16 @@ export default component$(() => {
 
           <div class="relative flex flex-wrap items-end justify-between gap-4">
             <div>
-              <span class="theta-badge border-black/20 text-neutral-700">Sponsor Hall</span>
+              <span class="theta-badge border-black/20 text-neutral-700">Previous Sponsors</span>
               <h2 class="mt-4 text-4xl font-extrabold sm:text-5xl">
-                {homeCopy.value.sponsors.titlePrefix}{" "}
-                <span class="text-[var(--theta-primary)]">{homeCopy.value.sponsors.titleAccent}</span>
+                Past Edition{" "}
+                <span class="text-[var(--theta-primary)]">Partners</span>
               </h2>
               <p class="mt-2 max-w-2xl text-sm text-neutral-600 sm:text-base">
-                Extraordinary partners who make Theta 2026 bigger, louder, and more memorable.
+                These brands supported previous editions of Theta and helped build the fest legacy.
               </p>
             </div>
-            <span class="theta-sticker rotate-[-4deg]">Powered by Legends</span>
+            <span class="theta-sticker rotate-[-4deg]">Legacy Wall</span>
           </div>
 
           <div class="relative mt-8 space-y-8">
