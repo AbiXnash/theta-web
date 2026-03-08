@@ -181,43 +181,75 @@ export const Header = component$(() => {
 
       <div
         class={[
-          "relative z-10 overflow-hidden border-t border-black/10 bg-white px-4 pb-4 lg:hidden transition-all duration-300",
-          open.value ? "max-h-[28rem] opacity-100" : "max-h-0 opacity-0 pb-0",
+          "relative z-10 overflow-hidden border-t border-black/10 bg-gradient-to-b from-white to-neutral-100 px-4 transition-all duration-300 lg:hidden",
+          open.value ? "max-h-[34rem] pb-5 opacity-100" : "max-h-0 pb-0 opacity-0",
         ]}
         aria-hidden={!open.value}
       >
-        <div class={["mt-4 space-y-2", open.value && "animate-[thetaMenuIn_240ms_ease-out]"]}>
-          {headerCopy.value.navItems.map((item) =>
-            item.active ? (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick$={closeMenu}
-                class={[
-                  "theta-focus block rounded-xl border px-4 py-3 font-semibold transition-transform duration-200 hover:-translate-y-0.5",
-                  isPathActive(item.href, location.url.pathname)
-                    ? "border-neutral-900 bg-neutral-900 text-white"
-                    : "border-black/15 bg-white text-neutral-900",
-                ]}
-              >
-                {item.label}
-              </Link>
+        <div
+          class={[
+            "mt-4 rounded-2xl border-2 border-black/15 bg-white/95 p-3 shadow-[0_8px_20px_rgba(0,0,0,0.1)]",
+            open.value && "animate-[thetaMenuIn_240ms_ease-out]",
+          ]}
+        >
+          <div class="mb-3 flex items-center justify-between rounded-xl border border-black/10 bg-neutral-50 px-3 py-2">
+            <p class="text-[10px] font-extrabold tracking-[0.18em] text-neutral-500 uppercase">Navigation</p>
+            <span class="rounded-full border border-black/15 bg-white px-2.5 py-1 text-[10px] font-bold text-neutral-500">
+              Menu
+            </span>
+          </div>
+
+          <div class="space-y-2">
+            {headerCopy.value.navItems.map((item) =>
+              item.active ? (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick$={closeMenu}
+                  class={[
+                    "theta-focus flex items-center justify-between rounded-xl border px-4 py-3 font-semibold transition-transform duration-200 hover:-translate-y-0.5",
+                    isPathActive(item.href, location.url.pathname)
+                      ? "border-neutral-900 bg-neutral-900 text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.06)]"
+                      : "border-black/15 bg-white text-neutral-900",
+                  ]}
+                >
+                  <span>{item.label}</span>
+                  <span class="text-xs opacity-70">→</span>
+                </Link>
+              ) : (
+                <span
+                  key={item.href}
+                  class="block rounded-xl border border-black/10 px-4 py-3 font-semibold text-neutral-500"
+                >
+                  {item.label}
+                </span>
+              ),
+            )}
+          </div>
+
+          <div class="mt-3 space-y-2.5 border-t border-black/10 pt-3">
+            {headerCopy.value.merch.comingSoon ? (
+              <div class="rounded-xl border border-black/15 bg-black px-4 py-3 text-center text-sm font-bold text-white">
+                {headerCopy.value.merch.label} • {headerCopy.value.merch.labelComingSoon}
+              </div>
             ) : (
-              <span
-                key={item.href}
-                class="block rounded-xl border border-black/10 px-4 py-3 font-semibold text-neutral-500"
+              <Link
+                href="/merch"
+                onClick$={closeMenu}
+                class="theta-focus block rounded-xl border-2 border-black/20 bg-white px-4 py-3 text-center font-bold text-black"
               >
-                {item.label}
-              </span>
-            ),
-          )}
-          <Link
-            href="/events"
-            onClick$={closeMenu}
-            class="theta-focus mt-2 block rounded-xl border-2 border-[var(--theta-primary)] bg-[var(--theta-primary)] px-4 py-3 text-center font-bold text-white"
-          >
-            Register Now
-          </Link>
+                {headerCopy.value.merch.label}
+              </Link>
+            )}
+
+            <Link
+              href="/events"
+              onClick$={closeMenu}
+              class="theta-focus block rounded-xl border-2 border-[var(--theta-primary)] bg-[var(--theta-primary)] px-4 py-3 text-center font-bold text-white shadow-[0_8px_18px_rgba(124,58,237,0.28)]"
+            >
+              Register Now
+            </Link>
+          </div>
         </div>
       </div>
     </header>
