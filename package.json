@@ -1,6 +1,6 @@
 {
   "name": "my-qwik-empty-starter",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Blank project with routing included",
   "engines": {
     "node": "^18.17.0 || ^20.3.0 || >=21.0.0"
