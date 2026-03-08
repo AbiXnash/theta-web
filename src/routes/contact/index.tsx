@@ -131,7 +131,7 @@ export default component$(() => {
   const TeamCard = ({ member }: { member: TeamMember }) => (
     <article class="theta-panel group relative overflow-hidden border-black/15 bg-white p-5 transition duration-200 hover:[transform:translateY(-6px)_rotate(-0.5deg)]">
       <div class="pointer-events-none absolute -top-10 -right-10 h-24 w-24 rounded-full bg-[var(--theta-primary)]/10 blur-2xl"></div>
-      <div class="relative mx-auto flex h-24 w-24 items-center justify-center overflow-hidden rounded-full border-2 border-black/20 bg-white text-2xl font-black text-neutral-900 shadow-[0_0_0_2px_rgba(124,58,237,0.24)]">
+      <div class="relative mx-auto flex h-24 w-24 items-center justify-center overflow-hidden rounded-full border-2 border-black/20 bg-white text-2xl font-black text-neutral-900 shadow-[0_0_0_2px_rgba(220, 20, 60,0.24)]">
         <img
           src={member.image || "/team/default-avatar.svg"}
           alt={member.name}
@@ -252,7 +252,7 @@ export default component$(() => {
             <p class="mt-2 text-sm text-neutral-600">{copy.value.stillQuestionsSubtitle}</p>
             <a
               href={`mailto:${teamData.value.webtek.email}`}
-              class="theta-focus mt-4 inline-flex rounded-xl border-2 border-[var(--theta-primary)] bg-[var(--theta-primary)] px-5 py-3 text-sm font-bold text-white shadow-[0_8px_20px_rgba(124,58,237,0.32)]"
+              class="theta-focus mt-4 inline-flex rounded-xl border-2 border-[var(--theta-primary)] bg-[var(--theta-primary)] px-5 py-3 text-sm font-bold text-white shadow-[0_8px_20px_rgba(220, 20, 60,0.32)]"
             >
               {copy.value.sendEmailLabel}
             </a>

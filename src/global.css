@@ -13,8 +13,8 @@
   --theta-stroke: #d4d4d4;
   --theta-text: #0a0a0a;
   --theta-muted: #404040;
-  --theta-primary: #7c3aed;
-  --theta-primary-soft: rgba(124, 58, 237, 0.2);
+  --theta-primary: #dc143c;
+  --theta-primary-soft: rgba(220, 20, 60, 0.2);
   font-family: "Space Grotesk", sans-serif;
 }
 
@@ -27,8 +27,8 @@ body {
   font-family: "Space Grotesk", sans-serif;
   color: var(--theta-text);
   background:
-    radial-gradient(circle at 12% 15%, rgba(124, 58, 237, 0.13), transparent 28%),
-    radial-gradient(circle at 88% 6%, rgba(124, 58, 237, 0.08), transparent 24%),
+    radial-gradient(circle at 12% 15%, rgba(220, 20, 60, 0.13), transparent 28%),
+    radial-gradient(circle at 88% 6%, rgba(220, 20, 60, 0.08), transparent 24%),
     linear-gradient(180deg, #ffffff 0%, #f5f5f5 55%, #ececec 100%);
   min-height: 100vh;
 }
@@ -58,13 +58,13 @@ body {
 .theta-panel:hover {
   transform: translateY(-6px);
   box-shadow: 12px 12px 0 rgba(0, 0, 0, 0.9);
-  border-color: rgba(124, 58, 237, 0.7);
+  border-color: rgba(220, 20, 60, 0.7);
 }
 
 .theta-focus:focus-visible {
   outline: 2px solid var(--theta-primary);
   outline-offset: 2px;
-  box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.32);
+  box-shadow: 0 0 0 4px rgba(220, 20, 60, 0.32);
 }
 
 .theta-badge {
@@ -89,7 +89,7 @@ body {
 }
 
 .theta-gradient-text {
-  background: linear-gradient(92deg, #ffffff 15%, #d4c2ff 45%, #7c3aed 85%);
+  background: linear-gradient(92deg, #ffffff 15%, #fecdd3 45%, #dc143c 85%);
   background-size: 180% 180%;
   -webkit-background-clip: text;
   background-clip: text;
@@ -106,9 +106,9 @@ body {
 
 .theta-hero-grid {
   background:
-    linear-gradient(90deg, rgba(124, 58, 237, 0.08) 1px, transparent 1px) 0 0 /
+    linear-gradient(90deg, rgba(220, 20, 60, 0.08) 1px, transparent 1px) 0 0 /
       24px 24px,
-    linear-gradient(rgba(124, 58, 237, 0.08) 1px, transparent 1px) 0 0 / 24px
+    linear-gradient(rgba(220, 20, 60, 0.08) 1px, transparent 1px) 0 0 / 24px
       24px;
 }
 
@@ -211,7 +211,7 @@ body {
 }
 
 .theta-glow {
-  box-shadow: 0 0 0 1px rgba(124, 58, 237, 0.3), 0 0 28px rgba(124, 58, 237, 0.28);
+  box-shadow: 0 0 0 1px rgba(220, 20, 60, 0.3), 0 0 28px rgba(220, 20, 60, 0.28);
 }
 
 .theta-underline::after {
@@ -258,10 +258,10 @@ body {
 @keyframes thetaPulse {
   0%,
   100% {
-    box-shadow: 0 0 0 1px rgba(124, 58, 237, 0.34), 0 0 18px rgba(124, 58, 237, 0.2);
+    box-shadow: 0 0 0 1px rgba(220, 20, 60, 0.34), 0 0 18px rgba(220, 20, 60, 0.2);
   }
   50% {
-    box-shadow: 0 0 0 1px rgba(124, 58, 237, 0.55), 0 0 28px rgba(124, 58, 237, 0.36);
+    box-shadow: 0 0 0 1px rgba(220, 20, 60, 0.55), 0 0 28px rgba(220, 20, 60, 0.36);
   }
 }
 
@@ -375,8 +375,8 @@ body {
   background: linear-gradient(
     110deg,
     transparent 25%,
-    rgba(124, 58, 237, 0.1) 48%,
-    rgba(124, 58, 237, 0.18) 52%,
+    rgba(220, 20, 60, 0.1) 48%,
+    rgba(220, 20, 60, 0.18) 52%,
     transparent 75%
   );
   transform: translateX(-60%);
@@ -451,7 +451,7 @@ body {
 .theta-orbit-ring {
   position: absolute;
   inset: 0;
-  border: 2px dashed rgba(124, 58, 237, 0.25);
+  border: 2px dashed rgba(220, 20, 60, 0.25);
   border-radius: 999px;
   animation: thetaOrbitSpin 22s linear infinite;
 }
@@ -490,7 +490,7 @@ body {
   content: "";
   position: absolute;
   inset: 10%;
-  border: 2px dashed rgba(124, 58, 237, 0.28);
+  border: 2px dashed rgba(220, 20, 60, 0.28);
   border-radius: 999px;
 }
 

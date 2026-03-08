@@ -39,7 +39,7 @@
     {
       "id": "theta",
       "name": "Theta",
-      "color": "#8b5cf6",
+      "color": "#b91c1c",
       "description": "Theta Technical Club"
     },
     {
@@ -75,13 +75,13 @@
     {
       "id": "code",
       "name": "Code",
-      "color": "#a855f7",
+      "color": "#be123c",
       "description": "Coding Club"
     },
     {
       "id": "design",
       "name": "Design",
-      "color": "#d946ef",
+      "color": "#e11d48",
       "description": "Design Club"
     },
     {

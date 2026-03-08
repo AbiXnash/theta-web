@@ -132,7 +132,7 @@ const defaultClusterColors: Record<string, string> = {
   ieee: "#14b8a6",
   sae: "#f97316",
   tedx: "#ef4444",
-  robotics: "#8b5cf6",
+  robotics: "#b91c1c",
   design: "#ec4899",
   code: "#22c55e",
 };
@@ -203,7 +203,7 @@ const defaultClusters: Cluster[] = [
   { id: "ieee", name: "IEEE", color: "#14b8a6" },
   { id: "sae", name: "SAE", color: "#f97316" },
   { id: "tedx", name: "TEDx", color: "#ef4444" },
-  { id: "robotics", name: "Robotics", color: "#8b5cf6" },
+  { id: "robotics", name: "Robotics", color: "#b91c1c" },
   { id: "design", name: "Design", color: "#ec4899" },
   { id: "code", name: "Code", color: "#22c55e" },
 ];
@@ -320,13 +320,13 @@ export default component$(() => {
   };
 
   const getClusterColor = (id?: string) => {
-    if (!id) return "#7c3aed";
+    if (!id) return "#dc143c";
 
     const mapped = defaultClusterColors[id.toLowerCase()];
     if (mapped) return mapped;
 
     const fromData = clusters.value.find((c) => c.id === id)?.color;
-    return fromData || "#7c3aed";
+    return fromData || "#dc143c";
   };
 
   let filtered = events.value;
@@ -408,7 +408,7 @@ export default component$(() => {
 
             <a
               href={copy.value.comingSoon.ctaHref}
-              class="theta-focus mt-6 inline-flex rounded-xl border-2 border-[var(--theta-primary)] bg-[var(--theta-primary)] px-6 py-3 text-sm font-bold text-white shadow-[0_10px_22px_rgba(124,58,237,0.35)]"
+              class="theta-focus mt-6 inline-flex rounded-xl border-2 border-[var(--theta-primary)] bg-[var(--theta-primary)] px-6 py-3 text-sm font-bold text-white shadow-[0_10px_22px_rgba(220, 20, 60,0.35)]"
             >
               {copy.value.comingSoon.ctaLabel}
             </a>
