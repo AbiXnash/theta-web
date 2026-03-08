@@ -68,10 +68,20 @@ const defaultLayoutCopy: LayoutCopy = {
 export default component$(() => {
   const underDev = useSignal(true);
   const toastOpen = useSignal(false);
+  const showTop = useSignal(false);
   const copy = useSignal<LayoutCopy>(defaultLayoutCopy);
 
   useVisibleTask$(() => {
     underDev.value = import.meta.env.PUBLIC_UNDER_DEV !== "false";
+  });
+
+  useVisibleTask$(() => {
+    const onScroll = () => {
+      showTop.value = window.scrollY > 520;
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   });
 
   useVisibleTask$(async () => {
@@ -103,6 +113,10 @@ export default component$(() => {
     setTimeout(() => {
       toastOpen.value = false;
     }, 1700);
+  });
+
+  const scrollTop = $(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
   });
 
   return (
@@ -141,6 +155,17 @@ export default component$(() => {
               </div>
             )}
           </div>
+        )}
+
+        {showTop.value && (
+          <button
+            type="button"
+            onClick$={scrollTop}
+            class="theta-focus fixed right-4 bottom-18 z-[94] inline-flex h-10 w-10 items-center justify-center rounded-full border border-black/20 bg-white shadow-[0_8px_16px_rgba(0,0,0,0.12)]"
+            aria-label="Scroll to top"
+          >
+            ↑
+          </button>
         )}
 
         <footer class="mx-auto mt-14 max-w-7xl px-4 pb-8 sm:px-6 lg:px-8">

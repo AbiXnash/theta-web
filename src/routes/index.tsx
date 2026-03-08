@@ -267,6 +267,25 @@ const sponsorTierStyles: Record<
   media: { chip: "bg-[#ede9fe] text-[#5b21b6]", border: "border-[#7c3aed]" },
 };
 
+const heroHighlights = [
+  {
+    label: "Hackathons",
+    path: "M13 3L4 14h6l-1 7 9-11h-6l1-7z",
+  },
+  {
+    label: "Robotics",
+    path: "M9 8h6v2h2a2 2 0 0 1 2 2v3a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3v-3a2 2 0 0 1 2-2h2V8zm1-3h4v2h-4V5zm-1 8h2v2H9v-2zm4 0h2v2h-2v-2z",
+  },
+  {
+    label: "Design",
+    path: "M12 3a6 6 0 0 0 0 12h1a1.5 1.5 0 0 1 0 3h-1a9 9 0 1 1 0-18zm-4 8a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3-4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm5 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z",
+  },
+  {
+    label: "Aerospace",
+    path: "M3 13l9-9 2 2-2.5 2.5 2 2L16 8l2 2-2.5 2.5 2 2L20 12l1 1-3 3-2-2-2.5 2.5 2 2-1 1-2-2-2.5 2.5-2-2L12 15l-2-2-2.5 2.5-2-2L3 13z",
+  },
+] as const;
+
 export default component$(() => {
   const configData = useSignal<ConfigData>(defaultConfig);
   const homeCopy = useSignal<HomeCopy>(defaultHomeCopy);
@@ -521,7 +540,7 @@ export default component$(() => {
       <div class="theta-noise pointer-events-none absolute inset-0 opacity-20"></div>
 
       <section class="relative mx-auto mt-8 max-w-7xl px-4 pt-10 pb-14 sm:px-6 lg:px-8 lg:pt-14">
-        <div class="theta-shell theta-hero-grid relative overflow-hidden p-6 sm:p-8 lg:p-10">
+        <div class="theta-shell theta-hero-grid theta-reveal relative overflow-hidden p-6 sm:p-8 lg:p-10">
           <div class="pointer-events-none absolute -top-20 -left-16 h-56 w-56 rounded-full bg-[var(--theta-primary)]/14 blur-3xl"></div>
           <div class="pointer-events-none absolute -right-20 -bottom-20 h-56 w-56 rounded-full bg-black/10 blur-3xl"></div>
 
@@ -549,30 +568,42 @@ export default component$(() => {
               </h1>
 
               <p class="mt-4 max-w-2xl text-base text-neutral-600 sm:text-lg">
-                {configData.value.meta.tagline}
-              </p>
-              <p class="mt-1 max-w-2xl text-sm text-neutral-500 sm:text-base">
+                {configData.value.meta.tagline}.{" "}
                 {homeCopy.value.hero.description}
               </p>
 
-              <div class="mt-6 flex flex-wrap gap-3">
-                <span class="theta-sticker animate-theta-float">⚡ Hackathons</span>
-                <span class="theta-sticker animate-theta-float [animation-delay:100ms]">🤖 Robotics</span>
-                <span class="theta-sticker animate-theta-float [animation-delay:200ms]">🎨 Design</span>
-                <span class="theta-sticker animate-theta-float [animation-delay:300ms]">🚀 Aerospace</span>
+              <div class="mt-6 flex flex-wrap gap-2.5">
+                {heroHighlights.map((item, index) => (
+                  <span
+                    key={item.label}
+                    class="inline-flex items-center gap-2 rounded-full border-2 border-black/20 bg-white px-3.5 py-1.5 text-xs font-bold text-neutral-800 shadow-[4px_4px_0_#111]"
+                    style={{ animationDelay: `${index * 90}ms` }}
+                  >
+                    <svg viewBox="0 0 24 24" class="h-3.5 w-3.5 text-[var(--theta-primary)]" fill="currentColor" aria-hidden="true">
+                      <path d={item.path} />
+                    </svg>
+                    {item.label}
+                  </span>
+                ))}
               </div>
 
               <div class="mt-8 flex flex-wrap gap-3">
                 <Link
                   href="/events"
-                  class="theta-focus rounded-xl border-2 border-[var(--theta-primary)] bg-[var(--theta-primary)] px-6 py-3 text-sm font-bold text-white shadow-[0_10px_22px_rgba(124,58,237,0.35)]"
+                  class="theta-focus inline-flex items-center gap-2 rounded-xl border-2 border-[var(--theta-primary)] bg-[var(--theta-primary)] px-6 py-3 text-sm font-bold text-white shadow-[0_10px_22px_rgba(124,58,237,0.35)]"
                 >
+                  <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6 6 6-6 6" />
+                  </svg>
                   Register Now
                 </Link>
                 <Link
                   href="/events"
-                  class="theta-focus rounded-xl border-2 border-black/20 bg-white px-6 py-3 text-sm font-bold text-black"
+                  class="theta-focus inline-flex items-center gap-2 rounded-xl border-2 border-black/20 bg-white px-6 py-3 text-sm font-bold text-black"
                 >
+                  <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M4 12h16M4 17h10" />
+                  </svg>
                   {homeCopy.value.hero.exploreEvents}
                 </Link>
               </div>
@@ -634,7 +665,7 @@ export default component$(() => {
         </div>
       </section>
 
-      <section class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+      <section class="theta-reveal theta-reveal-delay-1 mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div class="mb-7 flex flex-wrap items-end justify-between gap-3">
           <div>
             <span class="theta-badge border-black/15 text-neutral-600">
@@ -707,7 +738,7 @@ export default component$(() => {
         </div>
       </section>
 
-      <section class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+      <section class="theta-reveal theta-reveal-delay-1 mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div class="theta-shell relative overflow-hidden p-6 sm:p-8 lg:p-10">
           <div class="pointer-events-none absolute -top-20 -right-20 h-56 w-56 rounded-full bg-[var(--theta-primary)]/12 blur-3xl"></div>
           <div class="pointer-events-none absolute -left-16 bottom-0 h-40 w-40 rounded-full bg-black/8 blur-2xl"></div>
@@ -774,7 +805,7 @@ export default component$(() => {
         </div>
       </section>
 
-      <section id="theta-stats" class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+      <section id="theta-stats" class="theta-reveal theta-reveal-delay-2 mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div class="theta-shell relative overflow-hidden p-6 sm:p-8 lg:p-10">
           <div class="pointer-events-none absolute -top-16 -left-12 h-40 w-40 rounded-full bg-[var(--theta-primary)]/14 blur-2xl"></div>
           <div class="pointer-events-none absolute -right-14 -bottom-14 h-44 w-44 rounded-full bg-black/10 blur-3xl"></div>
@@ -835,7 +866,7 @@ export default component$(() => {
         </div>
       </section>
 
-      <section class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+      <section class="theta-reveal theta-reveal-delay-2 mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div class="theta-shell relative overflow-hidden p-6 sm:p-8 lg:p-10">
           <div class="pointer-events-none absolute -top-20 -left-20 h-56 w-56 rounded-full bg-[var(--theta-primary)]/15 blur-3xl"></div>
           <div class="pointer-events-none absolute -right-20 -bottom-20 h-56 w-56 rounded-full bg-black/10 blur-3xl"></div>
@@ -1032,7 +1063,7 @@ export default component$(() => {
           );
         })()}
 
-      <section class="mx-auto max-w-7xl px-4 pt-8 pb-8 sm:px-6 lg:px-8">
+      <section class="theta-reveal theta-reveal-delay-3 mx-auto max-w-7xl px-4 pt-8 pb-8 sm:px-6 lg:px-8">
         <div class="theta-shell relative overflow-hidden p-6 sm:p-8 lg:p-10">
           <div class="pointer-events-none absolute -top-14 -left-14 h-40 w-40 rounded-full bg-[var(--theta-primary)]/20 blur-2xl"></div>
           <div class="pointer-events-none absolute -right-16 -bottom-16 h-44 w-44 rounded-full bg-black/10 blur-3xl"></div>

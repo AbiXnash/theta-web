@@ -49,6 +49,14 @@ Notable route-copy keys:
 - `home.sponsors.hallSticker`
 - `eventsPage.metrics.{total,active,soon}`
 - `eventsPage.filterLabels.{category,status,cluster}`
+- `eventsPage.comingSoon.enabled`
+- `eventsPage.comingSoon.badge`
+- `eventsPage.comingSoon.title`
+- `eventsPage.comingSoon.description`
+- `eventsPage.comingSoon.ctaLabel`
+- `eventsPage.comingSoon.ctaHref`
+- `eventsPage.comingSoon.highlights[]`
+- `eventsPage.comingSoon.launchNote`
 - `contactPage.webtekTitle`
 - `contactPage.webtekDescription`
 - `contactPage.githubLabel`

@@ -64,6 +64,8 @@ interface EventsPageCopy {
     description: string;
     ctaLabel: string;
     ctaHref: string;
+    highlights: string[];
+    launchNote: string;
   };
 }
 
@@ -109,6 +111,8 @@ const defaultEventsPageCopy: EventsPageCopy = {
     description: "The full events lineup will be published shortly.",
     ctaLabel: "Back to Home",
     ctaHref: "/",
+    highlights: ["Hackathons", "Workshops", "Robotics", "Design Battles"],
+    launchNote: "Registrations open soon.",
   },
 };
 
@@ -291,6 +295,25 @@ export default component$(() => {
     return () => document.removeEventListener("keydown", onKeyDown);
   });
 
+  useVisibleTask$(() => {
+    const onShortcut = (event: KeyboardEvent) => {
+      if (event.key !== "/") return;
+      const active = document.activeElement as HTMLElement | null;
+      const isTyping =
+        active?.tagName === "INPUT" ||
+        active?.tagName === "TEXTAREA" ||
+        active?.isContentEditable;
+      if (isTyping) return;
+      const search = document.getElementById("events-search") as HTMLInputElement | null;
+      if (!search) return;
+      event.preventDefault();
+      search.focus();
+      search.select();
+    };
+    document.addEventListener("keydown", onShortcut);
+    return () => document.removeEventListener("keydown", onShortcut);
+  });
+
   const getClusterName = (id?: string) => {
     if (!id) return "Open";
     return clusters.value.find((c) => c.id === id)?.name || id;
@@ -341,6 +364,7 @@ export default component$(() => {
   const closeEvent = $(() => {
     selectedEvent.value = null;
   });
+  const visibleClusters = clusters.value.slice(0, 10);
 
   return (
     <div class="relative mx-auto min-h-screen max-w-7xl px-4 py-10 pb-16 sm:px-6 lg:px-8">
@@ -351,11 +375,40 @@ export default component$(() => {
           <div class="pointer-events-none absolute -bottom-16 -left-20 h-56 w-56 rounded-full bg-black/10 blur-3xl"></div>
           <div class="relative mx-auto max-w-2xl">
             <span class="theta-badge border-black/20 text-neutral-700">{copy.value.comingSoon.badge}</span>
-            <h1 class="mt-4 text-4xl font-extrabold sm:text-5xl">{copy.value.comingSoon.title}</h1>
-            <p class="mt-3 text-neutral-600">{copy.value.comingSoon.description}</p>
+            <h1 class="mt-4 text-4xl font-extrabold sm:text-5xl lg:text-6xl">{copy.value.comingSoon.title}</h1>
+            <p class="mx-auto mt-3 max-w-xl text-neutral-600">{copy.value.comingSoon.description}</p>
+
+            <div class="mt-6 grid gap-3 sm:grid-cols-3">
+              <article class="rounded-xl border border-black/10 bg-white px-4 py-3 text-left shadow-[0_6px_14px_rgba(0,0,0,0.08)]">
+                <p class="text-[11px] font-bold tracking-[0.14em] text-neutral-500 uppercase">Total Events</p>
+                <p class="mt-1 text-2xl font-black text-[var(--theta-primary)]">{events.value.length || "30+"}</p>
+              </article>
+              <article class="rounded-xl border border-black/10 bg-white px-4 py-3 text-left shadow-[0_6px_14px_rgba(0,0,0,0.08)]">
+                <p class="text-[11px] font-bold tracking-[0.14em] text-neutral-500 uppercase">Live Clusters</p>
+                <p class="mt-1 text-2xl font-black text-neutral-900">{visibleClusters.length || 10}</p>
+              </article>
+              <article class="rounded-xl border border-black/10 bg-white px-4 py-3 text-left shadow-[0_6px_14px_rgba(0,0,0,0.08)]">
+                <p class="text-[11px] font-bold tracking-[0.14em] text-neutral-500 uppercase">Status</p>
+                <p class="mt-1 text-2xl font-black text-amber-600">Preparing</p>
+              </article>
+            </div>
+
+            <div class="mt-5 flex flex-wrap justify-center gap-2">
+              {copy.value.comingSoon.highlights.map((item, index) => (
+                <span
+                  key={`${item}-${index}`}
+                  class="rounded-full border border-black/15 bg-white px-3 py-1 text-xs font-bold text-neutral-700 shadow-[0_4px_10px_rgba(0,0,0,0.06)]"
+                >
+                  {item}
+                </span>
+              ))}
+            </div>
+
+            <p class="mt-5 text-sm font-semibold text-neutral-600">{copy.value.comingSoon.launchNote}</p>
+
             <a
               href={copy.value.comingSoon.ctaHref}
-              class="theta-focus mt-6 inline-flex rounded-xl border-2 border-[var(--theta-primary)] bg-[var(--theta-primary)] px-6 py-3 text-sm font-bold text-white"
+              class="theta-focus mt-6 inline-flex rounded-xl border-2 border-[var(--theta-primary)] bg-[var(--theta-primary)] px-6 py-3 text-sm font-bold text-white shadow-[0_10px_22px_rgba(124,58,237,0.35)]"
             >
               {copy.value.comingSoon.ctaLabel}
             </a>
@@ -364,7 +417,7 @@ export default component$(() => {
       ) : (
         <>
 
-      <section class="theta-shell relative overflow-hidden p-6 sm:p-8">
+      <section class="theta-shell theta-reveal relative overflow-hidden p-6 sm:p-8">
         <div class="pointer-events-none absolute -top-14 -right-16 h-44 w-44 rounded-full bg-[var(--theta-primary)]/12 blur-3xl"></div>
         <div class="pointer-events-none absolute -bottom-16 -left-16 h-40 w-40 rounded-full bg-black/10 blur-3xl"></div>
 
@@ -492,7 +545,7 @@ export default component$(() => {
                   >
                     {copy.value.allClustersLabel}
                   </button>
-                  {clusters.value.map((cluster) => {
+                  {visibleClusters.map((cluster) => {
                     const color = getClusterColor(cluster.id);
                     return (
                       <button
@@ -519,6 +572,20 @@ export default component$(() => {
       </section>
 
       <section class="mt-5 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+        {!copy.value.comingSoon.enabled && events.value.length === 0 && (
+          <>
+            {Array.from({ length: 6 }).map((_, idx) => (
+              <article key={`events-skeleton-${idx}`} class="theta-panel p-5">
+                <div class="theta-skeleton h-40 w-full"></div>
+                <div class="mt-4 space-y-2">
+                  <div class="theta-skeleton h-4 w-2/3"></div>
+                  <div class="theta-skeleton h-3 w-full"></div>
+                  <div class="theta-skeleton h-3 w-5/6"></div>
+                </div>
+              </article>
+            ))}
+          </>
+        )}
         {filtered.map((event) => {
           const clusterColor = getClusterColor(event.cluster);
           const status = getEffectiveStatus(event);

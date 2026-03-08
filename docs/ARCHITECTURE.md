@@ -32,9 +32,15 @@ Pages fetch static JSON from `/public/data` using `fetch()` inside Qwik `useVisi
   - `.theta-panel` (card panel)
   - `.theta-badge` (pill tag)
   - `.theta-focus` (focus-visible accessibility ring)
+- Motion/QoL utilities:
+  - `.theta-reveal` (+ delay variants) for lightweight entrance animation
+  - `.theta-skeleton` for shimmer placeholders
+  - `prefers-reduced-motion` override to minimize animation for accessibility
 
 ## Accessibility & UX Notes
 
 - Modal overlays support keyboard close with `Escape`.
 - Focus-visible states are preserved via `.theta-focus`.
 - Mobile navigation uses tap-friendly block links.
+- Events page includes `/` keyboard shortcut for search focus.
+- Global scroll-to-top button is managed in `src/routes/layout.tsx`.

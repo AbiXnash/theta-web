@@ -162,7 +162,7 @@ export default component$(() => {
 
   return (
     <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-      <section class="theta-shell relative overflow-hidden p-7 sm:p-10">
+      <section class="theta-shell theta-reveal relative overflow-hidden p-7 sm:p-10">
         <div class="pointer-events-none absolute -top-14 -right-16 h-44 w-44 rounded-full bg-[var(--theta-primary)]/12 blur-3xl"></div>
         <div class="relative flex flex-wrap items-center justify-between gap-5">
           <div>
@@ -183,7 +183,7 @@ export default component$(() => {
         </div>
       </section>
 
-      <section class="mt-8 space-y-10">
+      <section class="theta-reveal theta-reveal-delay-1 mt-8 space-y-10">
         {teamData.value.order.map((section) => {
           const members = teamData.value[
             section.key as keyof Omit<TeamData, "order" | "webtek">
@@ -209,7 +209,7 @@ export default component$(() => {
         })}
       </section>
 
-      <section class="mt-12 grid gap-5 lg:grid-cols-2">
+      <section class="theta-reveal theta-reveal-delay-2 mt-12 grid gap-5 lg:grid-cols-2">
         <div class="theta-shell relative overflow-hidden p-6">
           <div class="pointer-events-none absolute -top-16 -right-16 h-40 w-40 rounded-full bg-[var(--theta-primary)]/12 blur-3xl"></div>
           <div class="relative">

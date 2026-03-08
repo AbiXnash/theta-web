@@ -152,7 +152,9 @@
       "title": "Events Page Coming Soon",
       "description": "We are finalizing the event lineup. Please check back shortly for registrations and schedules.",
       "ctaLabel": "Go to Home",
-      "ctaHref": "/"
+      "ctaHref": "/",
+      "highlights": ["Hackathons", "Workshops", "Robotics", "Design Battles"],
+      "launchNote": "Registrations and detailed schedules will go live soon."
     }
   },
   "contactPage": {
