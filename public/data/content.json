@@ -145,6 +145,14 @@
       "category": "Category",
       "status": "Status",
       "cluster": "Cluster"
+    },
+    "comingSoon": {
+      "enabled": true,
+      "badge": "Theta 2026",
+      "title": "Events Page Coming Soon",
+      "description": "We are finalizing the event lineup. Please check back shortly for registrations and schedules.",
+      "ctaLabel": "Go to Home",
+      "ctaHref": "/"
     }
   },
   "contactPage": {

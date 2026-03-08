@@ -57,6 +57,14 @@ interface EventsPageCopy {
     status: string;
     cluster: string;
   };
+  comingSoon: {
+    enabled: boolean;
+    badge: string;
+    title: string;
+    description: string;
+    ctaLabel: string;
+    ctaHref: string;
+  };
 }
 
 const defaultEventsPageCopy: EventsPageCopy = {
@@ -93,6 +101,14 @@ const defaultEventsPageCopy: EventsPageCopy = {
     category: "Category",
     status: "Status",
     cluster: "Cluster",
+  },
+  comingSoon: {
+    enabled: false,
+    badge: "Events",
+    title: "Coming Soon",
+    description: "The full events lineup will be published shortly.",
+    ctaLabel: "Back to Home",
+    ctaHref: "/",
   },
 };
 
@@ -241,6 +257,10 @@ export default component$(() => {
             ...defaultEventsPageCopy.filterLabels,
             ...(content.eventsPage.filterLabels || {}),
           },
+          comingSoon: {
+            ...defaultEventsPageCopy.comingSoon,
+            ...(content.eventsPage.comingSoon || {}),
+          },
         };
       }
 
@@ -325,6 +345,24 @@ export default component$(() => {
   return (
     <div class="relative mx-auto min-h-screen max-w-7xl px-4 py-10 pb-16 sm:px-6 lg:px-8">
       <div class="theta-noise pointer-events-none absolute inset-0 -z-10 opacity-20"></div>
+      {copy.value.comingSoon.enabled ? (
+        <section class="theta-shell relative mt-4 overflow-hidden p-8 text-center sm:p-12">
+          <div class="pointer-events-none absolute -top-16 -right-20 h-56 w-56 rounded-full bg-[var(--theta-primary)]/12 blur-3xl"></div>
+          <div class="pointer-events-none absolute -bottom-16 -left-20 h-56 w-56 rounded-full bg-black/10 blur-3xl"></div>
+          <div class="relative mx-auto max-w-2xl">
+            <span class="theta-badge border-black/20 text-neutral-700">{copy.value.comingSoon.badge}</span>
+            <h1 class="mt-4 text-4xl font-extrabold sm:text-5xl">{copy.value.comingSoon.title}</h1>
+            <p class="mt-3 text-neutral-600">{copy.value.comingSoon.description}</p>
+            <a
+              href={copy.value.comingSoon.ctaHref}
+              class="theta-focus mt-6 inline-flex rounded-xl border-2 border-[var(--theta-primary)] bg-[var(--theta-primary)] px-6 py-3 text-sm font-bold text-white"
+            >
+              {copy.value.comingSoon.ctaLabel}
+            </a>
+          </div>
+        </section>
+      ) : (
+        <>
 
       <section class="theta-shell relative overflow-hidden p-6 sm:p-8">
         <div class="pointer-events-none absolute -top-14 -right-16 h-44 w-44 rounded-full bg-[var(--theta-primary)]/12 blur-3xl"></div>
@@ -623,6 +661,8 @@ export default component$(() => {
             </div>
           </div>
         </div>
+      )}
+        </>
       )}
     </div>
   );
