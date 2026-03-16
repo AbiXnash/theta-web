@@ -994,20 +994,17 @@ export default component$(() => {
                         ]}
                       >
                         <div class="flex w-full items-center justify-between gap-3 rounded-xl px-2 py-2 text-left">
-                          <div class="flex items-center gap-3">
-                            <h3 class="text-lg font-extrabold text-neutral-900 sm:text-xl">
-                              {tier.label}
-                            </h3>
-                            <span
-                              class={[
-                                "rounded-full border-2 px-3 py-1 text-[11px] font-bold tracking-wide sm:text-xs",
-                                tierStyle.chip,
-                              ]}
-                            >
-                              {list.length} Partners
-                            </span>
-                          </div>
-
+                          <h3 class="text-lg font-extrabold text-neutral-900 sm:text-xl">
+                            {tier.label}
+                          </h3>
+                          <span
+                            class={[
+                              "rounded-full border-2 px-3 py-1 text-[11px] font-bold tracking-wide sm:text-xs",
+                              tierStyle.chip,
+                            ]}
+                          >
+                            {list.length} Partners
+                          </span>
                         </div>
 
                         <div
