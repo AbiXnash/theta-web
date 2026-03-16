@@ -994,21 +994,16 @@ export default component$(() => {
                         ]}
                       >
                         <div class="flex w-full items-center justify-between gap-3 rounded-xl px-2 py-2 text-left">
-                          <div class="flex items-center gap-3">
-                            <h3 class="text-lg font-extrabold text-neutral-900 sm:text-xl">
-                              {tier.label}
-                            </h3>
-                            <span
-                              class={[
-                                "rounded-full border-2 px-3 py-1 text-[11px] font-bold tracking-wide sm:text-xs",
-                                tierStyle.chip,
-                              ]}
-                            >
-                              {list.length} Partners
-                            </span>
-                          </div>
-                          <span class="text-[10px] font-bold tracking-[0.14em] text-neutral-500 uppercase">
-                            {shouldAnimate ? "Auto + Swipe" : "Static Lane"}
+                          <h3 class="text-lg font-extrabold text-neutral-900 sm:text-xl">
+                            {tier.label}
+                          </h3>
+                          <span
+                            class={[
+                              "rounded-full border-2 px-3 py-1 text-[11px] font-bold tracking-wide sm:text-xs",
+                              tierStyle.chip,
+                            ]}
+                          >
+                            {list.length} Partners
                           </span>
                         </div>
 
@@ -1018,7 +1013,7 @@ export default component$(() => {
                             "-mx-1 mt-3 px-1 pb-2",
                             shouldAnimate
                               ? "theta-marquee-lane overflow-x-auto"
-                              : "overflow-visible",
+                              : "overflow-x-auto sm:overflow-visible",
                           ]}
                         >
                           <div
@@ -1029,7 +1024,7 @@ export default component$(() => {
                               "flex gap-3 py-2",
                               shouldAnimate
                                 ? "min-w-max"
-                                : "w-full flex-wrap justify-center",
+                                : "flex-nowrap sm:flex-wrap sm:w-full sm:justify-center",
                               shouldAnimate &&
                                 (tierIndex % 2 === 0
                                   ? "animate-[thetaMarqueeLeft_24s_linear_infinite]"
