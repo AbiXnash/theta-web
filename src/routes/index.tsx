@@ -1018,7 +1018,7 @@ export default component$(() => {
                             "-mx-1 mt-3 px-1 pb-2",
                             shouldAnimate
                               ? "theta-marquee-lane overflow-x-auto"
-                              : "overflow-visible",
+                              : "overflow-x-auto sm:overflow-visible",
                           ]}
                         >
                           <div
@@ -1029,7 +1029,7 @@ export default component$(() => {
                               "flex gap-3 py-2",
                               shouldAnimate
                                 ? "min-w-max"
-                                : "w-full flex-wrap justify-center",
+                                : "flex-nowrap sm:flex-wrap sm:w-full sm:justify-center",
                               shouldAnimate &&
                                 (tierIndex % 2 === 0
                                   ? "animate-[thetaMarqueeLeft_24s_linear_infinite]"
