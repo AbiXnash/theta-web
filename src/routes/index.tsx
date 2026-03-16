@@ -1007,9 +1007,7 @@ export default component$(() => {
                               {list.length} Partners
                             </span>
                           </div>
-                          <span class="text-[10px] font-bold tracking-[0.14em] text-neutral-500 uppercase">
-                            {shouldAnimate ? "Auto + Swipe" : "Static Lane"}
-                          </span>
+
                         </div>
 
                         <div
